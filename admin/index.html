@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Blog - Glitchboi</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Admin Blog / Actualizaciones</h1>
+    <p class="muted">Este panel edita el archivo <code>assets/data/blog.json</code>. Exporta el JSON y s&uacute;belo al repositorio para publicar cambios.</p>
+
+    <div class="toolbar">
+      <label for="pw">Contrase&ntilde;a:</label>
+      <input id="pw" type="password" placeholder="****" autocomplete="current-password">
+      <button id="loginBtn" class="btn">Entrar</button>
+      <span id="authState" class="muted"></span>
+      
+    </div>
+
+    <div id="app" hidden>
+           <div class="toolbar" aria-label="Integración con GitHub Pages">
+             <input id="ghOwner" type="text" placeholder="owner (e.g. Glitchboi-sudo)" style="max-width:220px">
+           <input id="ghRepo" type="text" placeholder="repo (e.g. Glitchboi_page)" style="max-width:240px">
+           <input id="ghBranch" type="text" placeholder="branch (main)" value="main" style="max-width:140px">
+           <input id="ghPath" type="text" placeholder="path (assets/data/blog.json)" value="assets/data/blog.json" style="max-width:260px">
+         </div>
+         <div class="toolbar">
+            <input id="ghToken" type="password" placeholder="GitHub Token (repo:contents write)" style="max-width:360px">
+            <button id="saveCfg" class="btn">Guardar config</button>
+            <button id="clearTok" class="btn danger">Borrar token</button>
+            <button id="publish" class="btn" title="Commit directo a GitHub">Publicar</button>
+            <span class="muted right">El token se guarda localmente (navegador)</span>
+         </div>
+      <div class="toolbar">
+        <button id="add" class="btn">Agregar</button>
+        <input type="file" id="importFile" accept="application/json">
+        <button id="export" class="btn">Exportar JSON</button>
+        <span class="muted right" id="status"></span>
+      </div>
+      <table id="tbl" class="table">
+        <thead>
+          <tr><th>Fecha (YYYY-MM-DD)</th><th>T&iacute;tulo</th><th>Extracto</th><th>Link</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+</main>
+
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>
+

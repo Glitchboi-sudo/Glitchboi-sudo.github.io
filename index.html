@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GLITCH HARDWARE &mdash; TECH DOSSIER</title>
+    <meta name="description" content="Hardware a medida: IoT, embebidos y herramientas para pentesting.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <!-- CABECERA -->
+    <div class="header" aria-label="Encabezado estilo dossier">
+      <img class="logoX" src="assets/images/GlitchLogo.svg" alt="" aria-hidden="true">
+      <div class="top-marks"><span>[PG 00,001]</span><span>[AG 00,001]</span></div>
+      <div class="bar" role="presentation"></div>
+      <div class="title" data-i18n="hero_title" data-glitch="Mirar lo que podemos construir">Mirar lo que podemos construir</div>
+      <div class="kicker" data-i18n="kicker">Glitch Hardware &mdash; Ingenier&iacute;a embebida &amp; IoT</div>
+      <hr class="rule">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <span class="badge">DOSSIER</span>
+        <button id="themeBtn" class="toggle" type="button" aria-pressed="false" aria-label="Cambiar tema">[ modo nocturno ]</button>
+      </div>
+    </div>
+
+    <!-- CUERPO -->
+    <div class="grid">
+      <section>
+        <div class="label" data-i18n="key_services">Servicios Clave</div>
+        <table class="table" aria-describedby="Servicios Clave">
+          <tbody>
+            <tr><td><div class="dotfill"><span><a href="#hardware" data-i18n="svc_hw">Hardware libre para pentest</a></span><i></i><span data-i18n="svc_hw_desc">Dise&ntilde;o y fabricaci&oacute;n</span></div></td></tr>
+            <tr><td><div class="dotfill"><span><a href="#tools" data-i18n="svc_tools">Herramientas de auditor&iacute;a</a></span><i></i><span data-i18n="svc_tools_desc">RF, redes, IoT</span></div></td></tr>
+            <tr><td><div class="dotfill"><span><a href="#oss" data-i18n="svc_oss">Firmware y bibliotecas OSS</a></span><i></i><span data-i18n="svc_oss_desc">C / Python / RP2040</span></div></td></tr>
+            <tr><td><div class="dotfill"><span><a href="#training" data-i18n="svc_training">Capacitaci&oacute;n / Workshops</a></span><i></i><span data-i18n="svc_training_desc">"Romper para aprender"</span></div></td></tr>
+          </tbody>
+        </table>
+
+        <div class="section-title"><h2 data-i18n="projects_title">Proyectos (GitHub)</h2><div class="bar"></div></div>
+        <div id="projects" class="cards" aria-live="polite"></div>
+      </section>
+
+      <aside>
+        <div class="label" data-i18n="contact">Contacto</div>
+        <div class="block"><a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a></div>
+        <hr class="rule">
+        <div class="label" data-i18n="blog_updates">Blog / Actualizaciones</div>
+        <div id="blog" aria-live="polite"></div>
+      </aside>
+    </div>
+
+    <div class="footer">
+      <hr class="rule">
+      <div class="top-marks" style="margin-top:6px">
+        <span>&copy; <span id="y"></span> Glitch Hardware</span>
+        <span>[status: online]</span>
+      </div>
+    </div>
+  </main>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
+
+
+
+
+

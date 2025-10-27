@@ -1,0 +1,27 @@
+[
+  {
+    "date": "2025-10-18",
+    "title": "Hackplate en Github",
+    "excerpt": "Hackplate se publica en github",
+    "link": "https://github.com/Glitchboi-sudo/HackPlate"
+  },
+  {
+    "date": "2025-10-18",
+    "title": "Hackplate en Hackaday",
+    "excerpt": "Hackplate se publica en hackaday",
+    "link": "https://hackaday.io/project/204268-hackplate-open-reflow-preheating-station"
+  },
+  {
+    "date": "2025-10-24",
+    "title": "Cerberus en Hackaday",
+    "excerpt": "Publicamos Cerberus en Hackaday",
+    "link": "https://hackaday.io/project/204331-cerberus-a-usb-watchdog"
+  },
+  {
+    "date": "2025-10-24",
+    "title": "Cerberus V.3",
+    "excerpt": "Esta vivo!!",
+    "link": "https://hackaday.io/project/204331-cerberus-a-usb-watchdog/log/244196-v3-first-class"
+  }
+]
+

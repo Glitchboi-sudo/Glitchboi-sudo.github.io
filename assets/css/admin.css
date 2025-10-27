@@ -1,0 +1,24 @@
+﻿/* Admin panel styles layered on top of site theme */
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--mono); }
+main.container{ max-width:var(--max); margin:0 auto; padding:16px; }
+
+.muted{ color:var(--muted); font-size:12px } .toolbar{ display:flex; gap:8px; align-items:center; margin:12px 0; height:auto !important; background:transparent !important }
+.right{ margin-left:auto }
+
+input[type="text"], input[type="date"], input[type="password"], textarea {
+  border:1px solid var(--ink); background:var(--paper); color:var(--ink);
+  padding:6px 8px; width:100%; font-family:var(--mono);
+}
+textarea{ min-height:64px; }
+
+.btn{ border:1px solid var(--ink); background:transparent; color:var(--ink);
+  padding:6px 10px; font-weight:700; cursor:pointer; font-family:var(--mono); }
+.btn:hover, .btn:focus-visible{ background:var(--ink); color:var(--paper); outline:0 }
+.btn.danger{ border-color:#b00020; color:#b00020 }
+.btn.danger:hover, .btn.danger:focus-visible{ background:#b00020; color:#fff }
+
+table.table{ width:100%; border-collapse: collapse; font-size:14px }
+table.table thead th{ text-align:left; font-weight:700; padding:8px 0; font-size:12px; letter-spacing:.08em; text-transform:uppercase; border-bottom:1px solid var(--rule) }
+table.table td{ padding:8px; border-bottom:1px solid var(--rule); vertical-align:top }
+.row-actions{ white-space:nowrap }
+
