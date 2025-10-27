@@ -18,7 +18,7 @@ function ensureLangToggle(){
   const b=document.createElement('button');
   b.id='langBtn'; b.className='toggle'; b.type='button'; b.style.marginLeft='8px';
   b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]';
-  b.addEventListener('click',()=>{ CUR_LANG = (CUR_LANG==='es'?'en':'es'); document.documentElement.setAttribute('lang', CUR_LANG); try{localStorage.setItem('lang',CUR_LANG)}catch(e){}; b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]'; refreshLocale(); });
+  b.addEventListener('click',()=>{ CUR_LANG = (CUR_LANG==='es'?'en':'es'); document.documentElement.setAttribute('lang', CUR_LANG); try{localStorage.setItem('lang',CUR_LANG)}catch(e){}; b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]'; try{applyTranslations();}catch(e){}; refreshLocale(); });
   themeBtn.parentNode.insertBefore(b, themeBtn.nextSibling);
 }
 ensureLangToggle();
@@ -35,7 +35,7 @@ function refreshLocale(){
 // ===== I18N dictionary and helpers =====
 const I18N={
   es:{
-    hero_title:"Mirar lo que podemos construir",
+    hero_title:"Hardware de México para el mundo",
     kicker:"Glitch Hardware — Ingeniería embebida & IoT",
     key_services:"Servicios Clave",
     svc_hw:"Hardware libre para pentest",
@@ -58,7 +58,7 @@ const I18N={
     lang_btn:"[ EN ]"
   },
   en:{
-    hero_title:"See what we can build",
+    hero_title:"Hardware from Mexico to all",
     kicker:"Glitch Hardware — Embedded engineering & IoT",
     key_services:"Key Services",
     svc_hw:"Open hardware for pentest",
@@ -244,5 +244,6 @@ function fmtDate(s){ try{ return new Date(s+'T12:00:00').toLocaleDateString(curr
 // Apply translations on load and after theme toggle
 try{ applyTranslations(); }catch(e){}
 document.getElementById('themeBtn')?.addEventListener('click',()=>{ try{ applyTranslations(); }catch(e){} });
+
 
 
