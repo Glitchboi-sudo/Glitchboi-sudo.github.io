@@ -1,3 +1,34 @@
 README.upstream.md
 secrets.txt
 *.bak
+
+# Blog: plantilla y drafts
+posts/_plantilla-post.html
+posts/_*
+posts/drafts/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Archivos binarios no web / temporales
+*.psd
+*.ai
+*.xcf
+*.zip
+*.rar
+*.7z
+*.log
+*.tmp
+*~
+
+# Python locales
+__pycache__/
+.venv/
+venv/
+
+# Config local del script
+.blogconfig.json
