@@ -32,3 +32,9 @@ venv/
 
 # Config local del script
 .blogconfig.json
+
+# Previews locales
+posts/.preview-*.html
+
+# Local Scripts
+scripts/*
