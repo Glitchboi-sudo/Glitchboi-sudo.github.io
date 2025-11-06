@@ -6,7 +6,7 @@ function setTheme(m){ document.documentElement.setAttribute('data-theme',m); try
 btn.addEventListener('click',()=>setTheme(getTheme()==='dark'?'light':'dark')); setTheme(getTheme());
 document.getElementById('y').textContent=new Date().getFullYear();
 
-/* ===== LANGUAGE (auto + toggle for dates/UI) ===== */
+/* ===== LANGUAGE (auto + toggle for dates/UI + content) ===== */
 function detectLang(){ try{ const s=localStorage.getItem('lang'); if(s) return s; }catch(e){} const n=(navigator.language||'').toLowerCase(); return n.startsWith('es')?'es':'en'; }
 let CUR_LANG = detectLang();
 document.documentElement.setAttribute('lang', CUR_LANG);
@@ -18,7 +18,7 @@ function ensureLangToggle(){
   const b=document.createElement('button');
   b.id='langBtn'; b.className='toggle'; b.type='button'; b.style.marginLeft='8px';
   b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]';
-  b.addEventListener('click',()=>{ CUR_LANG = (CUR_LANG==='es'?'en':'es'); document.documentElement.setAttribute('lang', CUR_LANG); try{localStorage.setItem('lang',CUR_LANG)}catch(e){}; b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]'; try{applyTranslations();}catch(e){}; refreshLocale(); });
+  b.addEventListener('click',()=>{ CUR_LANG = (CUR_LANG==='es'?'en':'es'); document.documentElement.setAttribute('lang', CUR_LANG); try{localStorage.setItem('lang',CUR_LANG)}catch(e){}; b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]'; try{applyTranslations();}catch(e){}; try{applyLangVisibility();}catch(e){}; try{updateTitleAndMeta();}catch(e){}; refreshLocale(); });
   themeBtn.parentNode.insertBefore(b, themeBtn.nextSibling);
 }
 ensureLangToggle();
@@ -86,6 +86,41 @@ function applyTranslations(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const key=el.getAttribute('data-i18n'); const val=t(key); if(!val) return; if(el.classList.contains('title')){ el.dataset.glitch=val; el.textContent=val; } else { el.textContent=val; }});
   const theme=document.getElementById('themeBtn'); if(theme){ const isDark=getTheme()==='dark'; theme.textContent=isDark?t('theme_light'):t('theme_dark'); }
   const lang=document.getElementById('langBtn'); if(lang){ lang.textContent=t('lang_btn'); }
+}
+
+// Toggle [data-lang] content visibility and sync <title>/meta description
+function applyLangVisibility(){
+  const els = document.querySelectorAll('[data-lang]');
+  els.forEach(el=>{
+    const show = (el.getAttribute('data-lang')||'').toLowerCase() === CUR_LANG;
+    el.style.display = show ? '' : 'none';
+    el.setAttribute('aria-hidden', show ? 'false' : 'true');
+  });
+}
+
+function updateTitleAndMeta(){
+  // Prefer <title data-title-es/en> if present
+  const titleEl = document.querySelector('head > title');
+  if(titleEl){
+    const data = titleEl.dataset || {};
+    let es = data.titleEs, en = data.titleEn;
+    if(!es || !en){
+      // Fallback: read from .title[data-lang]
+      const tEs = document.querySelector('.title[data-lang="es"]');
+      const tEn = document.querySelector('.title[data-lang="en"]');
+      es = es || (tEs ? tEs.textContent.trim() : titleEl.textContent.trim());
+      en = en || (tEn ? tEn.textContent.trim() : es);
+    }
+    const base = CUR_LANG==='es' ? es : (en||es);
+    if(base) titleEl.textContent = base;
+  }
+  // Single meta[name=description] with data-desc-es/en
+  const desc = document.querySelector('meta[name="description"]');
+  if(desc){
+    const es = desc.dataset.descEs || desc.getAttribute('content') || '';
+    const en = desc.dataset.descEn || es;
+    desc.setAttribute('content', CUR_LANG==='es' ? es : en);
+  }
 }
 
 /* ===== BLOG (CMS PLANO) ===== */
@@ -241,8 +276,10 @@ function fmtDate(s){ try{ return new Date(s+'T12:00:00').toLocaleDateString(curr
   }
 })();
 
-// Apply translations on load and after theme toggle
+// Apply translations and language visibility on load and after theme toggle
 try{ applyTranslations(); }catch(e){}
+try{ applyLangVisibility(); }catch(e){}
+try{ updateTitleAndMeta(); }catch(e){}
 document.getElementById('themeBtn')?.addEventListener('click',()=>{ try{ applyTranslations(); }catch(e){} });
 
 

@@ -28,5 +28,11 @@
     "title": "Cerberus",
     "excerpt": "Esperando PCB de Cerberus v0.4: rediseño estético y práctico, listo para “show & tell” y nuevas funciones de memoria.",
     "link": "posts/Cerberus_1.html"
+  },
+  {
+    "date": "2025-10-27",
+    "title": "clear",
+    "excerpt": "Contenido Test del script asdfasdf",
+    "link": "posts/2025-10-27-Test.html"
   }
 ]
