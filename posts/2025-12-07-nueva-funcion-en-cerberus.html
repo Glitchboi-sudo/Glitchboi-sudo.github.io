@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title data-title-es="Nueva funcion en Cerberus — GLITCHBOI" data-title-en="Nueva funcion en Cerberus — GLITCHBOI">Nueva funcion en Cerberus — GLITCHBOI</title>
+  <meta name="description" content="Agregamos descriptores de USB en cerberus" data-desc-es="Agregamos descriptores de USB en cerberus" data-desc-en="Agregamos descriptores de USB en cerberus">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="header" aria-label="Encabezado estilo dossier">
+      <a href="../" aria-label="Inicio">
+        <img class="logoX" src="../assets/images/GlitchLogo.svg" alt="">
+      </a>
+      <div class="top-marks"><span>[PG 00,101]</span><span>[AG 00,101]</span></div>
+      <div class="bar" role="presentation"></div>
+      <div class="title" data-lang="es" data-glitch="Nueva funcion en Cerberus">Nueva funcion en Cerberus</div>
+      <div class="title" data-lang="en" data-glitch="Nueva funcion en Cerberus">Nueva funcion en Cerberus</div>
+      <div class="kicker">Glitch Hardware — Blog</div>
+      <hr class="rule">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <span class="badge">POST</span>
+        <div>
+          <button id="themeBtn" class="toggle" type="button" aria-pressed="false" aria-label="Cambiar tema">[ modo nocturno ]</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- META DEL POST -->
+    <div class="label">Detalles</div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="dotfill" style="margin-bottom:6px">
+        <span><time datetime="2025-12-07">2025-12-07</time></span>
+        <i></i>
+        <span>
+          <span data-lang="es">Categoría: Actualización</span>
+          <span data-lang="en">Category: Update</span>
+        </span>
+      </div>
+      <div style="color:var(--muted); font-size:14px">
+        <div data-lang="es" data-summary="es">Agregamos descriptores de USB en cerberus</div>
+        <div data-lang="en" data-summary="en">Agregamos descriptores de USB en cerberus</div>
+      </div>
+    </div>
+    <!-- <img src="../assets/images/hero-ejemplo.jpg" alt="Descripción de la imagen" style="width:100%;height:auto;border:1px solid var(--ink);margin-bottom:12px"> -->
+    <article class="card" style="margin-bottom:12px">
+      <div class="label">Contenido</div>
+      <div style="font-size:14px">
+        <div data-lang="es" data-body="es">Hola a todos, despues de mucho tiempo trabajando en un nuevo prototipo de cerberus logre añadir una funcionalidad que considero escencial para que el dispositivo no sea solo un refrito de USBValve. Añadimos soporte para <strong>descriptores de USB</strong>, por ejemplo ahora podras ver Fabricante, Numero serial, id, etc. Con esto esperamos que sea posible recabar mas informacion sobre posibles dispositivos maliciosos y en caso de estar debuggeando payloads para red team, poder ver informacion que puede servir para hacer fingerprint del dispositivo.
+
+Ademas eh estado trabajando en un rework completo de los componentes y la integracion, la idea es que voy a publicar una nueva breakout board de la proteccion contra sobrevoltaje, mejorada y simplificada.
+
+Espero que para antes del fin del mes tenga un prototipo integrado funcional con el nuevo firmware y todo. Ademas actualizare los requerimientos, Ahora estoy usando un devboard llamada <a href="https://wiki.wisdpi.com/iot/wisdpi-tiny-rp2040">WisdPi Tiny RP2040</a> por lo que tengo 4Mb de almacenamiento en lugar de 2 de la RP2040-zero, estare haciendo pruebas para ver si es necesario la memoria extra, de igual manera estare publicando firmware para las versiones DIY y para las versiones integradas.</div>
+        <div data-lang="en" data-body="en">Hola a todos, despues de mucho tiempo trabajando en un nuevo prototipo de cerberus logre añadir una funcionalidad que considero escencial para que el dispositivo no sea solo un refrito de USBValve. Añadimos soporte para <strong>descriptores de USB</strong>, por ejemplo ahora podras ver Fabricante, Numero serial, id, etc. Con esto esperamos que sea posible recabar mas informacion sobre posibles dispositivos maliciosos y en caso de estar debuggeando payloads para red team, poder ver informacion que puede servir para hacer fingerprint del dispositivo.
+
+Ademas eh estado trabajando en un rework completo de los componentes y la integracion, la idea es que voy a publicar una nueva breakout board de la proteccion contra sobrevoltaje, mejorada y simplificada.
+
+Espero que para antes del fin del mes tenga un prototipo integrado funcional con el nuevo firmware y todo. Ademas actualizare los requerimientos, Ahora estoy usando un devboard llamada <a href="https://wiki.wisdpi.com/iot/wisdpi-tiny-rp2040">WisdPi Tiny RP2040</a> por lo que tengo 4Mb de almacenamiento en lugar de 2 de la RP2040-zero, estare haciendo pruebas para ver si es necesario la memoria extra, de igual manera estare publicando firmware para las versiones DIY y para las versiones integradas.</div>
+        <hr class="rule">
+        <p style="font-size:12px;color:var(--muted)"><span data-lang="es">Etiquetas:</span> <span data-lang="en">Tags:</span> #hardware #iot</p>
+      </div>
+    </article>
+
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div class="label" style="margin:0">Sigue el proyecto</div>
+      <div style="display:flex;gap:8px">
+        <a class="block" href="https://github.com/Glitchboi-sudo" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="block" href="../" aria-label="Volver al inicio">Inicio</a>
+      </div>
+    </div>
+
+    <div id="projects" style="display:none"></div>
+    <div id="blog" style="display:none"></div>
+
+    <div class="footer">
+      <hr class="rule">
+      <div class="top-marks" style="margin-top:6px">
+        <span>&copy; <span id="y"></span> Glitch Hardware</span>
+        <span>[status: online]</span>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
