@@ -20,6 +20,8 @@ function ensureLangToggle(){
   b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]';
   b.addEventListener('click',()=>{ CUR_LANG = (CUR_LANG==='es'?'en':'es'); document.documentElement.setAttribute('lang', CUR_LANG); try{localStorage.setItem('lang',CUR_LANG)}catch(e){}; b.textContent = CUR_LANG==='es'?'[ EN ]':'[ ES ]'; try{applyTranslations();}catch(e){}; try{applyLangVisibility();}catch(e){}; try{updateTitleAndMeta();}catch(e){}; refreshLocale(); });
   themeBtn.parentNode.insertBefore(b, themeBtn.nextSibling);
+  const back = document.getElementById('backBtn');
+  if(back){ b.parentNode.insertBefore(back, b.nextSibling); }
 }
 ensureLangToggle();
 function currentLocale(){ return CUR_LANG==='es'?'es-MX':'en-US'; }
@@ -50,6 +52,7 @@ const I18N={
     contact:"Contacto",
     blog_updates:"Blog / Actualizaciones",
     view:"ver",
+    view_more:"Ver más",
     update:"Actualización",
     no_repos:"Sin repos visibles. Revisa GH_USER o haz público algún repo.",
     activity:"actividad",
@@ -73,6 +76,7 @@ const I18N={
     contact:"Contact",
     blog_updates:"Blog / Updates",
     view:"view",
+    view_more:"View more",
     update:"Update",
     no_repos:"No visible repos. Check GH_USER or make one public.",
     activity:"activity",
@@ -135,8 +139,11 @@ async function fetchBlogPosts(){
 
 function renderBlog(items){
   const $b = document.getElementById('blog');
+  if(!$b) return;
   $b.innerHTML = '';
-  (items||[]).sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5).forEach(x=>{
+  const sorted = (items||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const latest = sorted.slice(0,4);
+  latest.forEach(x=>{
     const date = x.date || new Date().toISOString().slice(0,10);
     const title = x.title || t('update');
     const excerpt = clampText(x.excerpt || '', 160);
@@ -147,6 +154,13 @@ function renderBlog(items){
     row.innerHTML = `<div class="dotfill"><span>${fmtDate(date)}</span><i></i><span>${esc(title)}</span></div><div style="color:var(--muted);font-size:12px;margin-top:2px;display:flex;justify-content:space-between;gap:8px"><span>${esc(excerpt)}</span><span>${right}</span></div><hr class="rule">`;
     $b.appendChild(row);
   });
+  if(sorted.length > latest.length){
+    const more=document.createElement('div');
+    const url = BLOG_BASE.endsWith('/') ? BLOG_BASE : BLOG_BASE + '/';
+    more.style.marginTop='6px';
+    more.innerHTML = `<a href="${escAttr(url)}" style="display:inline-flex;align-items:center;gap:6px;font-weight:700">${t('view_more')} →</a>`;
+    $b.appendChild(more);
+  }
 }
 
 /* ===== PROYECTOS DESDE GITHUB (SIN TOKENS) ===== */
@@ -281,6 +295,5 @@ try{ applyTranslations(); }catch(e){}
 try{ applyLangVisibility(); }catch(e){}
 try{ updateTitleAndMeta(); }catch(e){}
 document.getElementById('themeBtn')?.addEventListener('click',()=>{ try{ applyTranslations(); }catch(e){} });
-
 
 
