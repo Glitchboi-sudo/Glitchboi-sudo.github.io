@@ -24,9 +24,21 @@
     "link": "https://hackaday.io/project/204331-cerberus-a-usb-watchdog/log/244196-v3-first-class"
   },
   {
-    "date": "2025-10-27",
-    "title": "Cerberus",
-    "excerpt": "Esperando PCB de Cerberus v0.4: rediseño estético y práctico, listo para “show & tell” y nuevas funciones de memoria.",
+    "date": "2025-11-01",
+    "title": "Cerberus Update #1 — GLITCHBOI",
+    "excerpt": "Contenido Content Seguimos avanzando con Cerberus v0.4 . Esta versión mantiene la base funcional del prototipo anterior (v0.3) — que ya demostró detección y mitigación de fallas por software.",
     "link": "posts/Cerberus_1.html"
+  },
+  {
+    "date": "2025-11-05",
+    "title": "Version V3.1 lista — GLITCHBOI",
+    "excerpt": "Contenido Ya esta lista una version de prueba de la version 0.3, la llamare V0.3.1 porque no cambie funcionalidad ni nada realmente, es un prototipo hecho para ",
+    "link": "posts/2025-11-05-version-v31-lista.html"
+  },
+  {
+    "date": "2025-12-07",
+    "title": "Nueva funcion en Cerberus — GLITCHBOI",
+    "excerpt": "Contenido Hola a todos, despues de mucho tiempo trabajando en un nuevo prototipo de cerberus logre añadir una funcionalidad que considero escencial para que el ",
+    "link": "posts/2025-12-07-nueva-funcion-en-cerberus.html"
   }
 ]
