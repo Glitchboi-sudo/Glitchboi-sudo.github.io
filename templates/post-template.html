@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title data-title-es="{{TITLE_ES}} — GLITCHBOI" data-title-en="{{TITLE_EN}} — GLITCHBOI">{{TITLE_ES}} — GLITCHBOI</title>
+  <meta name="description" content="{{SUMMARY_ES}}" data-desc-es="{{SUMMARY_ES}}" data-desc-en="{{SUMMARY_EN}}">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="header" aria-label="Encabezado estilo dossier">
+      <a href="../" aria-label="Inicio">
+        <img class="logoX" src="../assets/images/GlitchLogo.svg" alt="">
+      </a>
+      <div class="top-marks"><span>[PG 00,{{PAGE_NUM}}]</span><span>[AG 00,{{PAGE_NUM}}]</span></div>
+      <div class="bar" role="presentation"></div>
+      <div class="title" data-lang="es" data-glitch="{{TITLE_ES}}">{{TITLE_ES}}</div>
+      <div class="title" data-lang="en" data-glitch="{{TITLE_EN}}">{{TITLE_EN}}</div>
+      <div class="kicker">Glitch Hardware — Blog</div>
+      <hr class="rule">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <span class="badge">POST</span>
+        <div>
+          <button id="themeBtn" class="toggle" type="button" aria-pressed="false" aria-label="Cambiar tema">[ modo nocturno ]</button>
+          <a id="backBtn" class="toggle" href="../blog/" aria-label="Regresar al blog" style="margin-left:8px">[ Regresar ]</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- META DEL POST -->
+    <div class="label">Detalles</div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="dotfill" style="margin-bottom:6px">
+        <span><time datetime="{{DATE}}">{{DATE}}</time></span>
+        <i></i>
+        <span>
+          <span data-lang="es">Categoría: {{CATEGORY_ES}}</span>
+          <span data-lang="en">Category: {{CATEGORY_EN}}</span>
+        </span>
+      </div>
+      <div style="color:var(--muted); font-size:14px">
+        <div data-lang="es" data-summary="es">{{SUMMARY_ES}}</div>
+        <div data-lang="en" data-summary="en">{{SUMMARY_EN}}</div>
+      </div>
+    </div>
+
+    {{IMAGE_SECTION}}
+
+    <article class="card" style="margin-bottom:12px">
+      <div class="label">Contenido</div>
+      <div style="font-size:14px">
+        <div data-lang="es" data-body="es">{{BODY_ES}}</div>
+        <div data-lang="en" data-body="en">{{BODY_EN}}</div>
+        <hr class="rule">
+        <p style="font-size:12px;color:var(--muted)">
+          <span data-lang="es">Etiquetas:</span>
+          <span data-lang="en">Tags:</span>
+          {{TAGS}}
+        </p>
+      </div>
+    </article>
+
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div class="label" style="margin:0">Sigue el proyecto</div>
+      <div style="display:flex;gap:8px">
+        <a class="block" href="https://github.com/Glitchboi-sudo" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="block" href="../" aria-label="Volver al inicio">Inicio</a>
+      </div>
+    </div>
+
+    <div id="projects" style="display:none"></div>
+    <div id="blog" style="display:none"></div>
+
+    <div class="footer">
+      <hr class="rule">
+      <div class="top-marks" style="margin-top:6px">
+        <span>&copy; <span id="y"></span> Glitch Hardware</span>
+        <span>[status: online]</span>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
