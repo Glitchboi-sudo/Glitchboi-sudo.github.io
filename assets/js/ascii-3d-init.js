@@ -3,22 +3,30 @@
  * Centraliza las opciones del efecto halftone bitmap
  */
 
-// Configuración por defecto del renderizador 3D con efecto halftone
-const ASCII3D_DEFAULT_CONFIG = {
-  cellSize: 2, // Celdas pequeñas = alta resolución
-  fontSize: 3, // Fuente pequeña = más detalle
-  color: "#00ff00", // Color por defecto (se sobreescribe con --ink del tema)
-  backgroundColor: "transparent",
-  // Caracteres halftone: del claro al oscuro (patrón de puntos)
-  chars: [" ", ".", "·", ":", "∙", "•", "o", "O", "0", "●", "█"],
-  autoRotate: true,
-  rotationSpeed: 0.005,
-  fps: 30,
-  halftone: true, // Activar efecto halftone bitmap
-  halftoneSize: 2, // Tamaño de celda halftone (2 = puntos pequeños visibles)
-  colorReduction: 12, // Reducción de paleta de colores (12 = retro moderado)
-  monochromeMode: true, // Modo monocromático TUI por defecto (escala de grises)
-};
+// Configuracion por defecto del renderizador 3D con efecto halftone
+// Se ajusta dinamicamente segun el tamano de pantalla
+function getResponsiveConfig() {
+  const isMobile = window.innerWidth <= 480;
+  const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
+
+  return {
+    cellSize: isMobile ? 3 : isTablet ? 2.5 : 2,
+    fontSize: isMobile ? 4 : isTablet ? 3.5 : 3,
+    color: "#00ff00", // Color por defecto (se sobreescribe con tema)
+    backgroundColor: "transparent",
+    // Caracteres halftone: del claro al oscuro (patron de puntos)
+    chars: [" ", ".", ":", "+", "*", "#", "@", "M", "W", "B", "8"],
+    autoRotate: true,
+    rotationSpeed: 0.005,
+    fps: 30,
+    halftone: true,
+    halftoneSize: isMobile ? 3 : 2,
+    colorReduction: 12,
+    monochromeMode: true,
+  };
+}
+
+const ASCII3D_DEFAULT_CONFIG = getResponsiveConfig();
 
 // Registro global de renderizadores activos
 window.ascii3DRenderers = window.ascii3DRenderers || {};
@@ -30,28 +38,37 @@ window.ascii3DRenderers = window.ascii3DRenderers || {};
  * @returns {ASCII3DThreeJS} Instancia del renderizador
  */
 function createASCII3DRenderer(containerId, customOptions = {}) {
-  // Obtener color del tema actual
-  let themeColor =
-    getComputedStyle(document.body).getPropertyValue("--ink").trim() ||
-    ASCII3D_DEFAULT_CONFIG.color;
+  // Obtener color basado en el tema actual
+  const themeColor = getThemeColor();
 
-  // En modo claro, usar un color más oscuro para mejor fidelidad
-  const currentTheme =
-    document.documentElement.getAttribute("data-theme") || "light";
-  if (currentTheme === "light") {
-    themeColor = "#000000";
-  } else {
-    themeColor = "#ffffff";
-  }
+  // Obtener configuracion responsiva actualizada
+  const responsiveConfig = getResponsiveConfig();
 
-  // Combinar configuración por defecto con opciones personalizadas
+  // Combinar configuracion por defecto con opciones personalizadas
   const config = {
-    ...ASCII3D_DEFAULT_CONFIG,
+    ...responsiveConfig,
     color: themeColor,
     ...customOptions,
   };
 
   return new ASCII3DThreeJS(containerId, config);
+}
+
+/**
+ * Obtiene el color apropiado según el tema actual
+ * @returns {string} Color hex para el renderizador
+ */
+function getThemeColor() {
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "light";
+
+  if (currentTheme === "light") {
+    // Negro puro para maximo contraste en fondo claro
+    return "#000000";
+  } else {
+    // Dorado/beige para modo oscuro (coincide con el tema del sitio)
+    return "#ffffff";
+  }
 }
 
 /**
@@ -103,17 +120,7 @@ function toggleAllMonochromeMode() {
  * Actualizar el color de todos los renderizadores activos basándose en el tema actual
  */
 function updateAllRenderersColor() {
-  let themeColor =
-    getComputedStyle(document.body).getPropertyValue("--ink").trim() ||
-    ASCII3D_DEFAULT_CONFIG.color;
-
-  // En modo claro, usar un color más oscuro para mejor fidelidad
-  const currentTheme =
-    document.documentElement.getAttribute("data-theme") || "light";
-  if (currentTheme === "light") {
-    // Usar un gris más oscuro en modo claro para mejor contraste
-    themeColor = "#333333";
-  }
+  const themeColor = getThemeColor();
 
   const renderers = Object.values(window.ascii3DRenderers || {});
   renderers.forEach((renderer) => {
@@ -147,4 +154,6 @@ window.createASCII3DRenderer = createASCII3DRenderer;
 window.initASCII3DWithModel = initASCII3DWithModel;
 window.toggleAllMonochromeMode = toggleAllMonochromeMode;
 window.updateAllRenderersColor = updateAllRenderersColor;
+window.getThemeColor = getThemeColor;
+window.getResponsiveConfig = getResponsiveConfig;
 window.ASCII3D_DEFAULT_CONFIG = ASCII3D_DEFAULT_CONFIG;

@@ -348,23 +348,20 @@ class ASCII3DThreeJS {
           if (char !== ' ') {
             // Modo monocromático (TUI) o color
             if (this.options.monochromeMode) {
-              // Modo TUI: usar solo el color del tema con opacidad basada en brillo
-              const alpha = brightness;  // Usar brillo como opacidad
+              // Modo TUI: usar color del tema con opacidad completa
+              // El caracter ya codifica el brillo, no modificar alpha
               this.asciiCtx.fillStyle = this.options.color;
-              this.asciiCtx.globalAlpha = alpha;
+              this.asciiCtx.globalAlpha = 1.0;
             } else {
               // Modo color: usar colores del modelo MTL
               this.asciiCtx.fillStyle = `rgb(${reduced.r}, ${reduced.g}, ${reduced.b})`;
               this.asciiCtx.globalAlpha = 1.0;
             }
 
-            // Dibujar el carácter en el centro de la celda halftone
+            // Dibujar el caracter en el centro de la celda halftone
             const centerX = x + Math.floor(halftoneSize / 2);
             const centerY = y + Math.floor(halftoneSize / 2);
             this.asciiCtx.fillText(char, centerX, centerY);
-
-            // Restaurar opacidad
-            this.asciiCtx.globalAlpha = 1.0;
           }
         }
       }
