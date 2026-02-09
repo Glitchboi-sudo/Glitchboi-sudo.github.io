@@ -5,19 +5,19 @@
 
 // Configuración por defecto del renderizador 3D con efecto halftone
 const ASCII3D_DEFAULT_CONFIG = {
-  cellSize: 2,           // Celdas pequeñas = alta resolución
-  fontSize: 3,           // Fuente pequeña = más detalle
-  color: '#00ff00',      // Color por defecto (se sobreescribe con --ink del tema)
-  backgroundColor: 'transparent',
+  cellSize: 2, // Celdas pequeñas = alta resolución
+  fontSize: 3, // Fuente pequeña = más detalle
+  color: "#00ff00", // Color por defecto (se sobreescribe con --ink del tema)
+  backgroundColor: "transparent",
   // Caracteres halftone: del claro al oscuro (patrón de puntos)
-  chars: [' ', '.', '·', ':', '∙', '•', 'o', 'O', '0', '●', '█'],
+  chars: [" ", ".", "·", ":", "∙", "•", "o", "O", "0", "●", "█"],
   autoRotate: true,
   rotationSpeed: 0.005,
   fps: 30,
-  halftone: true,        // Activar efecto halftone bitmap
-  halftoneSize: 2,       // Tamaño de celda halftone (2 = puntos pequeños visibles)
-  colorReduction: 12,    // Reducción de paleta de colores (12 = retro moderado)
-  monochromeMode: true   // Modo monocromático TUI por defecto (escala de grises)
+  halftone: true, // Activar efecto halftone bitmap
+  halftoneSize: 2, // Tamaño de celda halftone (2 = puntos pequeños visibles)
+  colorReduction: 12, // Reducción de paleta de colores (12 = retro moderado)
+  monochromeMode: true, // Modo monocromático TUI por defecto (escala de grises)
 };
 
 // Registro global de renderizadores activos
@@ -31,24 +31,24 @@ window.ascii3DRenderers = window.ascii3DRenderers || {};
  */
 function createASCII3DRenderer(containerId, customOptions = {}) {
   // Obtener color del tema actual
-  let themeColor = getComputedStyle(document.body)
-    .getPropertyValue('--ink')
-    .trim() || ASCII3D_DEFAULT_CONFIG.color;
+  let themeColor =
+    getComputedStyle(document.body).getPropertyValue("--ink").trim() ||
+    ASCII3D_DEFAULT_CONFIG.color;
 
   // En modo claro, usar un color más oscuro para mejor fidelidad
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  if (currentTheme === 'light') {
-    themeColor = '#333333';
-  }
-  else {
-    themeColor = "#aa9f6e";
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "light";
+  if (currentTheme === "light") {
+    themeColor = "#000000";
+  } else {
+    themeColor = "#ffffff";
   }
 
   // Combinar configuración por defecto con opciones personalizadas
   const config = {
     ...ASCII3D_DEFAULT_CONFIG,
     color: themeColor,
-    ...customOptions
+    ...customOptions,
   };
 
   return new ASCII3DThreeJS(containerId, config);
@@ -94,7 +94,7 @@ function toggleAllMonochromeMode() {
 
   // Toggle del primer renderizador y aplicar a todos
   const newState = renderers[0].toggleMonochromeMode();
-  renderers.slice(1).forEach(r => r.setMonochromeMode(newState));
+  renderers.slice(1).forEach((r) => r.setMonochromeMode(newState));
 
   return newState;
 }
@@ -103,20 +103,21 @@ function toggleAllMonochromeMode() {
  * Actualizar el color de todos los renderizadores activos basándose en el tema actual
  */
 function updateAllRenderersColor() {
-  let themeColor = getComputedStyle(document.body)
-    .getPropertyValue('--ink')
-    .trim() || ASCII3D_DEFAULT_CONFIG.color;
+  let themeColor =
+    getComputedStyle(document.body).getPropertyValue("--ink").trim() ||
+    ASCII3D_DEFAULT_CONFIG.color;
 
   // En modo claro, usar un color más oscuro para mejor fidelidad
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-  if (currentTheme === 'light') {
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "light";
+  if (currentTheme === "light") {
     // Usar un gris más oscuro en modo claro para mejor contraste
-    themeColor = '#333333';
+    themeColor = "#333333";
   }
 
   const renderers = Object.values(window.ascii3DRenderers || {});
-  renderers.forEach(renderer => {
-    if (renderer && typeof renderer.updateColor === 'function') {
+  renderers.forEach((renderer) => {
+    if (renderer && typeof renderer.updateColor === "function") {
       renderer.updateColor(themeColor);
     }
   });
@@ -125,7 +126,10 @@ function updateAllRenderersColor() {
 // Observar cambios en el atributo data-theme del documento
 const themeObserver = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+    if (
+      mutation.type === "attributes" &&
+      mutation.attributeName === "data-theme"
+    ) {
       // Esperar un tick para que CSS se actualice
       setTimeout(updateAllRenderersColor, 10);
     }
@@ -135,7 +139,7 @@ const themeObserver = new MutationObserver((mutations) => {
 // Iniciar observación del tema
 themeObserver.observe(document.documentElement, {
   attributes: true,
-  attributeFilter: ['data-theme']
+  attributeFilter: ["data-theme"],
 });
 
 // Exportar para uso global
