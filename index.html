@@ -102,7 +102,7 @@
 
       <!-- CUERPO -->
       <div class="grid">
-        <section>
+        <section aria-label="Especialidades y Contacto">
           <div
             class="label terminal-prompt"
             data-i18n="expertise"
@@ -131,6 +131,64 @@
             </tbody>
           </table>
 
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--muted);
+              margin: 16px 0 8px 0;
+              opacity: 0.7;
+            "
+          >
+            ╔══[ COMMUNICATIONS ]═══════════════╗
+          </div>
+          <div
+            class="label terminal-prompt-alt"
+            data-i18n="contact"
+            data-animate="slide-right"
+          >
+            Contacto
+          </div>
+          <div class="block" data-animate="fade-in" data-delay="100">
+            <span style="opacity: 0.7">[EMAIL]</span><br />
+            <a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a>
+          </div>
+
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--rule);
+              margin: 12px 0 8px 0;
+              opacity: 0.5;
+            "
+          >
+            ────────────────────────────────────
+          </div>
+          <div
+            class="label terminal-prompt-hash"
+            data-i18n="blog_updates"
+            data-animate="slide-right"
+            data-delay="200"
+          >
+            Blog / Actualizaciones
+          </div>
+          <div id="blog" aria-live="polite"></div>
+
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--muted);
+              margin-top: 16px;
+              opacity: 0.7;
+            "
+          >
+            ╚═══════════════════════════════════╝
+          </div>
+        </section>
+
+        <section aria-label="Filosof&iacute;a y Proyectos">
           <div
             style="
               margin: 16px 0;
@@ -205,66 +263,6 @@
             aria-live="polite"
           ></div>
         </section>
-
-        <aside>
-          <!-- Borde ASCII para sidebar -->
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--muted);
-              margin-bottom: 8px;
-              opacity: 0.7;
-            "
-          >
-            ╔══[ COMMUNICATIONS ]═══════════════╗
-          </div>
-
-          <div
-            class="label terminal-prompt-alt"
-            data-i18n="contact"
-            data-animate="slide-right"
-          >
-            Contacto
-          </div>
-          <div class="block" data-animate="fade-in" data-delay="100">
-            <span style="opacity: 0.7">[EMAIL]</span><br />
-            <a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a>
-          </div>
-
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--rule);
-              margin: 12px 0 8px 0;
-              opacity: 0.5;
-            "
-          >
-            ────────────────────────────────────
-          </div>
-          <div
-            class="label terminal-prompt-hash"
-            data-i18n="blog_updates"
-            data-animate="slide-right"
-            data-delay="200"
-          >
-            Blog / Actualizaciones
-          </div>
-          <div id="blog" aria-live="polite"></div>
-
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--muted);
-              margin-top: 16px;
-              opacity: 0.7;
-            "
-          >
-            ╚═══════════════════════════════════╝
-          </div>
-        </aside>
       </div>
 
       <div class="footer">
