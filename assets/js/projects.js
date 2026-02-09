@@ -264,7 +264,7 @@ function renderList(list, currentSlug){
     card.className = 'card card-link';
     card.href = `?repo=${encodeURIComponent(slugify(p.slug || p.repo || p.title || `p-${idx}`))}`;
     card.innerHTML = `
-      <div class="dotfill"><span>${esc(p.title || 'Proyecto')}</span><i></i><span>${esc(p.repo || 'repo')}</span></div>
+      <div class="dotfill"><span>${esc(p.title || 'Proyecto')}</span></div>
       <p class="desc" data-fallback style="margin:10px 0 8px;">${esc(clampText(p.summary || p.description || '', 180))}</p>
       <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)">
         <span>${p.updated || '—'}</span>
