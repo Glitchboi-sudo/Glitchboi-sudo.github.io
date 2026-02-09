@@ -132,6 +132,122 @@ function extractDescription(md){
   return text;
 }
 
+function extractImageFromReadme(md, repoName){
+  if(!md) return null;
+  const lines = md.split(/\r?\n/);
+
+  // Buscar en las primeras 20 líneas (antes de cualquier sección principal)
+  for(let i=0; i<Math.min(20, lines.length); i++){
+    const line = lines[i].trim();
+
+    // Detener si llegamos a una sección importante (##)
+    if(/^##\s+/.test(line)) break;
+
+    // Buscar markdown image: ![alt](url)
+    const mdMatch = line.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+    if(mdMatch){
+      let url = mdMatch[2].trim();
+      // Si es URL relativa, construir URL absoluta de GitHub
+      if(!url.startsWith('http')){
+        url = `https://raw.githubusercontent.com/${GH_USER}/${repoName}/main/${url.replace(/^\.?\/?/, '')}`;
+      }
+      return url;
+    }
+
+    // Buscar HTML img tag: <img src="url" ...>
+    const htmlMatch = line.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if(htmlMatch){
+      let url = htmlMatch[1].trim();
+      if(!url.startsWith('http')){
+        url = `https://raw.githubusercontent.com/${GH_USER}/${repoName}/main/${url.replace(/^\.?\/?/, '')}`;
+      }
+      return url;
+    }
+  }
+
+  return null;
+}
+
+async function findGlitchboiBanner(repoName){
+  if(!repoName) return null;
+
+  // Posibles nombres de archivo para el banner de Glitchboi
+  const bannerNames = [
+    'glitchboi-banner.png',
+    'glitchboi-banner.jpg',
+    'glitchboi-banner.jpeg',
+    'glitchboi.png',
+    'glitchboi.jpg',
+    'banner.png',
+    'banner.jpg'
+  ];
+
+  const branches = ['main', 'master'];
+
+  for(const branch of branches){
+    for(const name of bannerNames){
+      const url = `https://raw.githubusercontent.com/${GH_USER}/${repoName}/${branch}/${name}`;
+      try{
+        const res = await fetch(url, { method: 'HEAD' });
+        if(res.ok){
+          return url;
+        }
+      }catch(e){
+        // Continuar con el siguiente
+      }
+    }
+  }
+
+  return null;
+}
+
+function mergeProjectData(metaList, liveList){
+  // Si no hay datos de GitHub, usar solo el JSON
+  if(!liveList || !liveList.length) return metaList;
+
+  // Crear un mapa de los datos del JSON por nombre de repo (normalizado)
+  const metaMap = new Map();
+  metaList.forEach(meta => {
+    const repoName = String(meta.repo || meta.title || '').toLowerCase();
+    if(repoName) metaMap.set(repoName, meta);
+  });
+
+  // Combinar datos: GitHub (dinámico) + JSON (manual)
+  const merged = liveList.map(ghRepo => {
+    const repoName = String(ghRepo.repo || ghRepo.title || '').toLowerCase();
+    const meta = metaMap.get(repoName);
+
+    if(meta){
+      // Merge: priorizar GitHub para datos dinámicos, JSON para configuración manual
+      return {
+        ...ghRepo,                    // Datos de GitHub (descripción, fecha, etc.)
+        model: meta.model,             // Modelo 3D del JSON
+        tags: meta.tags || ghRepo.tags || ghRepo.topics || [], // Tags personalizados o topics de GitHub
+        links: meta.links,             // Enlaces personalizados del JSON
+        summary: meta.summary || ghRepo.summary,  // Summary personalizado o de GitHub
+        description: meta.description || ghRepo.description, // Descripción personalizada o de GitHub
+        slug: meta.slug || ghRepo.slug // Slug personalizado o generado
+      };
+    }else{
+      // Si no está en JSON, usar solo datos de GitHub
+      return ghRepo;
+    }
+  });
+
+  // Agregar proyectos que están en JSON pero no en GitHub
+  metaList.forEach(meta => {
+    const repoName = String(meta.repo || meta.title || '').toLowerCase();
+    const existsInMerged = merged.some(m =>
+      String(m.repo || m.title || '').toLowerCase() === repoName
+    );
+    if(!existsInMerged){
+      merged.push(meta);
+    }
+  });
+
+  return merged;
+}
+
 function pickProject(metaList, slug){
   if(!slug) return null;
   const lower = slug.toLowerCase();
@@ -147,29 +263,108 @@ function renderBanner(meta){
   if(!bannerBox) return;
   bannerBox.innerHTML = '';
 
-  if(meta?.model){
-    const id = 'project-banner-3d';
-    const node = document.createElement('div');
-    node.id = id;
-    node.className = 'ascii-3d-container';
-    node.style.height = '320px';
-    bannerBox.appendChild(node);
+  const hasModel = meta?.model;
+  const hasImage = meta?.banner || meta?.bannerUrl;
+  const imageUrl = meta?.bannerUrl || meta?.banner || FALLBACK_BANNER;
 
+  // Crear contenedor principal
+  const container = document.createElement('div');
+  container.style.position = 'relative';
+
+  // Si tiene ambos (imagen y modelo), agregar botón toggle
+  if(hasModel && hasImage){
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'toggle';
+    toggleBtn.style.position = 'absolute';
+    toggleBtn.style.top = '10px';
+    toggleBtn.style.right = '10px';
+    toggleBtn.style.zIndex = '10';
+    toggleBtn.textContent = '[ ver 3D ]';
+    toggleBtn.setAttribute('aria-label', 'Alternar entre imagen y modelo 3D');
+
+    let showing3D = false;
+
+    // Contenedor de imagen
+    const imageContainer = document.createElement('div');
+    imageContainer.id = 'banner-image-container';
+    imageContainer.style.display = 'block';
+    const img = document.createElement('img');
+    img.src = resolveAsset(imageUrl);
+    img.alt = meta?.title || 'Proyecto';
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.loading = 'lazy';
+    imageContainer.appendChild(img);
+
+    // Contenedor de modelo 3D
+    const modelContainer = document.createElement('div');
+    modelContainer.id = 'banner-model-container';
+    modelContainer.style.display = 'none';
+    const modelNode = document.createElement('div');
+    modelNode.id = 'project-banner-3d';
+    modelNode.className = 'ascii-3d-container';
+    modelNode.style.height = '320px';
+    modelContainer.appendChild(modelNode);
+
+    // Función toggle
+    toggleBtn.addEventListener('click', ()=>{
+      showing3D = !showing3D;
+      if(showing3D){
+        imageContainer.style.display = 'none';
+        modelContainer.style.display = 'block';
+        toggleBtn.textContent = '[ ver imagen ]';
+        // Inicializar modelo 3D si no se ha hecho
+        if(!modelNode.dataset.initialized){
+          initModel3D(modelNode, meta.model);
+          modelNode.dataset.initialized = 'true';
+        }
+      }else{
+        imageContainer.style.display = 'block';
+        modelContainer.style.display = 'none';
+        toggleBtn.textContent = '[ ver 3D ]';
+      }
+    });
+
+    container.appendChild(toggleBtn);
+    container.appendChild(imageContainer);
+    container.appendChild(modelContainer);
+  }
+  else if(hasModel){
+    // Solo modelo 3D
+    const modelNode = document.createElement('div');
+    modelNode.id = 'project-banner-3d';
+    modelNode.className = 'ascii-3d-container';
+    modelNode.style.height = '320px';
+    container.appendChild(modelNode);
+    initModel3D(modelNode, meta.model);
+  }
+  else{
+    // Solo imagen
+    const img = document.createElement('img');
+    img.src = resolveAsset(imageUrl);
+    img.alt = meta?.title || 'Proyecto';
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.loading = 'lazy';
+    container.appendChild(img);
+  }
+
+  bannerBox.appendChild(container);
+
+  // Función auxiliar para inicializar modelo 3D
+  function initModel3D(node, modelPath){
     try{
-      // Usar configuración compartida con efecto halftone bitmap
       if(typeof initASCII3DWithModel === 'function'){
-        // Versión con configuración nueva (halftone bitmap)
-        initASCII3DWithModel(id, resolveAsset(meta.model), {
+        initASCII3DWithModel(node.id, resolveAsset(modelPath), {
           rotationSpeed: 0.004,
           fps: 24
         }).catch((e)=>{
           console.warn('3D banner:', e);
-          renderImageBanner(meta.banner || FALLBACK_BANNER);
+          node.innerHTML = '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';
         });
       }else{
-        // Fallback si no está cargado ascii-3d-init.js
         console.warn('ascii-3d-init.js no cargado, usando configuración básica');
-        const ascii = new ASCII3DThreeJS(id, {
+        const ascii = new ASCII3DThreeJS(node.id, {
           cellSize: 2,
           fontSize: 3,
           color: getComputedStyle(document.body).getPropertyValue('--ink').trim() || '#0b0b0b',
@@ -182,24 +377,12 @@ function renderBanner(meta){
           halftoneSize: 2,
           colorReduction: 12
         });
-        ascii.loadModel(resolveAsset(meta.model)).then(()=>ascii.start()).catch(()=>{});
+        ascii.loadModel(resolveAsset(modelPath)).then(()=>ascii.start()).catch(()=>{});
       }
     }catch(e){
       console.warn('3D banner:', e);
-      renderImageBanner(meta.banner || FALLBACK_BANNER);
+      node.innerHTML = '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';
     }
-  }else{
-    renderImageBanner(meta?.banner || FALLBACK_BANNER);
-  }
-
-  function renderImageBanner(src){
-    const img = document.createElement('img');
-    img.src = resolveAsset(src);
-    img.alt = meta?.title || 'Proyecto';
-    img.style.width = '100%';
-    img.style.height = 'auto';
-    img.loading = 'lazy';
-    bannerBox.appendChild(img);
   }
 }
 
@@ -326,11 +509,13 @@ function renderProject(meta, gh, descriptionText){
     fetchReposList()
   ]);
 
-  // Fuente prioritaria: datos en vivo de GitHub; fallback: projects.json
-  const sourceList = liveList.length ? liveList : metaList;
-  const meta = slug ? pickProject(sourceList, slug) : null;
+  // Combinar datos de JSON y GitHub
+  const mergedList = mergeProjectData(metaList, liveList);
+  const meta = slug ? pickProject(mergedList, slug) : null;
+
   let gh = null;
   let readmeDescription = null;
+  let bannerUrl = null;
 
   const repoNameForGitHub = meta?.repo || meta?.title || slug;
 
@@ -339,6 +524,28 @@ function renderProject(meta, gh, descriptionText){
       gh = await fetchRepoInfo(repoNameForGitHub);
       const md = await fetchReadme(repoNameForGitHub);
       readmeDescription = extractDescription(md);
+
+      // Obtener imagen del README o banner de Glitchboi
+      bannerUrl = extractImageFromReadme(md, repoNameForGitHub);
+      if(!bannerUrl){
+        bannerUrl = await findGlitchboiBanner(repoNameForGitHub);
+      }
+
+      // Si se encontró una imagen, agregarla al objeto meta
+      if(bannerUrl && meta){
+        meta.bannerUrl = bannerUrl;
+      }else if(bannerUrl && !meta){
+        // Si no hay meta pero hay banner, crear un objeto meta básico
+        const tempMeta = {
+          bannerUrl: bannerUrl,
+          repo: repoNameForGitHub,
+          title: gh?.name || repoNameForGitHub
+        };
+        // Render con meta temporal
+        renderProject(tempMeta, gh, readmeDescription);
+        renderList(mergedList, slug);
+        return;
+      }
     }catch(e){
       console.warn('GitHub:', e);
     }
@@ -352,6 +559,6 @@ function renderProject(meta, gh, descriptionText){
     if(bodyEl) bodyEl.textContent = 'Selecciona un proyecto de la lista inferior.';
   }
 
-  // Lista inferior
-  renderList(sourceList, slug);
+  // Lista inferior con datos combinados
+  renderList(mergedList, slug);
 })();

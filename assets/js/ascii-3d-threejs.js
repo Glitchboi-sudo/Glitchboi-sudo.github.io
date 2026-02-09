@@ -400,6 +400,14 @@ class ASCII3DThreeJS {
     this.options.monochromeMode = enabled;
   }
 
+  // Actualizar el color del texto ASCII
+  updateColor(newColor) {
+    this.options.color = newColor;
+    if (this.asciiCanvas) {
+      this.asciiCanvas.style.color = newColor;
+    }
+  }
+
   destroy() {
     this.stop();
 

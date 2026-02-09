@@ -381,6 +381,22 @@ function renderProjects(items) {
     if (window.smoothTransitions) {
       window.smoothTransitions.observe(el);
     }
+
+    // Agregar separador después de cada proyecto (excepto el último)
+    if (index < items.length - 1) {
+      const separator = document.createElement("div");
+      separator.style.cssText = `
+        text-align: center;
+        margin: 20px 0;
+        opacity: 0.4;
+      `;
+      separator.innerHTML = `
+        <div style="font-size: 8px; color: var(--muted); letter-spacing: 0.2em;">
+          - - - - -
+        </div>
+      `;
+      $p.appendChild(separator);
+    }
   });
 }
 

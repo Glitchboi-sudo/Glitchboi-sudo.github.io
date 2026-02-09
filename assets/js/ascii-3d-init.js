@@ -31,9 +31,18 @@ window.ascii3DRenderers = window.ascii3DRenderers || {};
  */
 function createASCII3DRenderer(containerId, customOptions = {}) {
   // Obtener color del tema actual
-  const themeColor = getComputedStyle(document.body)
+  let themeColor = getComputedStyle(document.body)
     .getPropertyValue('--ink')
     .trim() || ASCII3D_DEFAULT_CONFIG.color;
+
+  // En modo claro, usar un color más oscuro para mejor fidelidad
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  if (currentTheme === 'light') {
+    themeColor = '#333333';
+  }
+  else {
+    themeColor = "#aa9f6e";
+  }
 
   // Combinar configuración por defecto con opciones personalizadas
   const config = {
@@ -90,8 +99,48 @@ function toggleAllMonochromeMode() {
   return newState;
 }
 
+/**
+ * Actualizar el color de todos los renderizadores activos basándose en el tema actual
+ */
+function updateAllRenderersColor() {
+  let themeColor = getComputedStyle(document.body)
+    .getPropertyValue('--ink')
+    .trim() || ASCII3D_DEFAULT_CONFIG.color;
+
+  // En modo claro, usar un color más oscuro para mejor fidelidad
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  if (currentTheme === 'light') {
+    // Usar un gris más oscuro en modo claro para mejor contraste
+    themeColor = '#333333';
+  }
+
+  const renderers = Object.values(window.ascii3DRenderers || {});
+  renderers.forEach(renderer => {
+    if (renderer && typeof renderer.updateColor === 'function') {
+      renderer.updateColor(themeColor);
+    }
+  });
+}
+
+// Observar cambios en el atributo data-theme del documento
+const themeObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+      // Esperar un tick para que CSS se actualice
+      setTimeout(updateAllRenderersColor, 10);
+    }
+  });
+});
+
+// Iniciar observación del tema
+themeObserver.observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['data-theme']
+});
+
 // Exportar para uso global
 window.createASCII3DRenderer = createASCII3DRenderer;
 window.initASCII3DWithModel = initASCII3DWithModel;
 window.toggleAllMonochromeMode = toggleAllMonochromeMode;
+window.updateAllRenderersColor = updateAllRenderersColor;
 window.ASCII3D_DEFAULT_CONFIG = ASCII3D_DEFAULT_CONFIG;
