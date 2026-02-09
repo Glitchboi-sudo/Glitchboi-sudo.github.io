@@ -8,16 +8,24 @@
   <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
+<body class="scanlines">
   <main class="container">
-    <div class="header" aria-label="Encabezado estilo dossier">
+    <div class="header crt-border" aria-label="Encabezado estilo dossier">
+      <!-- Banner ASCII superior -->
+      <div style="text-align: center; font-size: 10px; line-height: 1; color: var(--muted); margin-bottom: 12px; opacity: 0.7;">
+        ╔═══════════════════════════════════════════════════════════════════════╗<br>
+        ║                    ◄ BLOG ARCHIVE SYSTEM v2.0 ►                      ║<br>
+        ║                  [ACCESSING HISTORICAL RECORDS]                      ║<br>
+        ╚═══════════════════════════════════════════════════════════════════════╝
+      </div>
+
       <a href="../" aria-label="Ir a inicio">
         <img class="logoX" src="../assets/images/GlitchLogo.svg" alt="" aria-hidden="true">
       </a>
-      <div class="top-marks"><span>[PG 00,002]</span><span>[AG 00,002]</span></div>
-      <div class="bar" role="presentation"></div>
+      <div class="top-marks"><span>┤ LOG: 00,002 ├</span><span>┤ ARCHIVE ACCESS ├</span></div>
+      <div class="bar"></div>
       <div class="title" data-glitch="Blog / Actualizaciones">Blog / Actualizaciones</div>
-      <div class="kicker">Archivo completo</div>
+      <div class="kicker">Registro de Actividad del Sistema</div>
       <hr class="rule">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
         <a class="badge" href="../">← inicio</a>
@@ -26,19 +34,39 @@
     </div>
 
     <section>
-      <div class="label">Todas las entradas</div>
+      <!-- Separador ASCII -->
+      <div style="font-size: 10px; line-height: 1; color: var(--rule); margin: 20px 0 12px 0; opacity: 0.5;">
+        ════════════════════════════════════════════════════════════════════════
+      </div>
+
+      <div style="font-size: 11px; line-height: 1; color: var(--muted); margin-bottom: 8px; opacity: 0.7;">
+        ╔══[ POST INDEX ]═════════════════════════════════════════════════════╗
+      </div>
+
+      <div class="label terminal-prompt-hash">Todas las entradas del sistema</div>
       <div id="blog-list" class="cards" aria-live="polite"></div>
     </section>
 
     <div class="footer">
-      <hr class="rule">
-      <div class="top-marks" style="margin-top:6px">
-        <span>&copy; <span id="y"></span> Glitch Hardware</span>
-        <span>[status: online]</span>
+      <hr class="rule" />
+      <div style="text-align: center; margin: 16px 0;">
+        <div style="display: inline-block; border: 1px solid var(--rule); padding: 10px 20px; background: var(--paper);">
+          <div style="font-size: 10px; color: var(--muted); margin-bottom: 6px; opacity: 0.7;">
+            ┌─[ SYSTEM INFO ]─────────────────────┐
+          </div>
+          <div class="top-marks" style="margin: 0; font-size: 11px;">
+            <span>© <span id="y"></span> Glitch Hardware</span>
+            <span style="margin-left: 20px;">[status: online]</span>
+          </div>
+          <div style="font-size: 10px; color: var(--muted); margin-top: 6px; opacity: 0.7;">
+            └─────────────────────────────────────┘
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
   <script src="../assets/js/blog.js"></script>
+  <script src="../assets/js/terminal-fx.js"></script>
 </body>
 </html>

@@ -1,69 +1,350 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="es" dir="ltr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>GLITCHBOI</title>
-    <meta name="description" content="Hardware a medida: IoT, embebidos y herramientas para pentesting.">
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-  <main class="container">
-    <!-- CABECERA -->
-    <div class="header" aria-label="Encabezado estilo dossier">
-      <img class="logoX" src="assets/images/GlitchLogo.svg" alt="" aria-hidden="true">
-      <div class="top-marks"><span>[PG 00,001]</span><span>[AG 00,001]</span></div>
-      <div class="bar" role="presentation"></div>
-      <div class="title" data-i18n="hero_title" data-glitch="Hardware de M&eacute;xico para el mundo"></div>
-      <div class="kicker" data-i18n="kicker">Glitch Hardware &mdash; Ingenier&iacute;a embebida &amp; IoT</div>
-      <hr class="rule">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-        <span class="badge">DOSSIER</span>
-        <button id="themeBtn" class="toggle" type="button" aria-pressed="false" aria-label="Cambiar tema">[ modo nocturno ]</button>
+    <meta
+      name="description"
+      content="Hardware a medida: IoT, embebidos y herramientas para pentesting."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/animations.css" />
+  </head>
+  <body class="scanlines">
+    <main class="container">
+      <!-- CABECERA -->
+      <div class="header crt-border" aria-label="Encabezado estilo dossier">
+        <!-- Banner ASCII superior -->
+        <div
+          style="
+            text-align: center;
+            font-size: 10px;
+            line-height: 1;
+            color: var(--muted);
+            margin-bottom: 12px;
+            opacity: 0.7;
+          "
+        >
+          ╔═══════════════════════════════════════════════════════════════════════╗<br />
+          ║ ◄ GLITCHBOI TERMINAL v3.1 ► ║<br />
+          ║ [SECURE CONNECTION ESTABLISHED] ║<br />
+          ╚═══════════════════════════════════════════════════════════════════════╝
+        </div>
+
+        <img
+          class="logoX"
+          src="assets/images/GlitchLogo.svg"
+          alt=""
+          aria-hidden="true"
+        />
+        <div class="top-marks">
+          <span>┤ SESSION: 00,001 ├</span><span>┤ ACCESS: GRANTED ├</span>
+        </div>
+        <div class="bar" role="presentation"></div>
+        <div
+          class="title"
+          data-i18n="hero_title"
+          data-glitch="Hardware de M&eacute;xico para el mundo"
+        ></div>
+        <div class="kicker" data-i18n="kicker">
+          Glitch Hardware &mdash; Ingenier&iacute;a embebida &amp; IoT
+        </div>
+        <hr class="rule" />
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <span class="badge">DOSSIER</span>
+          <div style="display: flex; gap: 8px">
+            <button
+              id="colorBtn"
+              class="toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Alternar colores"
+            >
+              [ color ]
+            </button>
+            <button
+              id="themeBtn"
+              class="toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Cambiar tema"
+            >
+              [ modo nocturno ]
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- CUERPO -->
-    <div class="grid">
-      <section>
-        <div class="label" data-i18n="key_services">Servicios Clave</div>
-        <table class="table" aria-describedby="Servicios Clave">
-          <tbody>
-            <tr><td><div class="dotfill"><span><a href="#hardware" data-i18n="svc_hw">Hardware libre para pentest</a></span><i></i><span data-i18n="svc_hw_desc">Dise&ntilde;o y fabricaci&oacute;n</span></div></td></tr>
-            <tr><td><div class="dotfill"><span><a href="#tools" data-i18n="svc_tools">Herramientas de auditor&iacute;a</a></span><i></i><span data-i18n="svc_tools_desc">RF, redes, IoT</span></div></td></tr>
-            <tr><td><div class="dotfill"><span><a href="#oss" data-i18n="svc_oss">Firmware y bibliotecas OSS</a></span><i></i><span data-i18n="svc_oss_desc">C / Python / RP2040</span></div></td></tr>
-            <tr><td><div class="dotfill"><span><a href="#training" data-i18n="svc_training">Capacitaci&oacute;n / Workshops</a></span><i></i><span data-i18n="svc_training_desc">"Romper para aprender"</span></div></td></tr>
-          </tbody>
-        </table>
-
-        <div class="section-title"><h2 data-i18n="projects_title">Proyectos (GitHub)</h2><div class="bar"></div></div>
-        <div id="projects" class="cards" aria-live="polite"></div>
-      </section>
-
-      <aside>
-        <div class="label" data-i18n="contact">Contacto</div>
-        <div class="block"><a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a></div>
-        <hr class="rule">
-        <div class="label" data-i18n="blog_updates">Blog / Actualizaciones</div>
-        <div id="blog" aria-live="polite"></div>
-      </aside>
-    </div>
-
-    <div class="footer">
-      <hr class="rule">
-      <div class="top-marks" style="margin-top:6px">
-        <span>&copy; <span id="y"></span> Glitch Hardware</span>
-        <span>[status: online]</span>
+      <!-- ASCII 3D ANIMATION -->
+      <div
+        style="
+          font-size: 11px;
+          line-height: 1;
+          color: var(--muted);
+          margin-bottom: 8px;
+          opacity: 0.7;
+        "
+      >
+        ╔══[Latest]═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
       </div>
-    </div>
-  </main>
+      <div class="ascii-3d-container" id="ascii-3d" data-animate="fade-in">
+        <!-- El canvas se genera automáticamente aquí -->
+      </div>
 
-<script src="assets/js/main.js"></script>
-</body>
+      <!-- CUERPO -->
+      <div class="grid">
+        <section>
+          <div
+            class="label terminal-prompt"
+            data-i18n="expertise"
+            data-animate="slide-left"
+          >
+            Especialidades
+          </div>
+          <table class="table" aria-describedby="Especialidades">
+            <tbody>
+              <tr>
+                <td>
+                  <div class="dotfill">
+                    <span>Ingenier&iacute;a de Hardware Abierto</span
+                    ><br /><span data-i18n="exp_hardware_desc"
+                      >Dise&ntilde;o y distribuci&oacute;n para
+                      an&aacute;lisis</span
+                    ><br />
+                    <span>Pentesting</span><br />
+                    <span>Vulnerability Research</span><i></i
+                    ><span data-i18n="exp_pentest_desc"
+                      ><br />Identificaci&oacute;n de debilidades</span
+                    >
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div
+            style="
+              margin: 16px 0;
+              padding: 12px;
+              border: 1px solid var(--rule);
+              background: var(--paper);
+              position: relative;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: -10px;
+                left: 10px;
+                background: var(--paper);
+                padding: 0 8px;
+                color: var(--ink);
+                font-size: 11px;
+                font-weight: 700;
+              "
+            >
+              ▼ SYSTEM PHILOSOPHY ▼
+            </div>
+            <p
+              style="
+                margin: 8px 0 0 0;
+                font-size: 13px;
+                font-style: italic;
+                color: var(--muted);
+              "
+              data-i18n="philosophy"
+            >
+              > "Romper es la mejor forma de fortalecer"<br />
+              > 100% open source · Hecho en México para el mundo
+            </p>
+          </div>
+
+          <!-- Separador ASCII entre secciones -->
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--rule);
+              margin: 20px 0 12px 0;
+              opacity: 0.5;
+            "
+          >
+            ════════════════════════════════════════════════════════════════════════
+          </div>
+
+          <div class="section-title" data-animate="fade-in" data-delay="200">
+            <div
+              style="
+                font-size: 11px;
+                line-height: 1;
+                color: var(--muted);
+                margin-bottom: 8px;
+                opacity: 0.7;
+              "
+            >
+              ╔══[ REPOSITORY INDEX
+              ]═══════════════════════════════════════════════╗
+            </div>
+            <h2 class="terminal-prompt-hash" data-i18n="projects_title">
+              Proyectos Activos
+            </h2>
+            <div class="bar"></div>
+          </div>
+          <div
+            id="projects"
+            class="cards stagger-animation"
+            aria-live="polite"
+          ></div>
+        </section>
+
+        <aside>
+          <!-- Borde ASCII para sidebar -->
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--muted);
+              margin-bottom: 8px;
+              opacity: 0.7;
+            "
+          >
+            ╔══[ COMMUNICATIONS ]═══════════════╗
+          </div>
+
+          <div
+            class="label terminal-prompt-alt"
+            data-i18n="contact"
+            data-animate="slide-right"
+          >
+            Contacto
+          </div>
+          <div class="block" data-animate="fade-in" data-delay="100">
+            <span style="opacity: 0.7">[EMAIL]</span><br />
+            <a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a>
+          </div>
+
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--rule);
+              margin: 12px 0 8px 0;
+              opacity: 0.5;
+            "
+          >
+            ────────────────────────────────────
+          </div>
+          <div
+            class="label terminal-prompt-hash"
+            data-i18n="blog_updates"
+            data-animate="slide-right"
+            data-delay="200"
+          >
+            Blog / Actualizaciones
+          </div>
+          <div id="blog" aria-live="polite"></div>
+
+          <div
+            style="
+              font-size: 10px;
+              line-height: 1;
+              color: var(--muted);
+              margin-top: 16px;
+              opacity: 0.7;
+            "
+          >
+            ╚═══════════════════════════════════╝
+          </div>
+        </aside>
+      </div>
+
+      <div class="footer">
+        <hr class="rule" />
+        <div style="text-align: center; margin: 16px 0">
+          <div
+            style="
+              display: inline-block;
+              border: 1px solid var(--rule);
+              padding: 10px 20px;
+              background: var(--paper);
+            "
+          >
+            <div
+              style="
+                font-size: 10px;
+                color: var(--muted);
+                margin-bottom: 6px;
+                opacity: 0.7;
+              "
+            >
+              ┌─[ SYSTEM INFO ]─────────────────────┐
+            </div>
+            <div class="top-marks" style="margin: 0; font-size: 11px">
+              <span>© <span id="y"></span> Glitch Hardware</span>
+              <span style="margin-left: 20px">[status: online]</span>
+            </div>
+            <div
+              style="
+                font-size: 10px;
+                color: var(--muted);
+                margin-top: 6px;
+                opacity: 0.7;
+              "
+            >
+              └─────────────────────────────────────┘
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Three.js, MTLLoader y OBJLoader (local) -->
+    <script src="assets/js/libs/three.min.js"></script>
+    <script src="assets/js/libs/MTLLoader.js"></script>
+    <script src="assets/js/libs/OBJLoader.js"></script>
+
+    <!-- App Scripts -->
+    <script src="assets/js/transitions.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/ascii-3d-threejs.js"></script>
+    <script src="assets/js/ascii-3d-init.js"></script>
+    <script src="assets/js/terminal-fx.js"></script>
+
+    <script>
+      // Inicializar ASCII 3D con Three.js usando función compartida
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Usar función compartida para inicializar con configuración estándar de halftone
+          await initASCII3DWithModel("ascii-3d", "assets/models/cerberus.obj");
+
+          // Configurar toggle de color
+          const colorBtn = document.getElementById("colorBtn");
+          if (colorBtn) {
+            // Estado inicial (monocromático)
+            colorBtn.textContent = "[ color ]";
+            colorBtn.setAttribute("aria-pressed", "false");
+
+            colorBtn.addEventListener("click", () => {
+              const isMonochrome = toggleAllMonochromeMode();
+              colorBtn.textContent = isMonochrome
+                ? "[ color ]"
+                : "[ monocromo ]";
+              colorBtn.setAttribute("aria-pressed", String(!isMonochrome));
+            });
+          }
+        } catch (error) {
+          console.error("Error inicializando 3D:", error);
+        }
+      });
+    </script>
+  </body>
 </html>
-
-
-
-
-

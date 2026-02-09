@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title data-title-es="Proyectos — GLITCHBOI" data-title-en="Projects — GLITCHBOI">Proyectos — GLITCHBOI</title>
+  <meta name="description" content="Ficha detallada de proyectos de Glitch Hardware." data-desc-es="Ficha detallada de proyectos de Glitch Hardware." data-desc-en="Project dossiers for Glitch Hardware.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+</head>
+<body class="scanlines">
+  <main class="container">
+    <div class="header crt-border energy-border" aria-label="Encabezado estilo dossier">
+      <!-- Banner ASCII superior -->
+      <div style="text-align: center; font-size: 10px; line-height: 1; color: var(--muted); margin-bottom: 12px; opacity: 0.7;">
+        ╔═══════════════════════════════════════════════════════════════════════╗<br>
+        ║                  ◄ PROJECT DOSSIER DATABASE v4.2 ►                   ║<br>
+        ║                  [CLASSIFIED: SECURITY LEVEL GAMMA]                  ║<br>
+        ╚═══════════════════════════════════════════════════════════════════════╝
+      </div>
+
+      <a href="../" aria-label="Inicio">
+        <img class="logoX" src="../assets/images/GlitchLogo.svg" alt="Glitch Hardware">
+      </a>
+      <div class="top-marks"><span>┤ FILE: 00,050 ├</span><span>┤ ACCESS: FULL ├</span></div>
+      <div class="bar"></div>
+      <div class="title" id="project-title" data-glitch="Proyecto">Proyecto</div>
+      <div class="kicker" id="project-kicker">Dossier Clasificado</div>
+      <hr class="rule">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <a class="badge" href="../">← inicio</a>
+        <div>
+          <button id="themeBtn" class="toggle" type="button" aria-pressed="false" aria-label="Cambiar tema">[ modo nocturno ]</button>
+          <a id="backBtn" class="toggle" href="../" aria-label="Regresar" style="margin-left:8px">[ regresar ]</a>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <!-- Separador ASCII -->
+      <div style="font-size: 10px; line-height: 1; color: var(--rule); margin: 20px 0 12px 0; opacity: 0.5;">
+        ════════════════════════════════════════════════════════════════════════
+      </div>
+
+      <div style="font-size: 11px; line-height: 1; color: var(--muted); margin-bottom: 8px; opacity: 0.7;">
+        ╔══[ VISUAL RENDER ]══════════════════════════════════════════════════╗
+      </div>
+
+      <div id="project-banner" class="card" style="min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--paper);"></div>
+
+      <!-- Separador decorativo -->
+      <div style="text-align: center; margin: 16px 0;">
+        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
+          ────────────────────────────────────────────────────────────────────────
+        </div>
+        <div style="font-size: 9px; color: var(--muted); margin: 6px 0; opacity: 0.6; letter-spacing: 0.1em;">
+          ▼ DOSSIER CONTENT ▼
+        </div>
+        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
+          ────────────────────────────────────────────────────────────────────────
+        </div>
+      </div>
+
+      <article id="project-summary-card" class="card" style="margin-top:12px">
+        <div class="label terminal-prompt-alt" style="margin-top:0">Metadatos del Proyecto</div>
+        <div class="dotfill" style="margin-bottom:8px">
+          <span id="project-date">—</span>
+          <i></i>
+          <span id="project-language">—</span>
+        </div>
+        <p class="desc" id="project-summary" style="margin:10px 0 0;">—</p>
+        <div id="project-tags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      </article>
+
+      <!-- Separador entre secciones -->
+      <div style="text-align: center; margin: 20px 0 16px;">
+        <div style="font-size: 8px; color: var(--muted); opacity: 0.4; letter-spacing: 0.2em;">
+          ◆ ◆ ◆
+        </div>
+      </div>
+
+      <article id="project-body" class="card" style="margin-top:12px">
+        <div class="label terminal-prompt-hash" style="margin-top:0">Descripción Técnica</div>
+        <div id="project-description" style="font-size:14px;line-height:1.6;"></div>
+      </article>
+
+      <!-- Separador entre secciones -->
+      <div style="text-align: center; margin: 20px 0 16px;">
+        <div style="font-size: 8px; color: var(--muted); opacity: 0.4; letter-spacing: 0.2em;">
+          ◆ ◆ ◆
+        </div>
+      </div>
+
+      <article class="card" id="project-links-card" style="margin-top:12px">
+        <div class="label terminal-prompt" style="margin-top:0">Enlaces de Acceso</div>
+        <div id="project-links" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+      </article>
+    </section>
+
+    <section style="margin-top:32px">
+      <!-- Separador principal de sección -->
+      <div style="text-align: center; margin: 24px 0 20px;">
+        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
+          ════════════════════════════════════════════════════════════════════════
+        </div>
+        <div style="font-size: 9px; color: var(--muted); margin: 8px 0; opacity: 0.6; letter-spacing: 0.15em;">
+          ▼ END OF DOSSIER ▼
+        </div>
+        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
+          ════════════════════════════════════════════════════════════════════════
+        </div>
+      </div>
+
+      <div style="font-size: 11px; line-height: 1; color: var(--muted); margin-bottom: 8px; opacity: 0.7;">
+        ╔══[ RELATED FILES ]══════════════════════════════════════════════════╗
+      </div>
+
+      <div class="label terminal-prompt-alt">Otros proyectos disponibles</div>
+      <div id="project-list" class="cards"></div>
+    </section>
+
+    <div class="footer">
+      <hr class="rule" />
+      <div style="text-align: center; margin: 16px 0;">
+        <div style="display: inline-block; border: 1px solid var(--rule); padding: 10px 20px; background: var(--paper);">
+          <div style="font-size: 10px; color: var(--muted); margin-bottom: 6px; opacity: 0.7;">
+            ┌─[ SYSTEM INFO ]─────────────────────┐
+          </div>
+          <div class="top-marks" style="margin: 0; font-size: 11px;">
+            <span>© <span id="y"></span> Glitch Hardware</span>
+            <span style="margin-left: 20px;">[status: online]</span>
+          </div>
+          <div style="font-size: 10px; color: var(--muted); margin-top: 6px; opacity: 0.7;">
+            └─────────────────────────────────────┘
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/libs/three.min.js"></script>
+  <script src="../assets/js/libs/MTLLoader.js"></script>
+  <script src="../assets/js/libs/OBJLoader.js"></script>
+  <script src="../assets/js/ascii-3d-threejs.js"></script>
+  <script src="../assets/js/ascii-3d-init.js"></script>
+  <script src="../assets/js/projects.js"></script>
+  <script src="../assets/js/terminal-fx.js"></script>
+</body>
+</html>

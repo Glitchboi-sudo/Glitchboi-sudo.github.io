@@ -1,0 +1,437 @@
+/* ===== ANIMATIONS & TRANSITIONS - TUI CLEAN ===== */
+
+/* === Variables === */
+:root {
+  --transition-speed: 0.3s;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === Transiciones globales === */
+* {
+  transition-property: none;
+}
+
+body {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+body.page-loaded {
+  opacity: 1;
+}
+
+/* === Animaciones base === */
+.will-animate {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.will-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Tipos de animación === */
+
+/* Fade In */
+.animate-fade-in {
+  animation: fadeIn 0.6s var(--transition-timing) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide In desde la izquierda */
+.animate-slide-left {
+  animation: slideLeft 0.6s var(--transition-timing) forwards;
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In desde la derecha */
+.animate-slide-right {
+  animation: slideRight 0.6s var(--transition-timing) forwards;
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In desde abajo */
+.animate-slide-up {
+  animation: slideUp 0.6s var(--transition-timing) forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale In */
+.animate-scale {
+  animation: scaleIn 0.6s var(--transition-timing) forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Bounce In */
+.animate-bounce {
+  animation: bounceIn 0.8s var(--transition-timing) forwards;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* === Terminal prompt style === */
+.terminal-prompt::before {
+  content: "> ";
+  color: var(--muted);
+  font-weight: 700;
+  margin-right: 0.5ch;
+}
+
+.terminal-prompt-alt::before {
+  content: "$ ";
+  color: var(--muted);
+  font-weight: 700;
+  margin-right: 0.5ch;
+}
+
+.terminal-prompt-hash::before {
+  content: "# ";
+  color: var(--muted);
+  font-weight: 700;
+  margin-right: 0.5ch;
+}
+
+/* Cursor parpadeante */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: "▋";
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+/* === ASCII 3D Container === */
+.ascii-3d-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+/* Bordes ASCII para el contenedor */
+.ascii-3d-container::before {
+  content: "╔════════════════════════════════════════════════════════════════════╗";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.ascii-3d-container::after {
+  content: "╚════════════════════════════════════════════════════════════════════╝";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.ascii-canvas {
+  font-size: 10px;
+  color: var(--ink);
+}
+
+/* Canvas ASCII generado por Three.js - debe ocupar todo el contenedor */
+.ascii-canvas-threejs {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Efecto rainbow para ASCII */
+@keyframes rainbow {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.ascii-canvas.rainbow {
+  animation: rainbow 3s linear infinite;
+}
+
+/* === Hover glow effect === */
+.card,
+[data-hover-glow] {
+  position: relative;
+  isolation: isolate;
+}
+
+.card::before,
+[data-hover-glow]::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    var(--glow-color),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.card:hover::before,
+[data-hover-glow]:hover::before {
+  /* Desactiva el halo circular que aparecía al pasar el cursor */
+  opacity: 0;
+}
+
+/* === Loader overlay === */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.loader-spinner {
+  text-align: center;
+}
+
+.spinner-ascii pre {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: 0.2em;
+}
+
+/* === Efecto typing === */
+.typing-effect {
+  overflow: hidden;
+  border-right: 2px solid var(--ink);
+  white-space: nowrap;
+  animation:
+    typing 2s steps(40) 1s forwards,
+    blink-caret 0.75s step-end infinite;
+  max-width: fit-content;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Scanlines desactivadas - mantener clase para compatibilidad */
+.scanlines {
+  position: relative;
+}
+
+/* === Efectos de texto === */
+.text-glitch-subtle {
+  position: relative;
+}
+
+/* === Progress bar animada === */
+.progress > i {
+  transition: width 1s var(--transition-timing);
+}
+
+/* === Responsive === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .will-animate {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== MOBILE RESPONSIVE ANIMATIONS ===== */
+
+/* Mobile small: < 480px */
+@media(max-width:480px){
+  /* ASCII 3D container más pequeño en móvil */
+  .ascii-3d-container{
+    height: 300px;
+  }
+
+  /* Decoraciones ASCII más pequeñas */
+  .ascii-3d-container::before,
+  .ascii-3d-container::after{
+    font-size: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Reducir complejidad de animaciones en móvil */
+  .animate-bounce{
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  /* Animaciones más rápidas en móvil */
+  :root{
+    --transition-speed: 0.2s;
+  }
+
+  /* Canvas ASCII más pequeño */
+  .ascii-canvas{
+    font-size: 8px;
+  }
+
+  /* Typing effect ajustado */
+  .typing-effect{
+    animation-duration: 1.5s;
+  }
+}
+
+/* Tablet: 481px - 768px */
+@media(min-width:481px) and (max-width:768px){
+  .ascii-3d-container{
+    height: 400px;
+  }
+
+  .ascii-3d-container::before,
+  .ascii-3d-container::after{
+    font-size: 9px;
+  }
+
+  .ascii-canvas{
+    font-size: 9px;
+  }
+}
+
+/* Desktop small: 769px - 1024px */
+@media(min-width:769px) and (max-width:1024px){
+  .ascii-3d-container{
+    height: 450px;
+  }
+}
+
+/* Landscape mobile - contenedor más bajo */
+@media(max-height:500px) and (orientation:landscape){
+  .ascii-3d-container{
+    height: 250px;
+  }
+
+  .ascii-3d-container::before,
+  .ascii-3d-container::after{
+    font-size: 7px;
+  }
+}
+
+/* Stagger via JS; delays por data-delay en JS, así evitamos doble animación */
+
+/* ===== CLASES DE EFECTOS (desactivadas pero mantenidas para compatibilidad) ===== */
+.crt-noise { position: relative; }
+.phosphor-glow { }
+.crt-interference { }
+.crt-border { }
+.typewriter { }
+.boot-text { color: var(--ink); font-family: var(--mono); font-size: 12px; line-height: 1.4; }
+.matrix-bg { display: none; }
+.energy-border { }

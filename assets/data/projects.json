@@ -1,0 +1,28 @@
+[
+  {
+    "slug": "cerberus",
+    "repo": "Cerberus",
+    "title": "Cerberus",
+    "summary": "Watchdog USB para detección y análisis de dispositivos sospechosos.",
+    "description": "Cerberus es un watchdog USB open-source pensado para inspeccionar dispositivos, registrar eventos eléctricos y probar payloads de forma segura. Incluye firmware en RP2040 y hardware con protección de sobrevoltaje.",
+    "tags": ["hardware", "usb", "iot"],
+    "bannerType": "model",
+    "model": "../assets/models/cerberus.obj",
+    "banner": "../assets/images/1.jpeg",
+    "updated": "2026-02-08",
+    "links": [
+      { "label": "Guía rápida", "href": "../posts/2025-12-07-nueva-funcion-en-cerberus.html", "external": false }
+    ]
+  },
+  {
+    "slug": "hackplate",
+    "repo": "HackPlate",
+    "title": "Hackplate",
+    "summary": "Placa de pre-calentamiento / reflow abierta para laboratorios portátiles.",
+    "description": "Hackplate combina una resistencia de calentamiento con control PID básico para hacer reflow y preheat de PCBs pequeñas. Es ideal para reparaciones rápidas y para makers que quieran ensamblar prototipos sin estación grande.",
+    "tags": ["hardware", "reflow"],
+    "bannerType": "image",
+    "banner": "../assets/images/1.jpeg",
+    "updated": "2025-10-18"
+  }
+]
