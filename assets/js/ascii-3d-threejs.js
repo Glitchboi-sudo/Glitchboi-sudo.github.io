@@ -4,11 +4,31 @@
  */
 
 class ASCII3DThreeJS {
+  // Verificar soporte WebGL
+  static isWebGLSupported() {
+    try {
+      const canvas = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext &&
+        (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    } catch (e) {
+      return false;
+    }
+  }
+
   constructor(containerId, options = {}) {
     this.container = document.getElementById(containerId);
     if (!this.container) {
       throw new Error(`Container #${containerId} not found`);
     }
+
+    // Verificar soporte WebGL
+    if (!ASCII3DThreeJS.isWebGLSupported()) {
+      console.warn('WebGL no soportado en este dispositivo');
+      this.showFallbackMessage();
+      this.webglSupported = false;
+      return;
+    }
+    this.webglSupported = true;
 
     // Options
     this.options = {
@@ -97,8 +117,6 @@ class ASCII3DThreeJS {
     const height = this.container.clientHeight || 320;
     const aspect = width / height || 1.25;
 
-    console.log('ASCII3D setupThreeJS - container dimensions:', width, 'x', height);
-
     // Camera (alejada para modelo más grande)
     this.camera = new THREE.PerspectiveCamera(
       45,
@@ -146,21 +164,16 @@ class ASCII3DThreeJS {
     let width = this.container.clientWidth;
     let height = this.container.clientHeight;
 
-    console.log('ASCII3D updateDimensions:', width, 'x', height, 'container:', this.container.id);
-
     // Si las dimensiones son 0, intentar obtenerlas del estilo computado
     if (width === 0 || height === 0) {
       const computed = getComputedStyle(this.container);
       width = parseInt(computed.width) || 400;
       height = parseInt(computed.height) || 320;
-      console.log('ASCII3D using computed style:', width, 'x', height);
     }
 
     // Calcular columnas y filas basado en el tamano de celda
     this.cols = Math.floor(width / this.options.cellSize);
     this.rows = Math.floor(height / this.options.cellSize);
-
-    console.log('ASCII3D grid:', this.cols, 'cols x', this.rows, 'rows');
 
     // Canvas ASCII a resolucion completa para texto nítido
     this.asciiCanvas.width = width;
@@ -183,6 +196,8 @@ class ASCII3DThreeJS {
   }
 
   async loadModel(url) {
+    if (!this.webglSupported) return false;
+
     try {
       // Remove existing model
       if (this.model) {
@@ -393,10 +408,10 @@ class ASCII3DThreeJS {
   }
 
   start() {
+    if (!this.webglSupported) return;
     if (!this.animationId) {
       // Forzar actualización de dimensiones antes de empezar
       this.updateDimensions();
-      console.log('ASCII3D start() - cols:', this.cols, 'rows:', this.rows);
       this.animate();
     }
   }
@@ -425,6 +440,34 @@ class ASCII3DThreeJS {
     if (this.asciiCanvas) {
       this.asciiCanvas.style.color = newColor;
     }
+  }
+
+  // Mostrar mensaje de fallback cuando WebGL no está soportado
+  showFallbackMessage() {
+    const fallback = document.createElement('div');
+    fallback.style.cssText = `
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      min-height: 150px;
+      background: var(--paper, #1a1a1a);
+      border: 1px solid var(--rule, #333);
+      color: var(--muted, #666);
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      text-align: center;
+      padding: 20px;
+    `;
+    fallback.innerHTML = `
+      <div>
+        <div style="font-size: 24px; margin-bottom: 10px;">[ 3D ]</div>
+        <div>Modelo 3D no disponible</div>
+        <div style="font-size: 10px; margin-top: 6px; opacity: 0.7;">WebGL no soportado</div>
+      </div>
+    `;
+    this.container.appendChild(fallback);
   }
 
   destroy() {

@@ -372,13 +372,10 @@ function renderBanner(meta){
   // Función auxiliar para inicializar modelo 3D
   function initModel3D(node, modelPath){
     try{
-      console.log('initModel3D:', node.id, 'dimensions:', node.clientWidth, 'x', node.clientHeight);
       if(typeof initASCII3DWithModel === 'function'){
         initASCII3DWithModel(node.id, resolveAsset(modelPath), {
           rotationSpeed: 0.004,
           fps: 24
-        }).then(() => {
-          console.log('Model initialized, container dimensions:', node.clientWidth, 'x', node.clientHeight);
         }).catch((e)=>{
           console.warn('3D banner:', e);
           node.innerHTML = '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';

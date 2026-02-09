@@ -8,21 +8,43 @@
 function getResponsiveConfig() {
   const isMobile = window.innerWidth <= 480;
   const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
+  const isSmallMobile = window.innerWidth <= 360;
+
+  // En móviles pequeños, usar celdas más grandes para mejor rendimiento
+  let cellSize, fontSize, fps;
+
+  if (isSmallMobile) {
+    cellSize = 8;
+    fontSize = 10;
+    fps = 20; // Menor FPS para mejor rendimiento
+  } else if (isMobile) {
+    cellSize = 6;
+    fontSize = 8;
+    fps = 24;
+  } else if (isTablet) {
+    cellSize = 5;
+    fontSize = 7;
+    fps = 28;
+  } else {
+    cellSize = 4;
+    fontSize = 6;
+    fps = 30;
+  }
 
   return {
-    // Celdas pequenas = mas resolucion/detalle
-    cellSize: isMobile ? 5 : isTablet ? 4.5 : 4,
-    fontSize: isMobile ? 7 : isTablet ? 6.5 : 6,
+    // Celdas ajustadas según dispositivo
+    cellSize: cellSize,
+    fontSize: fontSize,
     color: "#00ff00", // Color por defecto (se sobreescribe con tema)
     backgroundColor: "transparent",
     // Caracteres ASCII clasicos: del claro al oscuro (estilo terminal retro)
     chars: " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split(""),
     autoRotate: true,
-    rotationSpeed: 0.005,
-    fps: 30,
+    rotationSpeed: isMobile ? 0.004 : 0.005, // Rotación más lenta en móvil
+    fps: fps,
     halftone: false,
     halftoneSize: 1,
-    colorReduction: 64,
+    colorReduction: isMobile ? 32 : 64, // Menos colores en móvil para mejor rendimiento
     monochromeMode: true,
   };
 }
@@ -80,31 +102,24 @@ function getThemeColor() {
  * @returns {Promise<ASCII3DThreeJS>} Promesa que resuelve con la instancia del renderizador
  */
 async function initASCII3DWithModel(containerId, modelPath, options = {}) {
-  console.log(`Inicializando renderizador 3D en #${containerId}...`);
-
   try {
-    const container = document.getElementById(containerId);
-    console.log(`Container encontrado:`, container ? 'si' : 'no',
-                'dimensiones:', container?.clientWidth, 'x', container?.clientHeight);
-
     const renderer = createASCII3DRenderer(containerId, options);
-    console.log(`Cargando modelo: ${modelPath}`);
 
     await renderer.loadModel(modelPath);
-    console.log(`Modelo cargado exitosamente`);
 
     // Forzar actualización de dimensiones después de cargar el modelo
-    renderer.updateDimensions();
+    if (renderer.updateDimensions) {
+      renderer.updateDimensions();
+    }
 
     renderer.start();
-    console.log(`Animación iniciada`);
 
     // Guardar en registro global para acceso desde toggles
     window.ascii3DRenderers[containerId] = renderer;
 
     return renderer;
   } catch (error) {
-    console.error(`Error inicializando renderizador 3D:`, error);
+    console.error('Error inicializando renderizador 3D:', error);
     throw error;
   }
 }
