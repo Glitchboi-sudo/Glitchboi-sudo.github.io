@@ -3,25 +3,26 @@
  * Centraliza las opciones del efecto halftone bitmap
  */
 
-// Configuracion por defecto del renderizador 3D con efecto halftone
+// Configuracion por defecto del renderizador 3D con efecto ASCII TUI
 // Se ajusta dinamicamente segun el tamano de pantalla
 function getResponsiveConfig() {
   const isMobile = window.innerWidth <= 480;
   const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
 
   return {
-    cellSize: isMobile ? 3 : isTablet ? 2.5 : 2,
-    fontSize: isMobile ? 4 : isTablet ? 3.5 : 3,
+    // Celdas pequenas = mas resolucion/detalle
+    cellSize: isMobile ? 5 : isTablet ? 4.5 : 4,
+    fontSize: isMobile ? 7 : isTablet ? 6.5 : 6,
     color: "#00ff00", // Color por defecto (se sobreescribe con tema)
     backgroundColor: "transparent",
-    // Caracteres halftone: del claro al oscuro (patron de puntos)
-    chars: [" ", ".", ":", "+", "*", "#", "@", "M", "W", "B", "8"],
+    // Caracteres ASCII clasicos: del claro al oscuro (estilo terminal retro)
+    chars: " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split(""),
     autoRotate: true,
     rotationSpeed: 0.005,
     fps: 30,
-    halftone: true,
-    halftoneSize: isMobile ? 3 : 2,
-    colorReduction: 12,
+    halftone: false,
+    halftoneSize: 1,
+    colorReduction: 64,
     monochromeMode: true,
   };
 }
@@ -79,24 +80,31 @@ function getThemeColor() {
  * @returns {Promise<ASCII3DThreeJS>} Promesa que resuelve con la instancia del renderizador
  */
 async function initASCII3DWithModel(containerId, modelPath, options = {}) {
-  console.log(`🎨 Inicializando renderizador 3D en #${containerId}...`);
+  console.log(`Inicializando renderizador 3D en #${containerId}...`);
 
   try {
+    const container = document.getElementById(containerId);
+    console.log(`Container encontrado:`, container ? 'si' : 'no',
+                'dimensiones:', container?.clientWidth, 'x', container?.clientHeight);
+
     const renderer = createASCII3DRenderer(containerId, options);
-    console.log(`📦 Cargando modelo: ${modelPath}`);
+    console.log(`Cargando modelo: ${modelPath}`);
 
     await renderer.loadModel(modelPath);
-    console.log(`✅ Modelo cargado exitosamente`);
+    console.log(`Modelo cargado exitosamente`);
+
+    // Forzar actualización de dimensiones después de cargar el modelo
+    renderer.updateDimensions();
 
     renderer.start();
-    console.log(`▶️  Animación iniciada`);
+    console.log(`Animación iniciada`);
 
     // Guardar en registro global para acceso desde toggles
     window.ascii3DRenderers[containerId] = renderer;
 
     return renderer;
   } catch (error) {
-    console.error(`❌ Error inicializando renderizador 3D:`, error);
+    console.error(`Error inicializando renderizador 3D:`, error);
     throw error;
   }
 }

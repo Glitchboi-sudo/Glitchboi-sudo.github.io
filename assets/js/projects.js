@@ -270,6 +270,7 @@ function renderBanner(meta){
   // Crear contenedor principal
   const container = document.createElement('div');
   container.style.position = 'relative';
+  container.style.width = '100%';
 
   // Si tiene ambos (imagen y modelo), agregar botón toggle
   if(hasModel && hasImage){
@@ -300,9 +301,11 @@ function renderBanner(meta){
     const modelContainer = document.createElement('div');
     modelContainer.id = 'banner-model-container';
     modelContainer.style.display = 'none';
+    modelContainer.style.width = '100%';
     const modelNode = document.createElement('div');
     modelNode.id = 'project-banner-3d';
     modelNode.className = 'ascii-3d-container';
+    modelNode.style.width = '100%';
     modelNode.style.height = '320px';
     modelContainer.appendChild(modelNode);
 
@@ -314,9 +317,12 @@ function renderBanner(meta){
         modelContainer.style.display = 'block';
         toggleBtn.textContent = '[ ver imagen ]';
         // Inicializar modelo 3D si no se ha hecho
+        // Usar requestAnimationFrame para asegurar que el layout se haya calculado
         if(!modelNode.dataset.initialized){
-          initModel3D(modelNode, meta.model);
           modelNode.dataset.initialized = 'true';
+          requestAnimationFrame(() => {
+            initModel3D(modelNode, meta.model);
+          });
         }
       }else{
         imageContainer.style.display = 'block';
@@ -330,13 +336,14 @@ function renderBanner(meta){
     container.appendChild(modelContainer);
   }
   else if(hasModel){
-    // Solo modelo 3D
+    // Solo modelo 3D - marcar para inicialización diferida
     const modelNode = document.createElement('div');
     modelNode.id = 'project-banner-3d';
     modelNode.className = 'ascii-3d-container';
+    modelNode.style.width = '100%';
     modelNode.style.height = '320px';
+    modelNode.dataset.pendingModel = meta.model;
     container.appendChild(modelNode);
-    initModel3D(modelNode, meta.model);
   }
   else{
     // Solo imagen
@@ -351,13 +358,27 @@ function renderBanner(meta){
 
   bannerBox.appendChild(container);
 
+  // Inicializar modelo 3D diferido (después de que el contenedor esté en el DOM)
+  const pendingModelNode = container.querySelector('[data-pending-model]');
+  if(pendingModelNode){
+    const modelPath = pendingModelNode.dataset.pendingModel;
+    delete pendingModelNode.dataset.pendingModel;
+    // Usar requestAnimationFrame para asegurar que el layout se haya calculado
+    requestAnimationFrame(() => {
+      initModel3D(pendingModelNode, modelPath);
+    });
+  }
+
   // Función auxiliar para inicializar modelo 3D
   function initModel3D(node, modelPath){
     try{
+      console.log('initModel3D:', node.id, 'dimensions:', node.clientWidth, 'x', node.clientHeight);
       if(typeof initASCII3DWithModel === 'function'){
         initASCII3DWithModel(node.id, resolveAsset(modelPath), {
           rotationSpeed: 0.004,
           fps: 24
+        }).then(() => {
+          console.log('Model initialized, container dimensions:', node.clientWidth, 'x', node.clientHeight);
         }).catch((e)=>{
           console.warn('3D banner:', e);
           node.innerHTML = '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';

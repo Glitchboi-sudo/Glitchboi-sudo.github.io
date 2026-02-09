@@ -47,22 +47,19 @@ class ASCII3DThreeJS {
   }
 
   init() {
-    // Create ASCII canvas
+    // Create ASCII canvas for TUI rendering
     this.asciiCanvas = document.createElement('canvas');
     this.asciiCanvas.className = 'ascii-canvas-threejs';
     this.asciiCanvas.style.cssText = `
-      font-family: 'Courier New', monospace;
-      font-size: ${this.options.fontSize}px;
-      line-height: ${this.options.cellSize}px;
-      color: ${this.options.color};
-      background: ${this.options.backgroundColor};
-      white-space: pre;
-      letter-spacing: 0;
-      image-rendering: pixelated;
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       display: block;
+      background: ${this.options.backgroundColor};
     `;
+    this.container.style.position = 'relative';
     this.container.appendChild(this.asciiCanvas);
     this.asciiCtx = this.asciiCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -95,10 +92,17 @@ class ASCII3DThreeJS {
     // Scene
     this.scene = new THREE.Scene();
 
+    // Obtener dimensiones con fallback
+    const width = this.container.clientWidth || 400;
+    const height = this.container.clientHeight || 320;
+    const aspect = width / height || 1.25;
+
+    console.log('ASCII3D setupThreeJS - container dimensions:', width, 'x', height);
+
     // Camera (alejada para modelo más grande)
     this.camera = new THREE.PerspectiveCamera(
       45,
-      this.container.clientWidth / this.container.clientHeight,
+      aspect,
       0.1,
       1000
     );
@@ -111,34 +115,58 @@ class ASCII3DThreeJS {
       preserveDrawingBuffer: true
     });
     this.renderer.setPixelRatio(0.625);  // ~60 PPI effect (60/96)
-    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    this.renderer.setSize(width, height);
     this.renderer.setClearColor(0x000000, 0);
 
-    // Lighting (dramática para gradientes visibles en rasterizado)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.15);  // Muy baja
+    // Iluminacion frontal para mejor visibilidad del modelo
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);  // Luz ambiente mas alta
     this.scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);  // Muy alta
-    directionalLight.position.set(2, 2, 3);  // Ángulo más dramático
-    this.scene.add(directionalLight);
+    // Luz principal frontal (desde la camara)
+    const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    frontLight.position.set(0, 0, 15);  // Directamente desde el frente
+    this.scene.add(frontLight);
 
-    const backLight = new THREE.DirectionalLight(0xffffff, 0.15);  // Baja
-    backLight.position.set(-2, -1, -2);
-    this.scene.add(backLight);
+    // Luz de relleno superior
+    const topLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    topLight.position.set(0, 10, 5);
+    this.scene.add(topLight);
+
+    // Luces laterales para rellenar sombras
+    const leftLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    leftLight.position.set(-10, 0, 5);
+    this.scene.add(leftLight);
+
+    const rightLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    rightLight.position.set(10, 0, 5);
+    this.scene.add(rightLight);
   }
 
   updateDimensions() {
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight;
+    let width = this.container.clientWidth;
+    let height = this.container.clientHeight;
 
+    console.log('ASCII3D updateDimensions:', width, 'x', height, 'container:', this.container.id);
+
+    // Si las dimensiones son 0, intentar obtenerlas del estilo computado
+    if (width === 0 || height === 0) {
+      const computed = getComputedStyle(this.container);
+      width = parseInt(computed.width) || 400;
+      height = parseInt(computed.height) || 320;
+      console.log('ASCII3D using computed style:', width, 'x', height);
+    }
+
+    // Calcular columnas y filas basado en el tamano de celda
     this.cols = Math.floor(width / this.options.cellSize);
     this.rows = Math.floor(height / this.options.cellSize);
 
-    // Update ASCII canvas
-    this.asciiCanvas.width = this.cols;
-    this.asciiCanvas.height = this.rows;
+    console.log('ASCII3D grid:', this.cols, 'cols x', this.rows, 'rows');
 
-    // Update reusable temp canvas
+    // Canvas ASCII a resolucion completa para texto nítido
+    this.asciiCanvas.width = width;
+    this.asciiCanvas.height = height;
+
+    // Canvas temporal para muestrear la escena 3D (baja resolucion)
     this.tempCanvas.width = this.cols;
     this.tempCanvas.height = this.rows;
 
@@ -148,7 +176,7 @@ class ASCII3DThreeJS {
     }
 
     // Update camera
-    if (this.camera) {
+    if (this.camera && width > 0 && height > 0) {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
     }
@@ -243,20 +271,15 @@ class ASCII3DThreeJS {
   }
 
   brightnessToChar(brightness) {
-    // Mapeo de brillo a carácter halftone (puntos)
-    // Invertido: brillo alto = carácter claro (punto pequeño)
-    //           brillo bajo = carácter oscuro (punto grande)
-    const inverted = 1 - brightness;  // Invertir para que oscuro = punto grande
-    const index = Math.floor(inverted * (this.options.chars.length - 1));
+    // Mapeo de brillo a caracter ASCII
+    // Para fondo oscuro: brillo alto = caracter denso (visible)
+    //                    brillo bajo = caracter ligero (menos visible)
+    const index = Math.floor(brightness * (this.options.chars.length - 1));
     return this.options.chars[Math.max(0, Math.min(this.options.chars.length - 1, index))];
   }
 
-  // Reducir paleta de colores para efecto bitmap
+  // Reducir paleta de colores para mejor gradiente ASCII
   reduceColorPalette(r, g, b) {
-    if (!this.options.halftone) {
-      return { r, g, b };
-    }
-
     const levels = this.options.colorReduction;
 
     // Cuantizar cada canal de color
@@ -275,6 +298,13 @@ class ASCII3DThreeJS {
     if (!this.renderer || !this.scene || !this.camera) return;
     if (!this.isVisible) return;
 
+    // Verificar dimensiones y recalcular si son 0
+    if (this.cols === 0 || this.rows === 0) {
+      this.updateDimensions();
+      // Si aun son 0, no hay nada que renderizar
+      if (this.cols === 0 || this.rows === 0) return;
+    }
+
     // Throttle to target FPS
     const now = performance.now();
     const minDelta = 1000 / this.options.fps;
@@ -283,9 +313,11 @@ class ASCII3DThreeJS {
     }
     this.lastFrameTime = now;
 
-    // Auto-rotate (solo eje Z - izquierda a derecha)
+    // Auto-rotate en ejes X e Y simultaneamente
     if (this.options.autoRotate && this.model) {
-      this.model.rotation.y += this.options.rotationSpeed;
+      this.model.rotation.z -= this.options.rotationSpeed;
+      this.model.rotation.y += this.options.rotationSpeed * 0.9;
+      this.model.rotation.x += this.options.rotationSpeed * 0.7;  // Velocidad ligeramente diferente para movimiento organico
     }
 
     // Render 3D scene to off-screen buffer
@@ -299,7 +331,7 @@ class ASCII3DThreeJS {
     const imageData = this.tempCtx.getImageData(0, 0, this.cols, this.rows);
     const pixels = imageData.data;
 
-    // Convert to ASCII
+    // Convert to ASCII TUI style
     // Clear canvas completely each frame
     this.asciiCtx.clearRect(0, 0, this.asciiCanvas.width, this.asciiCanvas.height);
 
@@ -309,59 +341,46 @@ class ASCII3DThreeJS {
       this.asciiCtx.fillRect(0, 0, this.asciiCanvas.width, this.asciiCanvas.height);
     }
 
+    // Configurar fuente para ASCII TUI
     this.asciiCtx.font = `${this.options.fontSize}px 'Courier New', monospace`;
-    this.asciiCtx.textBaseline = 'top';
+    this.asciiCtx.textBaseline = 'middle';
+    this.asciiCtx.textAlign = 'center';
 
-    // Procesar con efecto halftone bitmap
-    const halftoneSize = this.options.halftone ? this.options.halftoneSize : 1;
+    const cellSize = this.options.cellSize;
 
-    for (let y = 0; y < this.rows; y += halftoneSize) {
-      for (let x = 0; x < this.cols; x += halftoneSize) {
-        // Calcular color y brillo promedio de la celda halftone
-        let avgR = 0, avgG = 0, avgB = 0, avgA = 0;
-        let count = 0;
+    // Iterar sobre cada celda de la grilla ASCII
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        // Obtener pixel del canvas temporal (muestreado)
+        const i = (row * this.cols + col) * 4;
+        const r = pixels[i];
+        const g = pixels[i + 1];
+        const b = pixels[i + 2];
+        const a = pixels[i + 3];
 
-        for (let dy = 0; dy < halftoneSize && (y + dy) < this.rows; dy++) {
-          for (let dx = 0; dx < halftoneSize && (x + dx) < this.cols; dx++) {
-            const i = ((y + dy) * this.cols + (x + dx)) * 4;
-            avgR += pixels[i];
-            avgG += pixels[i + 1];
-            avgB += pixels[i + 2];
-            avgA += pixels[i + 3];
-            count++;
-          }
-        }
+        // Solo procesar pixels visibles
+        if (a > 10) {
+          // Reducir paleta de colores
+          const reduced = this.reduceColorPalette(r, g, b);
 
-        if (count > 0 && avgA > 0) {
-          avgR = Math.round(avgR / count);
-          avgG = Math.round(avgG / count);
-          avgB = Math.round(avgB / count);
-          avgA = Math.round(avgA / count);
-
-          // Reducir paleta de colores para efecto bitmap
-          const reduced = this.reduceColorPalette(avgR, avgG, avgB);
-
-          // Calcular brillo
+          // Calcular brillo y obtener caracter ASCII
           const brightness = (reduced.r + reduced.g + reduced.b) / (3 * 255);
           const char = this.brightnessToChar(brightness);
 
           if (char !== ' ') {
-            // Modo monocromático (TUI) o color
+            // Modo monocromatico (TUI) o color
             if (this.options.monochromeMode) {
-              // Modo TUI: usar color del tema con opacidad completa
-              // El caracter ya codifica el brillo, no modificar alpha
               this.asciiCtx.fillStyle = this.options.color;
-              this.asciiCtx.globalAlpha = 1.0;
             } else {
-              // Modo color: usar colores del modelo MTL
               this.asciiCtx.fillStyle = `rgb(${reduced.r}, ${reduced.g}, ${reduced.b})`;
-              this.asciiCtx.globalAlpha = 1.0;
             }
 
-            // Dibujar el caracter en el centro de la celda halftone
-            const centerX = x + Math.floor(halftoneSize / 2);
-            const centerY = y + Math.floor(halftoneSize / 2);
-            this.asciiCtx.fillText(char, centerX, centerY);
+            // Calcular posicion en pixeles (centro de la celda)
+            const pixelX = col * cellSize + cellSize / 2;
+            const pixelY = row * cellSize + cellSize / 2;
+
+            // Dibujar el caracter ASCII
+            this.asciiCtx.fillText(char, pixelX, pixelY);
           }
         }
       }
@@ -375,6 +394,9 @@ class ASCII3DThreeJS {
 
   start() {
     if (!this.animationId) {
+      // Forzar actualización de dimensiones antes de empezar
+      this.updateDimensions();
+      console.log('ASCII3D start() - cols:', this.cols, 'rows:', this.rows);
       this.animate();
     }
   }
