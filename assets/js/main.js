@@ -94,8 +94,11 @@ function refreshLocale() {
 // ===== I18N dictionary and helpers =====
 const I18N = {
   es: {
+    // Hero
     hero_title: "Hardware de México para el mundo",
     kicker: "Glitch Hardware — Ingeniería embebida & IoT",
+
+    // Expertise section
     expertise: "Especialidades",
     exp_hardware: "Ingeniería de Hardware Abierto",
     exp_hardware_desc: "Diseño y distribución para análisis",
@@ -105,23 +108,75 @@ const I18N = {
     exp_firmware_desc: "C / Python / RP2040",
     exp_education: "Educación en Ciberseguridad",
     exp_education_desc: "Formación práctica",
-    philosophy:
-      '"Romper es la mejor forma de fortalecer" — 100% open source, México para el mundo',
+
+    // Spec sheet labels
+    domain_label: "DOMINIO",
+    domain_value: "Hardware Abierto",
+    focus_label: "ENFOQUE",
+    focus_value: "Pentesting",
+    stack_label: "STACK",
+    stack_value: "IoT / Embebidos",
+    license_label: "LICENCIA",
+    license_value: "Open Source",
+    modules_count: "MÓDULOS: 4",
+    status_active: "ESTADO: ACTIVO",
+
+    // Communications
+    email_label: "CORREO",
+    protocol_label: "PROTOCOLO",
+    response_label: "RESPUESTA",
+    signal_label: "SEÑAL",
+    encryption_info: "CIFRADO: AES-256",
+    port_info: "PUERTO: 443",
+
+    // Philosophy
+    philosophy_1: "Romper es la mejor forma de fortalecer",
+    philosophy_2: "100% Open Source",
+    philosophy_3: "Hecho en México para el mundo",
+    philosophy_4: "Hardware + Software = Freedom",
+    principles_count: "PRINCIPIOS: 4",
+    version_stable: "VERSIÓN: ESTABLE",
+
+    // Projects
     projects_title: "Proyectos",
-    contact: "Contacto",
+    repos_loading: "REPOS: CARGANDO...",
+    api_github: "API: GITHUB",
+
+    // Blog
     blog_updates: "Blog / Actualizaciones",
+    entries_loading: "ENTRADAS: CARGANDO...",
+    feed_rss: "FEED: RSS",
     view: "ver",
     view_more: "Ver más",
     update: "Actualización",
     no_repos: "Sin repos visibles. Revisa GH_USER o haz público algún repo.",
     activity: "actividad",
+
+    // Footer
+    copyright_label: "DERECHOS",
+    status_label: "ESTADO",
+    status_online: "■ EN LÍNEA",
+    location_label: "UBICACIÓN",
+    end_transmission: "FIN DE TRANSMISIÓN",
+
+    // System status bar
+    sys_operational: "SIS: OPERATIVO",
+    node_mx: "NODO: MX-GLITCH-01",
+    protocol_https: "PROTOCOLO: HTTPS/2",
+    build_version: "BUILD: v3.1.4",
+
+    // Theme/Lang
     theme_dark: "[ modo nocturno ]",
     theme_light: "[ modo claro ]",
     lang_btn: "[ EN ]",
+    contact: "Contacto",
   },
   en: {
+    // Hero
     hero_title: "Hardware from Mexico to the world",
     kicker: "Glitch Hardware — Embedded engineering & IoT",
+
+    // Expertise section
     expertise: "Expertise",
     exp_hardware: "Open Hardware Engineering",
     exp_hardware_desc: "Design and distribution for analysis",
@@ -131,19 +186,68 @@ const I18N = {
     exp_firmware_desc: "C / Python / RP2040",
     exp_education: "Cybersecurity Education",
     exp_education_desc: "Practical training",
-    philosophy:
-      '"Breaking is the best way to strengthen" — 100% open source, Mexico to the world',
+
+    // Spec sheet labels
+    domain_label: "DOMAIN",
+    domain_value: "Open Hardware",
+    focus_label: "FOCUS",
+    focus_value: "Pentesting",
+    stack_label: "STACK",
+    stack_value: "IoT / Embedded",
+    license_label: "LICENSE",
+    license_value: "Open Source",
+    modules_count: "MODULES: 4",
+    status_active: "STATUS: ACTIVE",
+
+    // Communications
+    email_label: "EMAIL",
+    protocol_label: "PROTOCOL",
+    response_label: "RESPONSE",
+    signal_label: "SIGNAL",
+    encryption_info: "ENCRYPTION: AES-256",
+    port_info: "PORT: 443",
+
+    // Philosophy
+    philosophy_1: "Breaking is the best way to strengthen",
+    philosophy_2: "100% Open Source",
+    philosophy_3: "Made in Mexico for the world",
+    philosophy_4: "Hardware + Software = Freedom",
+    principles_count: "PRINCIPLES: 4",
+    version_stable: "VERSION: STABLE",
+
+    // Projects
     projects_title: "Projects",
-    contact: "Contact",
+    repos_loading: "REPOS: LOADING...",
+    api_github: "API: GITHUB",
+
+    // Blog
     blog_updates: "Blog / Updates",
+    entries_loading: "ENTRIES: LOADING...",
+    feed_rss: "FEED: RSS",
     view: "view",
     view_more: "View more",
     update: "Update",
     no_repos: "No visible repos. Check GH_USER or make one public.",
     activity: "activity",
+
+    // Footer
+    copyright_label: "COPYRIGHT",
+    status_label: "STATUS",
+    status_online: "■ ONLINE",
+    location_label: "LOCATION",
+    end_transmission: "END OF TRANSMISSION",
+
+    // System status bar
+    sys_operational: "SYS: OPERATIONAL",
+    node_mx: "NODE: MX-GLITCH-01",
+    protocol_https: "PROTOCOL: HTTPS/2",
+    build_version: "BUILD: v3.1.4",
+
+    // Theme/Lang
     theme_dark: "[ dark mode ]",
     theme_light: "[ light mode ]",
     lang_btn: "[ ES ]",
+    contact: "Contact",
   },
 };
 function t(k) {

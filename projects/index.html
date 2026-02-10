@@ -6,6 +6,8 @@
   <title data-title-es="Proyectos — GLITCHBOI" data-title-en="Projects — GLITCHBOI">Proyectos — GLITCHBOI</title>
   <meta name="description" content="Ficha detallada de proyectos de Glitch Hardware." data-desc-es="Ficha detallada de proyectos de Glitch Hardware." data-desc-en="Project dossiers for Glitch Hardware.">
   <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/animations.css">
 </head>
@@ -37,103 +39,182 @@
       </div>
     </div>
 
+    <!-- SYSTEM STATUS BAR -->
+    <div class="system-status-bar" aria-label="Estado del sistema">
+      <div class="status-item">
+        <span class="status-indicator"></span>
+        <span>DOSSIER: LOADED</span>
+      </div>
+      <div class="status-item">
+        <span>CLEARANCE: GAMMA</span>
+      </div>
+      <div class="status-item">
+        <span>MODE: VIEW</span>
+      </div>
+    </div>
+
     <section>
-      <!-- Separador ASCII -->
-      <div style="font-size: 10px; line-height: 1; color: var(--rule); margin: 20px 0 12px 0; opacity: 0.5;">
-        ════════════════════════════════════════════════════════════════════════
-      </div>
-
-      <div style="font-size: 11px; line-height: 1; color: var(--muted); margin-bottom: 8px; opacity: 0.7;">
-        ╔══[ VISUAL RENDER ]══════════════════════════════════════════════════╗
-      </div>
-
-      <div id="project-banner" class="card" style="min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--paper);"></div>
-
-      <!-- Separador decorativo -->
-      <div style="text-align: center; margin: 16px 0;">
-        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
-          ────────────────────────────────────────────────────────────────────────
+      <!-- VISUAL RENDER WINDOW -->
+      <div class="window">
+        <div class="window-titlebar">
+          <span class="window-title">RENDER.VISUAL.PREVIEW</span>
+          <div class="window-controls">
+            <span class="window-btn">[_]</span>
+            <span class="window-btn">[□]</span>
+            <span class="window-btn">[X]</span>
+          </div>
         </div>
-        <div style="font-size: 9px; color: var(--muted); margin: 6px 0; opacity: 0.6; letter-spacing: 0.1em;">
-          ▼ DOSSIER CONTENT ▼
+        <div class="window-content" style="padding: 0;">
+          <div id="project-banner" style="min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--paper);"></div>
         </div>
-        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
-          ────────────────────────────────────────────────────────────────────────
+        <div class="window-footer">
+          <span>RENDERER: ASCII-GL</span>
+          <span>FORMAT: OBJ/IMG</span>
         </div>
       </div>
 
-      <article id="project-summary-card" class="card" style="margin-top:12px">
-        <div class="label terminal-prompt-alt" style="margin-top:0">Metadatos del Proyecto</div>
-        <div class="dotfill" style="margin-bottom:8px">
-          <span id="project-date">—</span>
-          <i></i>
-          <span id="project-language">—</span>
-        </div>
-        <p class="desc" id="project-summary" style="margin:10px 0 0;">—</p>
-        <div id="project-tags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
-      </article>
+      <!-- TECH DIVIDER -->
+      <div class="tech-divider">
+        <span class="tech-divider-label">METADATA</span>
+      </div>
 
-      <!-- Separador entre secciones -->
-      <div style="text-align: center; margin: 20px 0 16px;">
-        <div style="font-size: 8px; color: var(--muted); opacity: 0.4; letter-spacing: 0.2em;">
-          ◆ ◆ ◆
+      <!-- PROJECT METADATA WINDOW -->
+      <div class="window">
+        <div class="window-titlebar">
+          <span class="window-title">DATA.PROJECT.INFO</span>
+          <div class="window-controls">
+            <span class="window-btn">[_]</span>
+            <span class="window-btn">[□]</span>
+            <span class="window-btn">[X]</span>
+          </div>
+        </div>
+        <div class="window-content">
+          <div class="spec-sheet" id="project-spec-sheet">
+            <div class="spec-field">
+              <span class="spec-field-label">DATE</span>
+              <span class="spec-field-value" id="project-date">—</span>
+            </div>
+            <div class="spec-field">
+              <span class="spec-field-label">LANGUAGE</span>
+              <span class="spec-field-value" id="project-language">—</span>
+            </div>
+            <div class="spec-field">
+              <span class="spec-field-label">STATUS</span>
+              <span class="spec-field-value" style="color: var(--tech-green);">ACTIVE</span>
+            </div>
+            <div class="spec-field">
+              <span class="spec-field-label">LICENSE</span>
+              <span class="spec-field-value">OPEN</span>
+            </div>
+          </div>
+          <div style="margin-top: 12px;">
+            <p class="desc" id="project-summary" style="margin: 0;">—</p>
+          </div>
+          <div id="project-tags" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"></div>
+        </div>
+        <div class="window-footer">
+          <span>FIELDS: 4</span>
+          <span>SCHEMA: v2.0</span>
         </div>
       </div>
 
-      <article id="project-body" class="card" style="margin-top:12px">
-        <div class="label terminal-prompt-hash" style="margin-top:0">Descripción Técnica</div>
-        <div id="project-description" style="font-size:14px;line-height:1.6;"></div>
-      </article>
+      <!-- TECH DIVIDER -->
+      <div class="tech-divider">
+        <span class="tech-divider-label">DESCRIPTION</span>
+      </div>
 
-      <!-- Separador entre secciones -->
-      <div style="text-align: center; margin: 20px 0 16px;">
-        <div style="font-size: 8px; color: var(--muted); opacity: 0.4; letter-spacing: 0.2em;">
-          ◆ ◆ ◆
+      <!-- TECHNICAL DESCRIPTION WINDOW -->
+      <div class="window">
+        <div class="window-titlebar">
+          <span class="window-title">DOC.TECHNICAL.README</span>
+          <div class="window-controls">
+            <span class="window-btn">[_]</span>
+            <span class="window-btn">[□]</span>
+            <span class="window-btn">[X]</span>
+          </div>
+        </div>
+        <div class="window-content">
+          <div id="project-description" style="font-size:14px;line-height:1.6;"></div>
+        </div>
+        <div class="window-footer">
+          <span>FORMAT: MARKDOWN</span>
+          <span>SOURCE: README.md</span>
         </div>
       </div>
 
-      <article class="card" id="project-links-card" style="margin-top:12px">
-        <div class="label terminal-prompt" style="margin-top:0">Enlaces de Acceso</div>
-        <div id="project-links" style="display:flex;gap:10px;flex-wrap:wrap"></div>
-      </article>
+      <!-- TECH DIVIDER -->
+      <div class="tech-divider">
+        <span class="tech-divider-label">ACCESS</span>
+      </div>
+
+      <!-- LINKS WINDOW -->
+      <div class="window">
+        <div class="window-titlebar">
+          <span class="window-title">LINKS.EXTERNAL.ACCESS</span>
+          <div class="window-controls">
+            <span class="window-btn">[_]</span>
+            <span class="window-btn">[□]</span>
+            <span class="window-btn">[X]</span>
+          </div>
+        </div>
+        <div class="window-content">
+          <div id="project-links" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+        </div>
+        <div class="window-footer">
+          <span>LINKS: LOADING...</span>
+        </div>
+      </div>
     </section>
 
     <section style="margin-top:32px">
-      <!-- Separador principal de sección -->
-      <div style="text-align: center; margin: 24px 0 20px;">
-        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
-          ════════════════════════════════════════════════════════════════════════
-        </div>
-        <div style="font-size: 9px; color: var(--muted); margin: 8px 0; opacity: 0.6; letter-spacing: 0.15em;">
-          ▼ END OF DOSSIER ▼
-        </div>
-        <div style="font-size: 10px; line-height: 1; color: var(--rule); opacity: 0.5;">
-          ════════════════════════════════════════════════════════════════════════
-        </div>
+      <!-- TECH DIVIDER -->
+      <div class="tech-divider">
+        <span class="tech-divider-label">RELATED</span>
       </div>
 
-      <div style="font-size: 11px; line-height: 1; color: var(--muted); margin-bottom: 8px; opacity: 0.7;">
-        ╔══[ RELATED FILES ]══════════════════════════════════════════════════╗
+      <!-- RELATED PROJECTS WINDOW -->
+      <div class="window">
+        <div class="window-titlebar">
+          <span class="window-title">INDEX.RELATED.PROJECTS</span>
+          <div class="window-controls">
+            <span class="window-btn">[_]</span>
+            <span class="window-btn">[□]</span>
+            <span class="window-btn">[X]</span>
+          </div>
+        </div>
+        <div class="window-content">
+          <div id="project-list" class="cards"></div>
+        </div>
+        <div class="window-footer">
+          <span>ENTRIES: LOADING...</span>
+          <span>FILTER: ACTIVE</span>
+        </div>
       </div>
-
-      <div class="label terminal-prompt-alt">Otros proyectos disponibles</div>
-      <div id="project-list" class="cards"></div>
     </section>
 
+    <!-- FOOTER -->
     <div class="footer">
-      <hr class="rule" />
-      <div style="text-align: center; margin: 16px 0;">
-        <div style="display: inline-block; border: 1px solid var(--rule); padding: 10px 20px; background: var(--paper);">
-          <div style="font-size: 10px; color: var(--muted); margin-bottom: 6px; opacity: 0.7;">
-            ┌─[ SYSTEM INFO ]─────────────────────┐
+      <div class="tech-divider">
+        <span class="tech-divider-label">EOF</span>
+      </div>
+      <div class="window" style="margin-bottom: 0;">
+        <div class="window-titlebar" style="justify-content: center;">
+          <span class="window-title">SYSTEM.INFO.FOOTER</span>
+        </div>
+        <div class="window-content" style="text-align: center;">
+          <div class="spec-sheet" style="justify-content: center; max-width: 300px; margin: 0 auto;">
+            <div class="spec-field" style="text-align: center;">
+              <span class="spec-field-label">COPYRIGHT</span>
+              <span class="spec-field-value">© <span id="y"></span> Glitch Hardware</span>
+            </div>
+            <div class="spec-field" style="text-align: center;">
+              <span class="spec-field-label">STATUS</span>
+              <span class="spec-field-value" style="color: var(--tech-green);">■ ONLINE</span>
+            </div>
           </div>
-          <div class="top-marks" style="margin: 0; font-size: 11px;">
-            <span>© <span id="y"></span> Glitch Hardware</span>
-            <span style="margin-left: 20px;">[status: online]</span>
-          </div>
-          <div style="font-size: 10px; color: var(--muted); margin-top: 6px; opacity: 0.7;">
-            └─────────────────────────────────────┘
-          </div>
+        </div>
+        <div class="window-footer" style="justify-content: center;">
+          <span>END OF DOSSIER</span>
         </div>
       </div>
     </div>
@@ -146,5 +227,6 @@
   <script src="../assets/js/ascii-3d-init.js"></script>
   <script src="../assets/js/projects.js"></script>
   <script src="../assets/js/terminal-fx.js"></script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>

@@ -9,6 +9,8 @@
       content="Hardware a medida: IoT, embebidos y herramientas para pentesting."
     />
     <meta name="color-scheme" content="light dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/animations.css" />
   </head>
@@ -27,12 +29,6 @@
             opacity: 0.7;
           "
         >
-          ╔═══════════════════════════════════════════════════════════════════════╗<br />
-          ║ ◄ GLITCHBOI TERMINAL v3.1 ► ║<br />
-          ║ [SECURE CONNECTION ESTABLISHED] ║<br />
-          ╚═══════════════════════════════════════════════════════════════════════╝
-        </div>
-
         <img
           class="logoX"
           src="assets/images/GlitchLogo.svg"
@@ -84,218 +80,321 @@
         </div>
       </div>
 
-      <!-- ASCII 3D ANIMATION -->
-      <div
-        style="
-          font-size: 11px;
-          line-height: 1;
-          color: var(--muted);
-          margin-bottom: 8px;
-          opacity: 0.7;
-        "
-      >
-        ╔══[Latest]═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+      <!-- SYSTEM STATUS BAR -->
+      <div class="system-status-bar" aria-label="Estado del sistema">
+        <div class="status-item">
+          <span class="status-indicator"></span>
+          <span data-i18n="sys_operational">SYS: OPERATIONAL</span>
+        </div>
+        <div class="status-item">
+          <span data-i18n="node_mx">NODE: MX-GLITCH-01</span>
+        </div>
+        <div class="status-item">
+          <span data-i18n="protocol_https">PROTOCOL: HTTPS/2</span>
+        </div>
+        <div class="status-item">
+          <span data-i18n="build_version">BUILD: v3.1.4</span>
+        </div>
       </div>
-      <div class="ascii-3d-container" id="ascii-3d" data-animate="fade-in">
-        <!-- El canvas se genera automáticamente aquí -->
+
+      <!-- ASCII 3D ANIMATION -->
+      <div class="window">
+        <div class="window-titlebar">
+          <span class="window-title">RENDER.MODULE.3D</span>
+          <div class="window-controls">
+            <span class="window-btn">[_]</span>
+            <span class="window-btn">[□]</span>
+            <span class="window-btn">[X]</span>
+          </div>
+        </div>
+        <div class="window-content" style="padding: 0;">
+          <div class="ascii-3d-container" id="ascii-3d" data-animate="fade-in">
+            <!-- El canvas se genera automáticamente aquí -->
+          </div>
+        </div>
+        <div class="window-footer">
+          <span>VRAM: 128MB</span>
+          <span>FPS: 60</span>
+          <span>RENDERER: ASCII-GL</span>
+        </div>
       </div>
 
       <!-- CUERPO -->
       <div class="grid">
         <section aria-label="Especialidades y Contacto">
-          <div
-            class="label terminal-prompt"
-            data-i18n="expertise"
-            data-animate="slide-left"
-          >
-            Especialidades
+          <!-- EXPERTISE WINDOW -->
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">MODULE.EXPERTISE.001</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div class="spec-sheet">
+                <div class="spec-field">
+                  <span class="spec-field-label" data-i18n="domain_label">DOMAIN</span>
+                  <span class="spec-field-value" data-i18n="domain_value">Hardware Abierto</span>
+                </div>
+                <div class="spec-field">
+                  <span class="spec-field-label" data-i18n="focus_label">FOCUS</span>
+                  <span class="spec-field-value" data-i18n="focus_value">Pentesting</span>
+                </div>
+                <div class="spec-field">
+                  <span class="spec-field-label" data-i18n="stack_label">STACK</span>
+                  <span class="spec-field-value" data-i18n="stack_value">IoT / Embebidos</span>
+                </div>
+                <div class="spec-field">
+                  <span class="spec-field-label" data-i18n="license_label">LICENSE</span>
+                  <span class="spec-field-value" data-i18n="license_value">Open Source</span>
+                </div>
+              </div>
+            </div>
+            <div class="window-footer">
+              <span data-i18n="modules_count">MODULES: 4</span>
+              <span data-i18n="status_active">STATUS: ACTIVE</span>
+            </div>
           </div>
-          <table class="table" aria-describedby="Especialidades">
-            <tbody>
-              <tr>
-                <td>
-                  <div class="dotfill">
-                    <span>Ingenier&iacute;a de Hardware Abierto</span
-                    ><br /><span data-i18n="exp_hardware_desc"
-                      >Dise&ntilde;o y distribuci&oacute;n para
-                      an&aacute;lisis</span
-                    ><br />
-                    <span>Pentesting</span><br />
-                    <span data-i18n="exp_pentest_desc">
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <!-- COMMUNICATIONS WINDOW -->
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">COMMS.CHANNEL.SECURE</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div class="data-row">
+                <span class="data-label" data-i18n="email_label">EMAIL</span>
+                <span class="data-value">
+                  <a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a>
+                </span>
+              </div>
+              <div class="data-row">
+                <span class="data-label" data-i18n="protocol_label">PROTOCOL</span>
+                <span class="data-value">PGP/ENCRYPTED</span>
+              </div>
+              <div class="data-row">
+                <span class="data-label" data-i18n="response_label">RESPONSE</span>
+                <span class="data-value">&lt; 24H</span>
+              </div>
+              <div class="data-row">
+                <span class="data-label" data-i18n="signal_label">SIGNAL</span>
+                <span class="data-value">████████░░ 80%</span>
+              </div>
+            </div>
+            <div class="window-footer">
+              <span data-i18n="encryption_info">ENCRYPTION: AES-256</span>
+              <span data-i18n="port_info">PORT: 443</span>
+            </div>
+          </div>
 
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--muted);
-              margin: 16px 0 8px 0;
-              opacity: 0.7;
-            "
-          >
-            ╔══[ COMMUNICATIONS ]═══════════════╗
-          </div>
-          <div
-            class="label terminal-prompt-alt"
-            data-i18n="contact"
-            data-animate="slide-right"
-          >
-            Contacto
-          </div>
-          <div class="block" data-animate="fade-in" data-delay="100">
-            <span style="opacity: 0.7">[EMAIL]</span><br />
-            <a href="mailto:glitchboi_mx@proton.me">glitchboi_mx@proton.me</a>
+          <!-- TECH DIVIDER -->
+          <div class="tech-divider">
+            <span class="tech-divider-label">FEED</span>
           </div>
 
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--rule);
-              margin: 12px 0 8px 0;
-              opacity: 0.5;
-            "
-          >
-            ────────────────────────────────────
+          <!-- BLOG WINDOW -->
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">FEED.BLOG.LATEST</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div id="blog" aria-live="polite"></div>
+            </div>
+            <div class="window-footer">
+              <span data-i18n="entries_loading">ENTRIES: LOADING...</span>
+              <span data-i18n="feed_rss">FEED: RSS</span>
+            </div>
           </div>
-          <div
-            class="label terminal-prompt-hash"
-            data-i18n="blog_updates"
-            data-animate="slide-right"
-            data-delay="200"
-          >
-            Blog / Actualizaciones
-          </div>
-          <div id="blog" aria-live="polite"></div>
 
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--muted);
-              margin-top: 16px;
-              opacity: 0.7;
-            "
-          >
-            ╚═══════════════════════════════════╝
+          <!-- HACKER CULTURE EASTER EGG -->
+          <div class="ascii-diagram" aria-hidden="true" title="2600 Hz - The original hack">
+    ┌──────────────────────────────────────────┐
+    │  ░░░ TRANSMISSION LOG ░░░                │
+    ├──────────────────────────────────────────┤
+    │  > INCOMING PACKET...                    │
+    │  > SRC: 127.0.0.1                        │
+    │  > DST: *.*.*.* (BROADCAST)              │
+    │  > TTL: ∞                                │
+    │  ────────────────────────────────────    │
+    │  48 41 43 4B 20 54 48 45 20 50 4C 41    │
+    │  4E 45 54 21 20 2D 20 50 48 52 41 43    │
+    │  4B 20 23 31 00 00 00 00 00 00 00 00    │
+    │  ────────────────────────────────────    │
+    │  > DECODE: ██████████████████████████   │
+    │  > STATUS: FREEDOM_ENABLED               │
+    │                                          │
+    │  "Information wants to be free"          │
+    └──────────────────────────────────────────┘
+          </div>
+                <div class="ascii-diagram" aria-hidden="true" title="The Gibson awaits...">
+    ┌──────────────────────────────────────────┐
+    │  NETWORK TOPOLOGY v2.6                   │
+    ├──────────────────────────────────────────┤
+    │                                          │
+    │    [WAN]──┬──[FIREWALL]──┬──[DMZ]       │
+    │           │              │               │
+    │           │         ┌────┴────┐          │
+    │           │         │ HONEYPOT│          │
+    │           │         └────┬────┘          │
+    │           │              │               │
+    │    ┌──────┴──────┐  ┌────┴────┐          │
+    │    │   ROUTER    │──│ SWITCH  │          │
+    │    │ 192.168.1.1 │  │  24-PT  │          │
+    │    └─────────────┘  └────┬────┘          │
+    │                          │               │
+    │         ┌────────────────┼────────┐      │
+    │         │                │        │      │
+    │    ┌────┴────┐     ┌────┴───┐ ┌──┴───┐  │
+    │    │ GLITCH  │     │ BACKUP │ │ ████ │  │
+    │    │ STATION │     │ SERVER │ │ ████ │  │
+    │    └─────────┘     └────────┘ └──────┘  │
+    │                                          │
+    │  "The street finds its own uses"  -WG   │
+    └──────────────────────────────────────────┘
+          </div>
+          <div class="ascii-diagram" aria-hidden="true" title="Case was the best... until he wasn't">
+    ┌──────────────────────────────────────────┐
+    │  ╔═══════════════════════════════════╗   │
+    │  ║  CASE FILE #2077                  ║   │
+    │  ╠═══════════════════════════════════╣   │
+    │  ║  > NEURAL INTERFACE: ACTIVE       ║   │
+    │  ║  > ICE BREAKER: LOADED            ║   │
+    │  ║  > MATRIX CONN: ████████ 100%     ║   │
+    │  ║  > FLATLINE: NEGATIVE             ║   │
+    │  ║                                   ║   │
+    │  ║  ┌─────────────────────────────┐  ║   │
+    │  ║  │ ▓▓▓ CYBERSPACE COWBOY ▓▓▓  │  ║   │
+    │  ║  │  "The sky above the port   │  ║   │
+    │  ║  │   was the color of         │  ║   │
+    │  ║  │   television, tuned to     │  ║   │
+    │  ║  │   a dead channel."         │  ║   │
+    │  ║  └─────────────────────────────┘  ║   │
+    │  ║                          -WG '84  ║   │
+    │  ╚═══════════════════════════════════╝   │
+    │  [ CHIBA CITY BLUES ]                    │
+    └──────────────────────────────────────────┘
           </div>
         </section>
 
         <section aria-label="Filosof&iacute;a y Proyectos">
-          <div
-            style="
-              margin: 16px 0;
-              padding: 12px;
-              border: 1px solid var(--rule);
-              background: var(--paper);
-              position: relative;
-            "
-          >
-            <div
-              style="
-                position: absolute;
-                top: -10px;
-                left: 10px;
-                background: var(--paper);
-                padding: 0 8px;
-                color: var(--ink);
-                font-size: 11px;
-                font-weight: 700;
-              "
-            >
-              ▼ SYSTEM PHILOSOPHY ▼
+          <!-- PHILOSOPHY WINDOW -->
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">CORE.PHILOSOPHY.SYS</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
             </div>
-            <p
-              style="
-                margin: 8px 0 0 0;
-                font-size: 13px;
-                font-style: italic;
-                color: var(--muted);
-              "
-              data-i18n="philosophy"
-            >
-              > "Romper es la mejor forma de fortalecer"<br />
-              > 100% open source · Hecho en México para el mundo
-            </p>
+            <div class="window-content">
+              <ul class="bracket-list">
+                <li data-i18n="philosophy_1">Romper es la mejor forma de fortalecer</li>
+                <li data-i18n="philosophy_2">100% Open Source</li>
+                <li data-i18n="philosophy_3">Hecho en México para el mundo</li>
+                <li data-i18n="philosophy_4">Hardware + Software = Freedom</li>
+              </ul>
+            </div>
+            <div class="window-footer">
+              <span data-i18n="principles_count">PRINCIPLES: 4</span>
+              <span data-i18n="version_stable">VERSION: STABLE</span>
+            </div>
           </div>
 
-          <!-- Separador ASCII entre secciones -->
-          <div
-            style="
-              font-size: 10px;
-              line-height: 1;
-              color: var(--rule);
-              margin: 20px 0 12px 0;
-              opacity: 0.5;
-            "
-          >
-            ════════════════════════════════════════════════════════════════════════
+          <!-- ASCII DIAGRAM - Hardware Pipeline -->
+          <div class="ascii-diagram" aria-hidden="true" title="Attack vector visualization">
+    ┌──────────────────────────────────────────┐
+    │  PAYLOAD DELIVERY SYSTEM v1.3            │
+    ├──────────────────────────────────────────┤
+    │                                          │
+    │   ┌─────────┐    ┌─────────┐    ┌─────┐ │
+    │   │  INPUT  │───►│ PROCESS │───►│ OUT │ │
+    │   │ ═══════ │    │ ═══════ │    │═════│ │
+    │   │ USB/NET │    │ RP2040  │    │EXEC │ │
+    │   └────┬────┘    └────┬────┘    └──┬──┘ │
+    │        │              │             │    │
+    │        ▼              ▼             ▼    │
+    │   [0x7F3A]       [0x4E2B]      [0x1D8C] │
+    │                                          │
+    │   STACK: ████████████████░░░░  78%      │
+    │   HEAP:  ██████████░░░░░░░░░░  45%      │
+    │   EXEC:  ████████████████████  100%     │
+    │                                          │
+    └──────────────────────────────────────────┘
           </div>
 
-          <div class="section-title" data-animate="fade-in" data-delay="200">
-            <div
-              style="
-                font-size: 11px;
-                line-height: 1;
-                color: var(--muted);
-                margin-bottom: 8px;
-                opacity: 0.7;
-              "
-            >
-              ╔══[REPOSITORY INDEX]══════════════════════════════════════════╗
-            </div>
-            <h2 class="terminal-prompt-hash" data-i18n="projects_title">
-              Proyectos Activos
-            </h2>
-            <div class="bar"></div>
+          <!-- TECH DIVIDER -->
+          <div class="tech-divider">
+            <span class="tech-divider-label">REPOSITORIES</span>
           </div>
-          <div
-            id="projects"
-            class="cards stagger-animation"
-            aria-live="polite"
-          ></div>
+
+          <!-- PROJECTS WINDOW -->
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">INDEX.PROJECTS.ACTIVE</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div
+                id="projects"
+                class="cards stagger-animation"
+                aria-live="polite"
+              ></div>
+            </div>
+            <div class="window-footer">
+              <span data-i18n="repos_loading">REPOS: LOADING...</span>
+              <span data-i18n="api_github">API: GITHUB</span>
+            </div>
+          </div>
         </section>
       </div>
 
+      <!-- FOOTER -->
       <div class="footer">
-        <hr class="rule" />
-        <div style="text-align: center; margin: 16px 0">
-          <div
-            style="
-              display: inline-block;
-              border: 1px solid var(--rule);
-              padding: 10px 20px;
-              background: var(--paper);
-            "
-          >
-            <div
-              style="
-                font-size: 10px;
-                color: var(--muted);
-                margin-bottom: 6px;
-                opacity: 0.7;
-              "
-            >
-              ┌─[ SYSTEM INFO ]─────────────────────┐
+        <div class="tech-divider">
+          <span class="tech-divider-label">EOF</span>
+        </div>
+        <div class="window" style="margin-bottom: 0;">
+          <div class="window-titlebar" style="justify-content: center;">
+            <span class="window-title">SYSTEM.INFO.FOOTER</span>
+          </div>
+          <div class="window-content" style="text-align: center;">
+            <div class="spec-sheet" style="justify-content: center; max-width: 400px; margin: 0 auto;">
+              <div class="spec-field" style="text-align: center;">
+                <span class="spec-field-label" data-i18n="copyright_label">COPYRIGHT</span>
+                <span class="spec-field-value">© <span id="y"></span> Glitch Hardware</span>
+              </div>
+              <div class="spec-field" style="text-align: center;">
+                <span class="spec-field-label" data-i18n="status_label">STATUS</span>
+                <span class="spec-field-value" style="color: var(--tech-green);" data-i18n="status_online">■ ONLINE</span>
+              </div>
+              <div class="spec-field" style="text-align: center;">
+                <span class="spec-field-label" data-i18n="location_label">LOCATION</span>
+                <span class="spec-field-value">MX-CDMX</span>
+              </div>
+              <div class="spec-field" style="text-align: center;">
+                <span class="spec-field-label" data-i18n="license_label">LICENSE</span>
+                <span class="spec-field-value">MIT/GPL</span>
+              </div>
             </div>
-            <div class="top-marks" style="margin: 0; font-size: 11px">
-              <span>© <span id="y"></span> Glitch Hardware</span>
-              <span style="margin-left: 20px">[status: online]</span>
-            </div>
-            <div
-              style="
-                font-size: 10px;
-                color: var(--muted);
-                margin-top: 6px;
-                opacity: 0.7;
-              "
-            >
-              └─────────────────────────────────────┘
-            </div>
+          </div>
+          <div class="window-footer" style="justify-content: center;">
+            <span data-i18n="end_transmission">END OF TRANSMISSION</span>
           </div>
         </div>
       </div>

@@ -435,3 +435,148 @@ body.page-loaded {
 .boot-text { color: var(--ink); font-family: var(--mono); font-size: 12px; line-height: 1.4; }
 .matrix-bg { display: none; }
 .energy-border { }
+
+/* ========================================
+   TUI SOBRECARGADA - ANIMACIONES SUTILES
+   ======================================== */
+
+/* === Window aparición === */
+.window {
+  animation: windowFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes windowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Status bar entrada === */
+.system-status-bar {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Spec sheet items stagger === */
+.spec-field {
+  opacity: 0;
+  animation: specFieldIn 0.3s ease-out forwards;
+}
+
+.spec-field:nth-child(1) { animation-delay: 0.05s; }
+.spec-field:nth-child(2) { animation-delay: 0.1s; }
+.spec-field:nth-child(3) { animation-delay: 0.15s; }
+.spec-field:nth-child(4) { animation-delay: 0.2s; }
+.spec-field:nth-child(5) { animation-delay: 0.25s; }
+.spec-field:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes specFieldIn {
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* === Data streaming sutil === */
+.data-streaming {
+  animation: dataStream 2s ease-in-out infinite;
+}
+
+@keyframes dataStream {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* === Bracket list hover === */
+.bracket-list li {
+  transition: padding-left 0.15s ease, background 0.15s ease;
+}
+
+.bracket-list li:hover {
+  padding-left: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* === Window titlebar glow sutil en hover === */
+.window:hover .window-titlebar {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* === Card panel header pulse on hover === */
+.card[data-panel-id]:hover::before {
+  animation: headerPulse 0.3s ease-out;
+}
+
+@keyframes headerPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+/* === Tech divider line animation === */
+.tech-divider::before,
+.tech-divider::after {
+  animation: lineExpand 0.6s ease-out forwards;
+}
+
+@keyframes lineExpand {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* === Focus ring animation === */
+:focus-visible {
+  animation: focusRing 0.2s ease-out;
+}
+
+@keyframes focusRing {
+  from {
+    outline-offset: 4px;
+    outline-color: transparent;
+  }
+  to {
+    outline-offset: 2px;
+    outline-color: var(--tech-cyan, #00d4ff);
+  }
+}
+
+/* === Respect reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  .window,
+  .system-status-bar,
+  .spec-field,
+  .data-streaming,
+  .tech-divider::before,
+  .tech-divider::after {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .bracket-list li {
+    transition: none;
+  }
+}

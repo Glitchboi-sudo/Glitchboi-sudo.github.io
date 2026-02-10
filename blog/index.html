@@ -6,7 +6,10 @@
   <title>Blog — GLITCHBOI</title>
   <meta name="description" content="Archivo completo de actualizaciones y posts de Glitch Hardware.">
   <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
 </head>
 <body class="scanlines">
   <main class="container">
@@ -33,40 +36,71 @@
       </div>
     </div>
 
-    <section>
-      <!-- Separador ASCII -->
-      <div style="font-size: 10px; line-height: 1; color: var(--rule); margin: 20px 0 12px 0; opacity: 0.5;">
-        ════════════════════════════════════════════════════════════════════════
+    <!-- SYSTEM STATUS BAR -->
+    <div class="system-status-bar" aria-label="Estado del sistema">
+      <div class="status-item">
+        <span class="status-indicator"></span>
+        <span>ARCHIVE: ONLINE</span>
       </div>
-
-      <div style="font-size: 11px; line-height: 1; color: var(--muted); margin-bottom: 8px; opacity: 0.7;">
-        ╔══[ POST INDEX ]═════════════════════════════════════════════════════╗
+      <div class="status-item">
+        <span>MODE: READ-ONLY</span>
       </div>
+      <div class="status-item">
+        <span>INDEX: CHRONOLOGICAL</span>
+      </div>
+    </div>
 
-      <div class="label terminal-prompt-hash">Todas las entradas del sistema</div>
-      <div id="blog-list" class="cards" aria-live="polite"></div>
-    </section>
+    <!-- BLOG ENTRIES WINDOW -->
+    <div class="window">
+      <div class="window-titlebar">
+        <span class="window-title">DATABASE.BLOG.ENTRIES</span>
+        <div class="window-controls">
+          <span class="window-btn">[_]</span>
+          <span class="window-btn">[□]</span>
+          <span class="window-btn">[X]</span>
+        </div>
+      </div>
+      <div class="window-content">
+        <div id="blog-list" class="cards" aria-live="polite"></div>
+      </div>
+      <div class="window-footer">
+        <span>ENTRIES: LOADING...</span>
+        <span>ORDER: DESC</span>
+        <span>FORMAT: JSON</span>
+      </div>
+    </div>
 
+    <!-- FOOTER -->
     <div class="footer">
-      <hr class="rule" />
-      <div style="text-align: center; margin: 16px 0;">
-        <div style="display: inline-block; border: 1px solid var(--rule); padding: 10px 20px; background: var(--paper);">
-          <div style="font-size: 10px; color: var(--muted); margin-bottom: 6px; opacity: 0.7;">
-            ┌─[ SYSTEM INFO ]─────────────────────┐
+      <div class="tech-divider">
+        <span class="tech-divider-label">EOF</span>
+      </div>
+      <div class="window" style="margin-bottom: 0;">
+        <div class="window-titlebar" style="justify-content: center;">
+          <span class="window-title">SYSTEM.INFO.FOOTER</span>
+        </div>
+        <div class="window-content" style="text-align: center;">
+          <div class="spec-sheet" style="justify-content: center; max-width: 300px; margin: 0 auto;">
+            <div class="spec-field" style="text-align: center;">
+              <span class="spec-field-label">COPYRIGHT</span>
+              <span class="spec-field-value">© <span id="y"></span> Glitch Hardware</span>
+            </div>
+            <div class="spec-field" style="text-align: center;">
+              <span class="spec-field-label">STATUS</span>
+              <span class="spec-field-value" style="color: var(--tech-green);">■ ONLINE</span>
+            </div>
           </div>
-          <div class="top-marks" style="margin: 0; font-size: 11px;">
-            <span>© <span id="y"></span> Glitch Hardware</span>
-            <span style="margin-left: 20px;">[status: online]</span>
-          </div>
-          <div style="font-size: 10px; color: var(--muted); margin-top: 6px; opacity: 0.7;">
-            └─────────────────────────────────────┘
-          </div>
+        </div>
+        <div class="window-footer" style="justify-content: center;">
+          <span>END OF ARCHIVE</span>
         </div>
       </div>
     </div>
   </main>
 
+  <script>document.body.classList.add('page-loaded');</script>
   <script src="../assets/js/blog.js"></script>
   <script src="../assets/js/terminal-fx.js"></script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>

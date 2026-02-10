@@ -6,15 +6,26 @@
   <title data-title-es="{{TITLE_ES}} — GLITCHBOI" data-title-en="{{TITLE_EN}} — GLITCHBOI">{{TITLE_ES}} — GLITCHBOI</title>
   <meta name="description" content="{{SUMMARY_ES}}" data-desc-es="{{SUMMARY_ES}}" data-desc-en="{{SUMMARY_EN}}">
   <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
 </head>
-<body>
+<body class="scanlines">
   <main class="container">
-    <div class="header" aria-label="Encabezado estilo dossier">
+    <div class="header crt-border" aria-label="Encabezado estilo dossier">
+      <!-- Banner ASCII superior -->
+      <div style="text-align: center; font-size: 10px; line-height: 1; color: var(--muted); margin-bottom: 12px; opacity: 0.7;">
+        ╔═══════════════════════════════════════════════════════════════════════╗<br>
+        ║                     ◄ BLOG POST VIEWER v1.0 ►                        ║<br>
+        ║                      [DOCUMENT AUTHENTICATED]                        ║<br>
+        ╚═══════════════════════════════════════════════════════════════════════╝
+      </div>
+
       <a href="../" aria-label="Inicio">
         <img class="logoX" src="../assets/images/GlitchLogo.svg" alt="">
       </a>
-      <div class="top-marks"><span>[PG 00,{{PAGE_NUM}}]</span><span>[AG 00,{{PAGE_NUM}}]</span></div>
+      <div class="top-marks"><span>┤ DOC: {{PAGE_NUM}} ├</span><span>┤ TYPE: POST ├</span></div>
       <div class="bar" role="presentation"></div>
       <div class="title" data-lang="es" data-glitch="{{TITLE_ES}}">{{TITLE_ES}}</div>
       <div class="title" data-lang="en" data-glitch="{{TITLE_EN}}">{{TITLE_EN}}</div>
@@ -29,59 +40,158 @@
       </div>
     </div>
 
-    <!-- META DEL POST -->
-    <div class="label">Detalles</div>
-    <div class="card" style="margin-bottom:12px">
-      <div class="dotfill" style="margin-bottom:6px">
-        <span><time datetime="{{DATE}}">{{DATE}}</time></span>
-        <i></i>
-        <span>
-          <span data-lang="es">Categoría: {{CATEGORY_ES}}</span>
-          <span data-lang="en">Category: {{CATEGORY_EN}}</span>
-        </span>
+    <!-- SYSTEM STATUS BAR -->
+    <div class="system-status-bar" aria-label="Estado del sistema">
+      <div class="status-item">
+        <span class="status-indicator"></span>
+        <span>DOC: LOADED</span>
       </div>
-      <div style="color:var(--muted); font-size:14px">
-        <div data-lang="es" data-summary="es">{{SUMMARY_ES}}</div>
-        <div data-lang="en" data-summary="en">{{SUMMARY_EN}}</div>
+      <div class="status-item">
+        <span>MODE: READ</span>
+      </div>
+      <div class="status-item">
+        <span>AUTH: VERIFIED</span>
+      </div>
+    </div>
+
+    <!-- POST METADATA WINDOW -->
+    <div class="window">
+      <div class="window-titlebar">
+        <span class="window-title">META.POST.DETAILS</span>
+        <div class="window-controls">
+          <span class="window-btn">[_]</span>
+          <span class="window-btn">[□]</span>
+          <span class="window-btn">[X]</span>
+        </div>
+      </div>
+      <div class="window-content">
+        <div class="spec-sheet">
+          <div class="spec-field">
+            <span class="spec-field-label">DATE</span>
+            <span class="spec-field-value"><time datetime="{{DATE}}">{{DATE}}</time></span>
+          </div>
+          <div class="spec-field">
+            <span class="spec-field-label">CATEGORY</span>
+            <span class="spec-field-value">
+              <span data-lang="es">{{CATEGORY_ES}}</span>
+              <span data-lang="en">{{CATEGORY_EN}}</span>
+            </span>
+          </div>
+          <div class="spec-field">
+            <span class="spec-field-label">FORMAT</span>
+            <span class="spec-field-value">ARTICLE</span>
+          </div>
+          <div class="spec-field">
+            <span class="spec-field-label">LANG</span>
+            <span class="spec-field-value">ES/EN</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; color: var(--muted); font-size: 14px;">
+          <div data-lang="es" data-summary="es">{{SUMMARY_ES}}</div>
+          <div data-lang="en" data-summary="en">{{SUMMARY_EN}}</div>
+        </div>
+      </div>
+      <div class="window-footer">
+        <span>ID: {{PAGE_NUM}}</span>
+        <span>SCHEMA: POST.v1</span>
       </div>
     </div>
 
     {{IMAGE_SECTION}}
 
-    <article class="card" style="margin-bottom:12px">
-      <div class="label">Contenido</div>
-      <div style="font-size:14px">
-        <div data-lang="es" data-body="es">{{BODY_ES}}</div>
-        <div data-lang="en" data-body="en">{{BODY_EN}}</div>
-        <hr class="rule">
-        <p style="font-size:12px;color:var(--muted)">
+    <!-- TECH DIVIDER -->
+    <div class="tech-divider">
+      <span class="tech-divider-label">CONTENT</span>
+    </div>
+
+    <!-- POST CONTENT WINDOW -->
+    <div class="window">
+      <div class="window-titlebar">
+        <span class="window-title">DOC.CONTENT.BODY</span>
+        <div class="window-controls">
+          <span class="window-btn">[_]</span>
+          <span class="window-btn">[□]</span>
+          <span class="window-btn">[X]</span>
+        </div>
+      </div>
+      <div class="window-content">
+        <div style="font-size: 14px; line-height: 1.6;">
+          <div data-lang="es" data-body="es">{{BODY_ES}}</div>
+          <div data-lang="en" data-body="en">{{BODY_EN}}</div>
+        </div>
+        <hr class="rule" style="margin: 16px 0;">
+        <div style="font-size: 12px; color: var(--muted);">
           <span data-lang="es">Etiquetas:</span>
           <span data-lang="en">Tags:</span>
           {{TAGS}}
-        </p>
+        </div>
       </div>
-    </article>
+      <div class="window-footer">
+        <span>FORMAT: MARKDOWN</span>
+        <span>ENCODING: UTF-8</span>
+      </div>
+    </div>
 
-    <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-      <div class="label" style="margin:0">Sigue el proyecto</div>
-      <div style="display:flex;gap:8px">
-        <a class="block" href="https://github.com/Glitchboi-sudo" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a class="block" href="../" aria-label="Volver al inicio">Inicio</a>
+    <!-- TECH DIVIDER -->
+    <div class="tech-divider">
+      <span class="tech-divider-label">LINKS</span>
+    </div>
+
+    <!-- LINKS WINDOW -->
+    <div class="window">
+      <div class="window-titlebar">
+        <span class="window-title">NAV.EXTERNAL.LINKS</span>
+        <div class="window-controls">
+          <span class="window-btn">[_]</span>
+          <span class="window-btn">[□]</span>
+          <span class="window-btn">[X]</span>
+        </div>
+      </div>
+      <div class="window-content">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a class="block" href="https://github.com/Glitchboi-sudo" target="_blank" rel="noopener noreferrer">[ GitHub ]</a>
+          <a class="block" href="../" aria-label="Volver al inicio">[ Inicio ]</a>
+          <a class="block" href="../blog/" aria-label="Volver al blog">[ Blog ]</a>
+        </div>
+      </div>
+      <div class="window-footer">
+        <span>LINKS: 3</span>
       </div>
     </div>
 
     <div id="projects" style="display:none"></div>
     <div id="blog" style="display:none"></div>
 
+    <!-- FOOTER -->
     <div class="footer">
-      <hr class="rule">
-      <div class="top-marks" style="margin-top:6px">
-        <span>&copy; <span id="y"></span> Glitch Hardware</span>
-        <span>[status: online]</span>
+      <div class="tech-divider">
+        <span class="tech-divider-label">EOF</span>
+      </div>
+      <div class="window" style="margin-bottom: 0;">
+        <div class="window-titlebar" style="justify-content: center;">
+          <span class="window-title">SYSTEM.INFO.FOOTER</span>
+        </div>
+        <div class="window-content" style="text-align: center;">
+          <div class="spec-sheet" style="justify-content: center; max-width: 300px; margin: 0 auto;">
+            <div class="spec-field" style="text-align: center;">
+              <span class="spec-field-label">COPYRIGHT</span>
+              <span class="spec-field-value">&copy; <span id="y"></span> Glitch Hardware</span>
+            </div>
+            <div class="spec-field" style="text-align: center;">
+              <span class="spec-field-label">STATUS</span>
+              <span class="spec-field-value" style="color: var(--tech-green);">■ ONLINE</span>
+            </div>
+          </div>
+        </div>
+        <div class="window-footer" style="justify-content: center;">
+          <span>END OF DOCUMENT</span>
+        </div>
       </div>
     </div>
   </main>
 
+  <script>document.body.classList.add('page-loaded');</script>
   <script src="../assets/js/main.js"></script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
