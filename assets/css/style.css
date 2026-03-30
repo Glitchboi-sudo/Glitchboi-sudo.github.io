@@ -1577,6 +1577,44 @@ section {
   }
 }
 
+/* ===== MICROGRAPHIC - COMPACT DATA VISUALIZATIONS ===== */
+.ascii-diagram.micrographic {
+  font-size: 9px;
+  line-height: 1.25;
+  opacity: 0.85;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, var(--bg) 0%, var(--paper) 100%);
+  border-left: 2px solid var(--tech-green);
+}
+
+.ascii-diagram.micrographic:hover {
+  opacity: 1;
+  border-left-color: var(--tech-cyan);
+}
+
+/* Compact variant - more condensed certification marks */
+.ascii-diagram.micrographic.compact {
+  font-size: 8px;
+  line-height: 1.2;
+  padding: 8px 10px;
+  letter-spacing: 0.02em;
+}
+
+/* Tablet - show micrographics but smaller */
+@media (min-width: 481px) and (max-width: 768px) {
+  .ascii-diagram.micrographic {
+    font-size: 8px;
+    padding: 8px 10px;
+  }
+}
+
+/* Mobile - hide micrographics too */
+@media (max-width: 480px) {
+  .ascii-diagram.micrographic {
+    display: none;
+  }
+}
+
 /* ===== PANEL CARD - MODIFICACIÓN DE CARDS ===== */
 .card[data-panel-id] {
   padding: 0;

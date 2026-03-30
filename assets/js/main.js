@@ -170,6 +170,13 @@ const I18N = {
     theme_light: "[ modo claro ]",
     lang_btn: "[ EN ]",
     contact: "Contacto",
+
+    // Who We Are
+    who_we_are_p1: "Somos un colectivo de ingenieros y hackers con sede en Ciudad de México, dedicados a crear hardware de seguridad accesible y open source.",
+    who_we_are_p2: "Inspirados por la tradición de cDc, L0pht y la escena phreaker de los 90s, creemos que el conocimiento debe ser libre y las herramientas de seguridad accesibles para todos.",
+    who_we_are_p3: "Cada dispositivo que creamos está diseñado para enseñar, investigar y fortalecer la seguridad — nunca para dañar.",
+    founded_label: "FUNDADO: 2024",
+    team_label: "EQUIPO: CDMX",
   },
   en: {
     // Hero
@@ -248,6 +255,13 @@ const I18N = {
     theme_light: "[ light mode ]",
     lang_btn: "[ ES ]",
     contact: "Contact",
+
+    // Who We Are
+    who_we_are_p1: "We are a collective of engineers and hackers based in Mexico City, dedicated to creating accessible and open source security hardware.",
+    who_we_are_p2: "Inspired by the tradition of cDc, L0pht and the 90s phreaker scene, we believe knowledge should be free and security tools accessible to everyone.",
+    who_we_are_p3: "Every device we create is designed to teach, research, and strengthen security — never to harm.",
+    founded_label: "FOUNDED: 2024",
+    team_label: "TEAM: CDMX",
   },
 };
 function t(k) {
