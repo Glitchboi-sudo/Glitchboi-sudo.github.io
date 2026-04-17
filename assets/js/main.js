@@ -387,7 +387,7 @@ function renderBlog(items) {
 
 /* ===== PROYECTOS DESDE GITHUB (SIN TOKENS) ===== */
 const GH_USER = "Glitchboi-sudo";
-const MAX_REPOS = 6;
+const MAX_REPOS = 5;
 const EXCLUDED_REPOS = new Set(["Glitchboi-sudo", "Glitchboi-sudo.github.io"]);
 const PROJECTS_DATA_URL = "assets/data/projects.json";
 
@@ -555,7 +555,7 @@ function renderProjects(items) {
       const separator = document.createElement("div");
       separator.style.cssText = `
         text-align: center;
-        margin: 20px 0;
+        margin: 4px 0;
         opacity: 0.4;
       `;
       separator.innerHTML = `

@@ -575,7 +575,7 @@ a:focus-visible::before {
 /* En el grid principal, las cards dentro de windows se mantienen en 1 columna para mejor legibilidad */
 .window .cards {
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 2px;
 }
 
 /* Cards más grandes y con más contenido visible en desktop */
@@ -602,7 +602,7 @@ a:focus-visible::before {
   content: "";
   display: block;
   text-align: center;
-  margin: 20px auto 0;
+  margin: 2px auto 0;
   width: 100%;
   max-width: 200px;
   height: 1px;
@@ -638,11 +638,11 @@ a:focus-visible::before {
 /* Cards responsivo */
 @media (max-width: 480px) {
   .cards {
-    gap: 20px;
+    gap: 2px;
   }
 
   .cards .card-link:not(:last-child)::after {
-    margin: 16px auto 0;
+    margin: 2px auto 0;
     max-width: 150px;
   }
 }
