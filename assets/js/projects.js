@@ -281,6 +281,7 @@ function mergeProjectData(metaList, liveList) {
         summary: meta.summary || ghRepo.summary, // Summary personalizado o de GitHub
         description: meta.description || ghRepo.description, // Descripción personalizada o de GitHub
         slug: meta.slug || ghRepo.slug, // Slug personalizado o generado
+        pricing: meta.pricing, // Información de precios del JSON
       };
     } else {
       // Si no está en JSON, usar solo datos de GitHub
@@ -515,6 +516,107 @@ function renderLinks({ githubUrl, homepage, docs, extraLinks }) {
   });
 }
 
+function renderPricing(pricing) {
+  const $window = document.getElementById("pricing-window");
+  const $divider = document.getElementById("pricing-divider");
+  const $container = document.getElementById("project-pricing");
+  const $currency = document.getElementById("pricing-currency");
+
+  if (!$container || !$window || !$divider) return;
+
+  // Si no hay pricing, ocultar la sección
+  if (!pricing || !pricing.options || !pricing.options.length) {
+    $window.style.display = "none";
+    $divider.style.display = "none";
+    return;
+  }
+
+  // Mostrar la sección
+  $window.style.display = "block";
+  $divider.style.display = "flex";
+  $container.innerHTML = "";
+
+  // Actualizar moneda
+  if ($currency && pricing.currency) {
+    $currency.textContent = `CURRENCY: ${pricing.currency}`;
+  }
+
+  // Crear grid de opciones
+  const grid = document.createElement("div");
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(200px, 1fr))";
+  grid.style.gap = "12px";
+
+  pricing.options.forEach((opt) => {
+    const card = document.createElement("div");
+    card.style.border = "1px solid var(--rule)";
+    card.style.padding = "12px";
+    card.style.position = "relative";
+
+    // Badge de disponibilidad
+    if (!opt.available) {
+      card.style.opacity = "0.6";
+    }
+
+    // Tipo (DIY, Kit, Assembled)
+    const typeLabel = document.createElement("div");
+    typeLabel.style.fontSize = "10px";
+    typeLabel.style.color = "var(--muted)";
+    typeLabel.style.marginBottom = "4px";
+    typeLabel.textContent = opt.type ? opt.type.toUpperCase() : "";
+    card.appendChild(typeLabel);
+
+    // Nombre de la opción
+    const label = document.createElement("div");
+    label.style.fontWeight = "bold";
+    label.style.marginBottom = "8px";
+    label.textContent = opt.label || opt.type;
+    card.appendChild(label);
+
+    // Precio
+    const priceEl = document.createElement("div");
+    priceEl.style.fontSize = "18px";
+    priceEl.style.fontWeight = "bold";
+    priceEl.style.marginBottom = "8px";
+    if (opt.price === 0) {
+      priceEl.textContent = "GRATIS";
+      priceEl.style.color = "var(--tech-green, #00ff00)";
+    } else if (opt.price === null || opt.price === undefined) {
+      priceEl.textContent = "TBD";
+      priceEl.style.color = "var(--muted)";
+    } else {
+      priceEl.textContent = `$${opt.price} ${pricing.currency || "MXN"}`;
+    }
+    card.appendChild(priceEl);
+
+    // Nota
+    if (opt.note) {
+      const note = document.createElement("div");
+      note.style.fontSize = "11px";
+      note.style.color = "var(--muted)";
+      note.style.lineHeight = "1.4";
+      note.textContent = opt.note;
+      card.appendChild(note);
+    }
+
+    // Badge de estado
+    if (!opt.available) {
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.style.position = "absolute";
+      badge.style.top = "8px";
+      badge.style.right = "8px";
+      badge.style.fontSize = "9px";
+      badge.textContent = "SOON";
+      card.appendChild(badge);
+    }
+
+    grid.appendChild(card);
+  });
+
+  $container.appendChild(grid);
+}
+
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -611,6 +713,7 @@ function renderProject(meta, gh, descriptionText) {
     docs: meta?.docs,
     extraLinks: meta?.links,
   });
+  renderPricing(meta?.pricing);
 }
 
 (async function initProjectPage() {

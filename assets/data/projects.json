@@ -14,7 +14,30 @@
         "href": "../posts/2025-12-07-nueva-funcion-en-cerberus.html",
         "external": false
       }
-    ]
+    ],
+    "pricing": {
+      "currency": "MXN",
+      "options": [
+        {
+          "type": "diy",
+          "label": "DIY (Hazlo tú mismo)",
+          "label_en": "DIY (Do It Yourself)",
+          "price": 0,
+          "note": "Descarga los archivos Gerber y fabrica con PCBWay u otro proveedor",
+          "note_en": "Download Gerber files and manufacture with PCBWay or other provider",
+          "available": true
+        },
+        {
+          "type": "assembled",
+          "label": "Unidad ensamblada",
+          "label_en": "Assembled Unit",
+          "price": null,
+          "note": "Próximamente",
+          "note_en": "Coming soon",
+          "available": false
+        }
+      ]
+    }
   },
   {
     "slug": "hackplate",
@@ -24,6 +47,29 @@
     "description": "Hackplate combina una resistencia de calentamiento con control PID básico para hacer reflow y preheat de PCBs pequeñas. Es ideal para reparaciones rápidas y para makers que quieran ensamblar prototipos sin estación grande.",
     "tags": ["hardware", "reflow"],
     "model": "",
-    "updated": "2025-10-18"
+    "updated": "2025-10-18",
+    "pricing": {
+      "currency": "MXN",
+      "options": [
+        {
+          "type": "diy",
+          "label": "DIY (Hazlo tú mismo)",
+          "label_en": "DIY (Do It Yourself)",
+          "price": 0,
+          "note": "Archivos disponibles en el repositorio",
+          "note_en": "Files available in the repository",
+          "available": true
+        },
+        {
+          "type": "assembled",
+          "label": "Unidad ensamblada",
+          "label_en": "Assembled Unit",
+          "price": null,
+          "note": "Próximamente",
+          "note_en": "Coming soon",
+          "available": false
+        }
+      ]
+    }
   }
 ]

@@ -172,11 +172,18 @@ const I18N = {
     contact: "Contacto",
 
     // Who We Are
-    who_we_are_p1: "Somos un colectivo de ingenieros y hackers con sede en Ciudad de México, dedicados a crear hardware de seguridad accesible y open source.",
-    who_we_are_p2: "Inspirados por la tradición de cDc, L0pht y la escena phreaker de los 90s, creemos que el conocimiento debe ser libre y las herramientas de seguridad accesibles para todos.",
-    who_we_are_p3: "Cada dispositivo que creamos está diseñado para enseñar, investigar y fortalecer la seguridad — nunca para dañar.",
+    who_we_are_p1:
+      "Somos un colectivo de ingenieros y hackers con sede en Ciudad de México, dedicados a crear hardware de seguridad accesible y open source.",
+    who_we_are_p2:
+      "Inspirados por la tradición de cDc, L0pht y la escena phreaker de los 90s, creemos que el conocimiento debe ser libre y las herramientas de seguridad accesibles para todos.",
+    who_we_are_p3:
+      "Cada dispositivo que creamos está diseñado para enseñar, investigar y fortalecer la seguridad — nunca para dañar.",
     founded_label: "FUNDADO: 2024",
     team_label: "EQUIPO: CDMX",
+
+    // Collective Members
+    collective_desc: "Páginas de los integrantes del colectivo",
+    members_count: "MIEMBROS: 4",
   },
   en: {
     // Hero
@@ -257,11 +264,18 @@ const I18N = {
     contact: "Contact",
 
     // Who We Are
-    who_we_are_p1: "We are a collective of engineers and hackers based in Mexico City, dedicated to creating accessible and open source security hardware.",
-    who_we_are_p2: "Inspired by the tradition of cDc, L0pht and the 90s phreaker scene, we believe knowledge should be free and security tools accessible to everyone.",
-    who_we_are_p3: "Every device we create is designed to teach, research, and strengthen security — never to harm.",
+    who_we_are_p1:
+      "We are a collective of engineers and hackers based in Mexico City, dedicated to creating accessible and open source security hardware.",
+    who_we_are_p2:
+      "Inspired by the tradition of cDc, L0pht and the 90s phreaker scene, we believe knowledge should be free and security tools accessible to everyone.",
+    who_we_are_p3:
+      "Every device we create is designed to teach, research, and strengthen security — never to harm.",
     founded_label: "FOUNDED: 2024",
     team_label: "TEAM: CDMX",
+
+    // Collective's friends
+    collective_desc: "Pages from collective's friends",
+    members_count: "MEMBERS: 4",
   },
 };
 function t(k) {
@@ -375,11 +389,46 @@ function renderBlog(items) {
 const GH_USER = "Glitchboi-sudo";
 const MAX_REPOS = 6;
 const EXCLUDED_REPOS = new Set(["Glitchboi-sudo", "Glitchboi-sudo.github.io"]);
+const PROJECTS_DATA_URL = "assets/data/projects.json";
+
 function slugifyRepo(name) {
   return String(name || "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+async function loadProjectsMeta() {
+  try {
+    const res = await fetch(PROJECTS_DATA_URL, {
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function getPricingBadge(pricing) {
+  // Si no hay pricing definido, mostrar FREE (es open source)
+  if (!pricing || !pricing.options || !pricing.options.length) {
+    return `<span class="badge" style="background: var(--tech-green, #00ff00); color: #000; font-size: 11px; padding: 4px 8px; font-weight: bold;">FREE</span>`;
+  }
+
+  // Buscar opciones con precio pagado disponibles
+  const paidOptions = pricing.options.filter((o) => o.available && o.price > 0);
+
+  if (paidOptions.length > 0) {
+    // Mostrar el precio más bajo de las opciones pagadas
+    const minPrice = Math.min(...paidOptions.map((o) => o.price));
+    const currency = pricing.currency || "MXN";
+    return `<span class="badge" style="background: var(--accent, #000000); color: #fff; font-size: 11px; padding: 4px 8px; font-weight: bold;">$${minPrice} ${currency}</span>`;
+  }
+
+  // Si solo hay opciones gratuitas o no disponibles, mostrar FREE
+  return `<span class="badge" style="background: var(--tech-green, #00ff00); color: #000; font-size: 11px; padding: 4px 8px; font-weight: bold;">FREE</span>`;
 }
 
 async function fetchRepos(user) {
@@ -462,13 +511,14 @@ function renderProjects(items) {
     const safeTitle = esc(p.title);
     const safeMeta = esc(p.meta);
     const safeNote = esc(p.note || "\u2014");
+    const pricingBadge = getPricingBadge(p.pricing);
 
     const detailHref = p.detailUrl || projectDetailLink(p.title);
     const githubHref = p.githubUrl || p.url;
 
     el.innerHTML = `
       <div class="dotfill">
-        <span><a href="${escAttr(detailHref)}">${safeTitle}</a></span>
+        <span><a href="${escAttr(detailHref)}">${safeTitle}</a> ${pricingBadge}</span>
         <i></i>
         <span>${safeMeta}</span>
       </div>
@@ -549,8 +599,23 @@ function fmtDate(s) {
 
 (async function initProjects() {
   try {
-    const repos = await fetchRepos(GH_USER);
-    renderProjects(repos);
+    const [repos, projectsMeta] = await Promise.all([
+      fetchRepos(GH_USER),
+      loadProjectsMeta(),
+    ]);
+
+    // Merge pricing data from projects.json
+    const reposWithPricing = repos.map((repo) => {
+      const meta = projectsMeta.find(
+        (p) => slugifyRepo(p.repo || p.title) === slugifyRepo(repo.title),
+      );
+      return {
+        ...repo,
+        pricing: meta?.pricing || null,
+      };
+    });
+
+    renderProjects(reposWithPricing);
   } catch (e) {
     console.error("GitHub API:", e);
     renderProjects([
