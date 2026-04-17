@@ -8,14 +8,29 @@ class ASCII3D {
 
     // Configuración
     this.config = {
-      chars: options.chars || ['█', '▓', '▒', '░', '/', '\\', '|', '-', '+', 'x', '*', '.', ':', '~'],
+      chars: options.chars || [
+        "█",
+        "▓",
+        "▒",
+        "░",
+        "/",
+        "\\",
+        "|",
+        "-",
+        "+",
+        "x",
+        "*",
+        ".",
+        ":",
+        "~",
+      ],
       speed: options.speed || 0.001,
       size: options.size || 20,
-      pattern: options.pattern || 'cube',
-      colors: options.colors || ['#00ff00', '#00ffff', '#ff00ff', '#ffff00'],
+      pattern: options.pattern || "cube",
+      colors: options.colors || ["#00ff00", "#00ffff", "#ff00ff", "#ffff00"],
       rotateX: 0,
       rotateY: 0,
-      rotateZ: 0
+      rotateZ: 0,
     };
 
     this.animationFrame = null;
@@ -25,8 +40,8 @@ class ASCII3D {
 
   init() {
     // Crear canvas de texto
-    this.canvas = document.createElement('pre');
-    this.canvas.className = 'ascii-canvas';
+    this.canvas = document.createElement("pre");
+    this.canvas.className = "ascii-canvas";
     this.canvas.style.cssText = `
       font-family: monospace;
       line-height: 1;
@@ -40,7 +55,7 @@ class ASCII3D {
 
     // Dimensiones
     this.updateDimensions();
-    window.addEventListener('resize', () => this.updateDimensions());
+    window.addEventListener("resize", () => this.updateDimensions());
   }
 
   updateDimensions() {
@@ -53,20 +68,26 @@ class ASCII3D {
   generateCube() {
     const size = this.config.size;
     return [
-      [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1], // Cara frontal
-      [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]      // Cara trasera
-    ].map(p => p.map(c => c * size));
+      [-1, -1, -1],
+      [1, -1, -1],
+      [1, 1, -1],
+      [-1, 1, -1], // Cara frontal
+      [-1, -1, 1],
+      [1, -1, 1],
+      [1, 1, 1],
+      [-1, 1, 1], // Cara trasera
+    ].map((p) => p.map((c) => c * size));
   }
 
   // Generar vértices de una pirámide
   generatePyramid() {
     const size = this.config.size;
     return [
-      [0, -size * 1.5, 0],           // Vértice superior
-      [-size, size, -size],          // Base
+      [0, -size * 1.5, 0], // Vértice superior
+      [-size, size, -size], // Base
       [size, size, -size],
       [size, size, size],
-      [-size, size, size]
+      [-size, size, size],
     ];
   }
 
@@ -76,7 +97,7 @@ class ASCII3D {
       let modelData;
 
       // Si es una URL, cargar desde archivo
-      if (typeof source === 'string') {
+      if (typeof source === "string") {
         const response = await fetch(source);
         modelData = await response.json();
       } else {
@@ -86,21 +107,21 @@ class ASCII3D {
 
       // Validar estructura del modelo
       if (!modelData.vertices || !modelData.edges) {
-        throw new Error('Modelo inválido: debe contener vertices y edges');
+        throw new Error("Modelo inválido: debe contener vertices y edges");
       }
 
       // Guardar modelo personalizado
       this.customModel = {
         vertices: modelData.vertices,
-        edges: modelData.edges
+        edges: modelData.edges,
       };
 
       // Cambiar al patrón custom
-      this.config.pattern = 'custom';
+      this.config.pattern = "custom";
 
       return true;
     } catch (error) {
-      console.error('Error cargando modelo:', error);
+      console.error("Error cargando modelo:", error);
       return false;
     }
   }
@@ -111,9 +132,7 @@ class ASCII3D {
 
     const size = this.config.size;
     // Escalar vértices según el tamaño configurado
-    return this.customModel.vertices.map(v =>
-      v.map(coord => coord * size)
-    );
+    return this.customModel.vertices.map((v) => v.map((coord) => coord * size));
   }
 
   // Proyección 3D a 2D
@@ -146,44 +165,68 @@ class ASCII3D {
   // Renderizar frame
   render() {
     // Crear buffer 2D
-    const buffer = Array(this.height).fill(null).map(() =>
-      Array(this.width).fill(' ')
-    );
-    const zBuffer = Array(this.height).fill(null).map(() =>
-      Array(this.width).fill(-Infinity)
-    );
+    const buffer = Array(this.height)
+      .fill(null)
+      .map(() => Array(this.width).fill(" "));
+    const zBuffer = Array(this.height)
+      .fill(null)
+      .map(() => Array(this.width).fill(-Infinity));
 
     // Generar geometría según patrón
     let vertices;
     let edges;
 
-    if (this.config.pattern === 'cube') {
+    if (this.config.pattern === "cube") {
       vertices = this.generateCube();
       edges = [
-        [0,1],[1,2],[2,3],[3,0], // Frontal
-        [4,5],[5,6],[6,7],[7,4], // Trasera
-        [0,4],[1,5],[2,6],[3,7]  // Conexiones
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 0], // Frontal
+        [4, 5],
+        [5, 6],
+        [6, 7],
+        [7, 4], // Trasera
+        [0, 4],
+        [1, 5],
+        [2, 6],
+        [3, 7], // Conexiones
       ];
-    } else if (this.config.pattern === 'pyramid') {
+    } else if (this.config.pattern === "pyramid") {
       vertices = this.generatePyramid();
       edges = [
-        [0,1],[0,2],[0,3],[0,4], // Desde vértice a base
-        [1,2],[2,3],[3,4],[4,1]  // Base
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [0, 4], // Desde vértice a base
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 1], // Base
       ];
-    } else if (this.config.pattern === 'custom' && this.customModel) {
+    } else if (this.config.pattern === "custom" && this.customModel) {
       vertices = this.generateCustom();
       edges = this.customModel.edges;
     } else {
       vertices = this.generateCube();
       edges = [
-        [0,1],[1,2],[2,3],[3,0],
-        [4,5],[5,6],[6,7],[7,4],
-        [0,4],[1,5],[2,6],[3,7]
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 0],
+        [4, 5],
+        [5, 6],
+        [6, 7],
+        [7, 4],
+        [0, 4],
+        [1, 5],
+        [2, 6],
+        [3, 7],
       ];
     }
 
     // Proyectar vértices
-    const projected = vertices.map(v => this.project(v));
+    const projected = vertices.map((v) => this.project(v));
 
     edges.forEach(([start, end], idx) => {
       this.drawLine(
@@ -191,12 +234,12 @@ class ASCII3D {
         projected[end],
         buffer,
         zBuffer,
-        this.config.chars[idx % this.config.chars.length]
+        this.config.chars[idx % this.config.chars.length],
       );
     });
 
     // Convertir buffer a string
-    const output = buffer.map(row => row.join('')).join('\n');
+    const output = buffer.map((row) => row.join("")).join("\n");
     this.canvas.textContent = output;
 
     // Actualizar rotación
@@ -278,6 +321,6 @@ class ASCII3D {
 }
 
 // Exportar para uso global
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.ASCII3D = ASCII3D;
 }

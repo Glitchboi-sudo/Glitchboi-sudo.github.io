@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title
+      data-title-es="Cerberus: Version 1.0 — GLITCHBOI"
+      data-title-en="Cerberus: Version 1.0 — GLITCHBOI"
+    >
+      Cerberus: Version 1.0 — GLITCHBOI
+    </title>
+    <meta
+      name="description"
+      content="Qué es Cerberus, por qué lo construí y cómo funciona"
+      data-desc-es="Qué es Cerberus, por qué lo construí y cómo funciona"
+      data-desc-en="What is Cerberus, why I built it and how it works"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="header" aria-label="Encabezado estilo dossier">
+        <a href="../" aria-label="Inicio">
+          <img class="logoX" src="../assets/images/GlitchLogo.svg" alt="" />
+        </a>
+        <div class="top-marks">
+          <span>[PG 00,101]</span><span>[AG 00,101]</span>
+        </div>
+        <div class="bar" role="presentation"></div>
+        <div class="title" data-lang="es" data-glitch="Cerberus: Version 1.0">
+          Cerberus: Version 1.0
+        </div>
+        <div class="title" data-lang="en" data-glitch="Cerberus: Version 1.0">
+          Cerberus: Version 1.0
+        </div>
+        <div class="kicker">Glitch Hardware — Blog</div>
+        <hr class="rule" />
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <span class="badge">POST</span>
+          <div>
+            <button
+              id="themeBtn"
+              class="toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Cambiar tema"
+            >
+              <span data-lang="es">[ modo nocturno ]</span>
+              <span data-lang="en">[ dark mode ]</span>
+            </button>
+            <a
+              id="backBtn"
+              class="toggle"
+              href="../blog/"
+              aria-label="Regresar al blog"
+              style="margin-left: 8px"
+            >
+              <span data-lang="es">[ Regresar ]</span>
+              <span data-lang="en">[ Back ]</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- META DEL POST -->
+      <div class="label">
+        <span data-lang="es">Detalles</span>
+        <span data-lang="en">Details</span>
+      </div>
+      <div class="card" style="margin-bottom: 12px">
+        <div class="dotfill" style="margin-bottom: 6px">
+          <span><time datetime="2025-12-07">2025-12-07</time></span>
+          <i></i>
+          <span>
+            <span data-lang="es">Categoría: Proyecto</span>
+            <span data-lang="en">Category: Project</span>
+          </span>
+        </div>
+      </div>
+
+      <article class="card" style="margin-bottom: 12px">
+        <div class="label">
+          <span data-lang="es">Contenido</span>
+          <span data-lang="en">Content</span>
+        </div>
+        <div style="font-size: 14px">
+          <div data-lang="es" data-body="es">
+            <p>
+              Después de mucho tiempo por fin pude terminar la primera versión
+              funcional del proyecto, Cerberus. Fue un camino largo, para este
+              punto tengo 4 prototipos, cada uno con errores diferentes y cosas
+              que sinceramente estaban mal hechas.
+            </p>
+            <p>
+              Este proyecto lo empecé gracias a que vi USBValve en el canal de
+              Linus Tech Tips y se me hizo muy interesante. Yo quería uno pero
+              tenía relativamente poca experiencia con hardware. Se puede ver en
+              mi intento de PCB
+            </p>
+            <img
+              src="../assets/images/imagen.png"
+              alt="prototipo 1"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <p>
+              Cuando me di cuenta de mi error me di cuenta que USBValve no tiene
+              protección contra USBKiller y eso me pareció una gran oportunidad!
+              Poder aportar algo nuevo a un proyecto que antes de mi
+              intervención se veía muy robusto.
+            </p>
+            <p>
+              Me puse a investigar y descubrí que
+              <a href="https://electroniccats.com/store/paw-protector/"
+                >Electronic Cats</a
+              >
+              vende un producto como el que quería, un "condón" que protege tu
+              puerto USB de todo tipo de ataques, pero había un detalle que me
+              hizo mucho ruido
+              <b>lo hace desconectando todos los pines de datos</b>
+            </p>
+            <p>
+              Para mí eso lo hacía en extremo deficiente para un investigador
+              que quiere debuggear payloads o gastar bromas. Por eso empecé a
+              trabajar en mi propio diseño <br />
+              gracias a que EC es una empresa dedicada al software libre pude
+              bajar los diseños y empezar a modificarlos como base, pero leí muy
+              mal los data sheets de los componentes y mi diseño quedó horrible
+              además de inservible
+            </p>
+            <img
+              src="../assets/images/imagen(1).png"
+              alt="prototipo 2"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <p>
+              No conecté las rutas de datos, mi circuito de sobrevoltaje estaba
+              al revés y no podía corregirlo. Por eso después hice módulos de
+              todo y a volver a la protoboard, con eso pude hacer mi primera
+              versión funcional.
+            </p>
+            <img
+              src="../assets/images/imagen(2).png"
+              alt="prototipo 3"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <p>
+              En este punto ya había invertido mucho tiempo en el hardware, en
+              lo que debuggeaba cosas me puse a tocar el software, y fui
+              cambiando la GUI, hice pantallas e indicadores con el NeoPixel de
+              la RP2040-zero. Con eso fui avanzando en versiones del firmware,
+              pero aún me quedaban muchas dudas de mi circuito. Me puse a
+              investigar mucho y me di cuenta de algo terrible para mí en ese
+              punto.
+            </p>
+            <p>
+              A partir de la versión 3 de USBKiller se pueden dar descargas por
+              los buses de datos, es algo completamente diferente a lo que yo
+              tenía diseñado. Por lo que tuve que rediseñar todo otra vez. ¿Cómo
+              aíslas eléctricamente buses datos de "alta velocidad" pero que se
+              sigan comunicando? Pues no sabía, toca leer mucho.
+            </p>
+            <p>
+              Mientras buscaba componentes e ideas me topé con el módulo USB de
+              ADUM3160, parecía ideal! Lo adapté y todo hacía sentido, pero me
+              topé con una pared. Con solo este circuito es imposible saber tal
+              cual si una USB es USBKiller, claro no le va a pasar nada al
+              circuito pero no te va a avisar, sentía que era algo necesario por
+              lo que busqué como solucionar mi problema.
+            </p>
+            <p>
+              Al final encontré el UCS4003-E/8N de Texas Instruments, no es que
+              aguante todo el voltaje que le voy a meter pero sí avisa que hay
+              un corto o sobretensión. Con eso es suficiente, lo agregué y
+              llegamos a la versión 1.0:
+            </p>
+            <img
+              src="../assets/images/2.jpeg"
+              alt="Version 1 frente"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <img
+              src="../assets/images/3.jpeg"
+              alt="Version 2 detras"
+              style="
+                max-width: 100%;
+                width: 380px;
+                display: block;
+                margin: -150px auto -120px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+                transform: rotate(90deg);
+              "
+            />
+            <p>
+              Esta es la primera versión de la que me siento orgulloso. Es
+              funcional, creo que es estética y muy portable. Siguiendo con la
+              visión de la empresa sé qué esperar a que todos usen exactamente
+              mi diseño completo. Por lo que hice un módulo con la parte de
+              protección de sobrevoltaje para que puedan incluirlo a un USBValve
+              común y corriente o a su diseño personal.
+            </p>
+            <p>
+              Fue mucho tiempo pero estoy seguro que valió la pena! Espero que
+              pronto puedan tener uno en sus manos y compartir sus comentarios!
+            </p>
+
+            <p>
+              Este proyecto fue posible gracias al apoyo de
+              <a
+                href="https://www.pcbway.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >PCBWay</a
+              >. Gracias a ellos pudimos llevar CerberusZero del esquemático a
+              un producto físico. Los archivos Gerber están listos para subir
+              directamente a su plataforma.
+            </p>
+            <p align="center">
+              <img
+                src="https://www.pcbway.com/project/img/images/frompcbway-1220.png"
+                alt="PCBWay Logo"
+                width="400"
+              />
+            </p>
+
+            <hr class="rule" />
+
+            <p>¿Tienes ideas? Pull Requests bienvenidos.</p>
+
+            <hr class="rule" />
+
+            <p><strong>Agradecimientos</strong></p>
+            <p>
+              <a
+                href="https://github.com/cecio"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Cecio</a
+              >
+              por USBvalve, la base sobre la que construimos el proyecto.<br />
+              <a
+                href="https://github.com/wagiminator"
+                target="_blank"
+                rel="noopener noreferrer"
+                >wagiminator</a
+              >
+              por el diseño del aislador USB ADUM3160.<br />
+            </p>
+
+            <hr class="rule" />
+            <p>
+              Cerberus es <strong>100% open source</strong> bajo licencia GNU
+              AGPLv3.
+            </p>
+            <p>
+              <strong>Repositorio</strong>:
+              <a
+                href="https://github.com/Glitchboi-sudo/Cerberus-A-USB-Watchdog"
+                target="_blank"
+                rel="noopener noreferrer"
+                >github.com/Glitchboi-sudo/Cerberus-A-USB-Watchdog</a
+              >
+            </p>
+          </div>
+
+          <div data-lang="en" data-body="en">
+            <p>
+              After a long time I was finally able to finish the first
+              functional version of the project, Cerberus. It was a long road,
+              at this point I have 4 prototypes, each with different errors and
+              things that were honestly poorly made.
+            </p>
+            <p>
+              I started this project because I saw USBValve on the Linus Tech
+              Tips channel and I found it very interesting. I wanted one but I
+              had relatively little experience with hardware. You can see it in
+              my PCB attempt
+            </p>
+            <img
+              src="../assets/images/imagen.png"
+              alt="prototype 1"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <p>
+              When I realized my mistake I noticed that USBValve has no
+              protection against USBKiller and that seemed like a great
+              opportunity! Being able to contribute something new to a project
+              that before my intervention looked very robust.
+            </p>
+            <p>
+              I started researching and discovered that
+              <a href="https://electroniccats.com/store/paw-protector/"
+                >Electronic Cats</a
+              >
+              sells a product like the one I wanted, a "condom" that protects
+              your USB port from all types of attacks, but there was a detail
+              that bothered me a lot:
+              <b>it does it by disconnecting all data pins</b>
+            </p>
+            <p>
+              For me that made it extremely deficient for a researcher who wants
+              to debug payloads or play pranks. That's why I started working on
+              my own design <br />
+              Thanks to EC being a company dedicated to free software I was able
+              to download the designs and start modifying them as a base, but I
+              read the component datasheets very poorly and my design ended up
+              horrible and useless
+            </p>
+            <img
+              src="../assets/images/imagen(1).png"
+              alt="prototype 2"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <p>
+              I didn't connect the data routes, my overvoltage circuit was
+              backwards and I couldn't fix it. That's why I later made modules
+              of everything and went back to the protoboard, with that I was
+              able to make my first functional version.
+            </p>
+            <img
+              src="../assets/images/imagen(2).png"
+              alt="prototype 3"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <p>
+              At this point I had already invested a lot of time in the
+              hardware, while debugging things I started touching the software,
+              and I kept changing the GUI, I made screens and indicators with
+              the NeoPixel on the RP2040-zero. With that I was advancing through
+              firmware versions, but I still had many doubts about my circuit. I
+              researched a lot and realized something terrible for me at that
+              point.
+            </p>
+            <p>
+              Starting from version 3 of USBKiller, discharges can be given
+              through data buses, it's something completely different from what
+              I had designed. So I had to redesign everything again. How do you
+              electrically isolate "high speed" data buses but still allow them
+              to communicate? Well, I didn't know, time to read a lot.
+            </p>
+            <p>
+              While looking for components and ideas I came across the ADUM3160
+              USB module, it seemed ideal! I adapted it and everything made
+              sense, but I hit a wall. With just this circuit it's impossible to
+              know if a USB is a USBKiller, of course nothing will happen to the
+              circuit but it won't warn you, I felt that was necessary so I
+              looked for how to solve my problem.
+            </p>
+            <p>
+              In the end I found the UCS4003-E/8N from Texas Instruments, it's
+              not that it withstands all the voltage I'm going to put into it
+              but it does warn about a short or overvoltage. That's enough, I
+              added it and we arrived at version 1.0:
+            </p>
+            <img
+              src="../assets/images/2.jpeg"
+              alt="Version 1 front"
+              style="
+                max-width: 100%;
+                width: 500px;
+                display: block;
+                margin: 16px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+              "
+            />
+            <img
+              src="../assets/images/3.jpeg"
+              alt="Version 1 back"
+              style="
+                max-width: 100%;
+                width: 380px;
+                display: block;
+                margin: -150px auto -120px auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                border: 2px solid var(--rule);
+                transform: rotate(90deg);
+              "
+            />
+            <p>
+              This is the first version I'm proud of. It's functional, I think
+              it's aesthetic and very portable. Following the company's vision I
+              know what to expect for everyone to use exactly my complete
+              design. That's why I made a module with the overvoltage protection
+              part so they can include it in a regular USBValve or their
+              personal design.
+            </p>
+            <p>
+              It took a long time but I'm sure it was worth it! I hope you can
+              soon have one in your hands and share your comments!
+            </p>
+
+            <p>
+              This project was made possible thanks to the support of
+              <a
+                href="https://www.pcbway.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >PCBWay</a
+              >. Thanks to them we were able to take CerberusZero from schematic
+              to a physical product. The Gerber files are ready to upload
+              directly to their platform.
+            </p>
+            <p align="center">
+              <img
+                src="https://www.pcbway.com/project/img/images/frompcbway-1220.png"
+                alt="PCBWay Logo"
+                width="400"
+              />
+            </p>
+
+            <hr class="rule" />
+
+            <p>Got ideas? Pull Requests welcome.</p>
+
+            <hr class="rule" />
+
+            <p><strong>Acknowledgments</strong></p>
+            <p>
+              <a
+                href="https://github.com/cecio"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Cecio</a
+              >
+              for USBvalve, the base on which we built the project.<br />
+              <a
+                href="https://github.com/wagiminator"
+                target="_blank"
+                rel="noopener noreferrer"
+                >wagiminator</a
+              >
+              for the ADUM3160 USB isolator design.<br />
+            </p>
+
+            <hr class="rule" />
+            <p>
+              Cerberus is <strong>100% open source</strong> under GNU AGPLv3
+              license.
+            </p>
+            <p>
+              <strong>Repository</strong>:
+              <a
+                href="https://github.com/Glitchboi-sudo/Cerberus-A-USB-Watchdog"
+                target="_blank"
+                rel="noopener noreferrer"
+                >github.com/Glitchboi-sudo/Cerberus-A-USB-Watchdog</a
+              >
+            </p>
+          </div>
+
+          <hr class="rule" />
+          <p style="font-size: 12px; color: var(--muted)">
+            <span data-lang="es">Etiquetas:</span>
+            <span data-lang="en">Tags:</span> #hardware #iot #seguridad #usb
+            #redteam
+          </p>
+        </div>
+      </article>
+
+      <div
+        class="card"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        "
+      >
+        <div class="label" style="margin: 0">
+          <span data-lang="es">Sigue el proyecto</span>
+          <span data-lang="en">Follow the project</span>
+        </div>
+        <div style="display: flex; gap: 8px">
+          <a
+            class="block"
+            href="https://github.com/Glitchboi-sudo"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <a class="block" href="../" aria-label="Volver al inicio">
+            <span data-lang="es">Inicio</span>
+            <span data-lang="en">Home</span>
+          </a>
+        </div>
+      </div>
+
+      <div id="projects" style="display: none"></div>
+      <div id="blog" style="display: none"></div>
+
+      <div class="footer">
+        <hr class="rule" />
+        <div class="top-marks" style="margin-top: 6px">
+          <span>&copy; <span id="y"></span> Glitch Hardware</span>
+          <span>[status: online]</span>
+        </div>
+      </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>
