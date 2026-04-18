@@ -529,6 +529,31 @@ function renderBanner(meta) {
   itemContainer.style.alignItems = "center";
   itemContainer.style.justifyContent = "center";
 
+  // Soporte de swipe/touch para navegación en móvil
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const minSwipeDistance = 50; // Mínima distancia para considerar swipe
+
+  itemWrapper.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  itemWrapper.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (Math.abs(swipeDistance) > minSwipeDistance && filteredItems.length > 1) {
+      if (swipeDistance < 0) {
+        // Swipe izquierda -> siguiente
+        currentIndex = (currentIndex + 1) % filteredItems.length;
+      } else {
+        // Swipe derecha -> anterior
+        currentIndex = (currentIndex - 1 + filteredItems.length) % filteredItems.length;
+      }
+      renderItem(currentIndex);
+    }
+  }, { passive: true });
+
   // Variables para título e indicadores
   let titleEl = null;
   let indicatorContainer = null;
@@ -551,8 +576,9 @@ function renderBanner(meta) {
   // Función para actualizar visibilidad de navegación
   function updateNavVisibility() {
     const showNav = filteredItems.length > 1;
-    if (prevBtn) prevBtn.style.display = showNav ? "" : "none";
-    if (nextBtn) nextBtn.style.display = showNav ? "" : "none";
+    // En móvil ocultamos las flechas completamente (se usa swipe)
+    if (prevBtn) prevBtn.style.display = (showNav && !isMobile) ? "" : "none";
+    if (nextBtn) nextBtn.style.display = (showNav && !isMobile) ? "" : "none";
     if (indicatorContainer)
       indicatorContainer.style.display = showNav ? "flex" : "none";
   }
@@ -708,8 +734,22 @@ function renderBanner(meta) {
   titleEl.style.color = "var(--muted)";
   titleEl.style.textAlign = "center";
 
+  // Hint de swipe para móvil
+  let swipeHint = null;
+  if (isMobile && allGalleryItems.length > 1) {
+    swipeHint = document.createElement("div");
+    swipeHint.id = "gallery-swipe-hint";
+    swipeHint.style.marginTop = "8px";
+    swipeHint.style.fontSize = "10px";
+    swipeHint.style.color = "var(--muted)";
+    swipeHint.style.textAlign = "center";
+    swipeHint.style.opacity = "0.6";
+    swipeHint.textContent = "← desliza →";
+  }
+
   container.appendChild(indicatorContainer);
   container.appendChild(titleEl);
+  if (swipeHint) container.appendChild(swipeHint);
 
   // Inicializar
   rebuildIndicators();

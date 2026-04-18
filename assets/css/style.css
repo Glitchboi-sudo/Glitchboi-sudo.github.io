@@ -435,6 +435,20 @@ a:focus-visible::before {
 [data-theme="dark"] .logoX {
   filter: invert(1);
 }
+/* Logo link - sin efecto hover */
+a:has(.logoX),
+a[aria-label="Inicio"] {
+  background: transparent !important;
+  color: inherit !important;
+}
+a:has(.logoX):hover,
+a:has(.logoX):focus-visible,
+a[aria-label="Inicio"]:hover,
+a[aria-label="Inicio"]:focus-visible {
+  background: transparent !important;
+  color: inherit !important;
+  outline: none;
+}
 .top-marks {
   display: flex;
   justify-content: space-between;
