@@ -514,11 +514,17 @@ function renderBanner(meta) {
 
   container.appendChild(controlsBar);
 
+  // Wrapper para el item + flechas de navegación (position: relative para las flechas absolutas)
+  const itemWrapper = document.createElement("div");
+  itemWrapper.id = "gallery-item-wrapper";
+  itemWrapper.style.position = "relative";
+  itemWrapper.style.width = "100%";
+
   // Contenedor del item actual
   const itemContainer = document.createElement("div");
   itemContainer.id = "gallery-item-container";
   itemContainer.style.width = "100%";
-  itemContainer.style.minHeight = "480px";
+  itemContainer.style.minHeight = isMobile ? "300px" : "480px";
   itemContainer.style.display = "flex";
   itemContainer.style.alignItems = "center";
   itemContainer.style.justifyContent = "center";
@@ -676,8 +682,13 @@ function renderBanner(meta) {
     renderItem(currentIndex);
   });
 
-  container.appendChild(prevBtn);
-  container.appendChild(nextBtn);
+  // Agregar flechas al wrapper del item (no al container principal)
+  itemWrapper.appendChild(itemContainer);
+  itemWrapper.appendChild(prevBtn);
+  itemWrapper.appendChild(nextBtn);
+
+  // Agregar wrapper al container principal
+  container.appendChild(itemWrapper);
 
   // Indicador de posición (dots)
   indicatorContainer = document.createElement("div");
@@ -697,7 +708,6 @@ function renderBanner(meta) {
   titleEl.style.color = "var(--muted)";
   titleEl.style.textAlign = "center";
 
-  container.appendChild(itemContainer);
   container.appendChild(indicatorContainer);
   container.appendChild(titleEl);
 
