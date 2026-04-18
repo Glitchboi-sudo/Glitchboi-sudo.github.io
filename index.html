@@ -433,7 +433,11 @@
       document.addEventListener("DOMContentLoaded", async () => {
         try {
           // Usar función compartida para inicializar con configuración estándar de halftone
-          await initASCII3DWithModel("ascii-3d", "assets/models/cerberus.obj");
+          // floatingMode: animación estilo videojuego (rotación Y + flotación vertical)
+          await initASCII3DWithModel("ascii-3d", "assets/models/cerberus.obj", {
+            floatingMode: true,
+            rotationSpeed: 0.006
+          });
 
           // Configurar toggle de color
           const colorBtn = document.getElementById("colorBtn");

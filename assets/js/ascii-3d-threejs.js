@@ -117,14 +117,14 @@ class ASCII3DThreeJS {
     const height = this.container.clientHeight || 320;
     const aspect = width / height || 1.25;
 
-    // Camera (alejada para modelo más grande)
+    // Camera - optimizada para llenar más el espacio
     this.camera = new THREE.PerspectiveCamera(
-      45,
+      40,  // FOV más estrecho para modelo más grande
       aspect,
       0.1,
       1000
     );
-    this.camera.position.z = 15;  // Alejada para ver modelo 5x más grande
+    this.camera.position.z = 12;  // Más cerca para que el modelo llene más espacio
 
     // Renderer (off-screen) - sin antialiasing para efecto bitmap
     this.renderer = new THREE.WebGLRenderer({

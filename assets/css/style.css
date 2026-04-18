@@ -495,6 +495,175 @@ a:focus-visible::before {
   }
 }
 
+/* ===== PROJECT LAYOUT - TWO COLUMNS ===== */
+.project-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .project-layout {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .project-layout .project-visual {
+    position: sticky;
+    top: 16px;
+  }
+}
+@media (min-width: 1200px) {
+  .project-layout {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+.project-visual {
+  min-width: 0; /* Prevent grid blowout */
+  overflow: hidden;
+}
+.project-visual .window-content {
+  padding: 8px !important;
+}
+.project-visual #project-banner {
+  min-height: 480px;
+}
+@media (min-width: 900px) {
+  .project-visual #project-banner {
+    min-height: 550px;
+  }
+}
+@media (min-width: 1200px) {
+  .project-visual #project-banner {
+    min-height: 620px;
+  }
+}
+@media (max-width: 480px) {
+  .project-visual #project-banner {
+    min-height: 350px;
+  }
+}
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0; /* Prevent grid blowout */
+  overflow: hidden;
+}
+.project-info .tech-divider {
+  margin: 0;
+}
+.project-info .window {
+  margin: 0;
+}
+.project-info .window-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.project-info .spec-sheet {
+  overflow: hidden;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 1100px) {
+  .project-info .spec-sheet {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.project-info .window-footer {
+  font-size: 10px;
+}
+.project-info .window-footer span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48%;
+}
+/* Stats grid for project info */
+.project-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px;
+}
+.project-stat {
+  text-align: center;
+  padding: 8px 4px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+.project-stat-value {
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  color: var(--tech-green, #00ff00);
+}
+.project-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-top: 4px;
+  display: block;
+}
+
+/* Markdown content styling */
+#project-description a {
+  color: var(--tech-green, #00ff00);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#project-description a:hover {
+  color: var(--ink);
+  background: var(--tech-green, #00ff00);
+}
+#project-description code {
+  background: var(--rule);
+  padding: 2px 6px;
+  font-family: var(--mono, monospace);
+  font-size: 12px;
+  border: 1px solid var(--muted);
+}
+#project-description pre {
+  background: var(--rule);
+  padding: 12px;
+  overflow-x: auto;
+  font-family: var(--mono, monospace);
+  font-size: 12px;
+  margin: 12px 0;
+  border: 1px solid var(--muted);
+}
+#project-description pre code {
+  background: none;
+  padding: 0;
+  border: none;
+}
+#project-description ul,
+#project-description ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+#project-description li {
+  margin: 4px 0;
+}
+#project-description strong {
+  font-weight: bold;
+  color: var(--ink);
+}
+#project-description em {
+  font-style: italic;
+}
+#project-description h2,
+#project-description h3,
+#project-description h4 {
+  margin: 16px 0 8px;
+  font-weight: bold;
+  color: var(--ink);
+}
+#project-description hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 16px 0;
+}
+
 .label {
   font-size: 12px;
   text-transform: uppercase;
@@ -865,23 +1034,44 @@ a:focus-visible::before {
 
 /* ===== MOBILE COMPREHENSIVE FIXES ===== */
 
-/* ASCII 3D Container - Mobile optimizado */
+/* ASCII 3D Container - Responsive con viewport height */
 .ascii-3d-container {
   width: 100%;
-  height: 280px;
+  height: 55vh;
+  min-height: 400px;
+  max-height: 600px;
   position: relative;
   overflow: hidden;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1400px) {
   .ascii-3d-container {
-    height: 220px;
+    height: 60vh;
+    max-height: 700px;
+  }
+}
+
+@media (max-width: 900px) {
+  .ascii-3d-container {
+    height: 45vh;
+    min-height: 300px;
+    max-height: 450px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ascii-3d-container {
+    height: 40vh;
+    min-height: 250px;
+    max-height: 350px;
   }
 }
 
 @media (max-width: 480px) {
   .ascii-3d-container {
-    height: 180px;
+    height: 35vh;
+    min-height: 200px;
+    max-height: 300px;
   }
 }
 

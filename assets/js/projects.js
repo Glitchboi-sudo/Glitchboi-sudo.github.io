@@ -94,6 +94,73 @@ function clampText(str, max = 240) {
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trim() + "\u2026";
 }
 
+/**
+ * Simple markdown parser for README rendering
+ * Supports: links, bold, italic, code, headers, lists, horizontal rules
+ */
+function parseMarkdown(text) {
+  if (!text) return "";
+
+  let html = text
+    // Escape HTML first (but preserve markdown)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+
+    // Headers (must be at start of line)
+    .replace(/^### (.+)$/gm, '<h4 style="margin: 16px 0 8px; font-size: 14px; font-weight: bold;">$1</h4>')
+    .replace(/^## (.+)$/gm, '<h3 style="margin: 16px 0 8px; font-size: 15px; font-weight: bold;">$1</h3>')
+    .replace(/^# (.+)$/gm, '<h2 style="margin: 16px 0 8px; font-size: 16px; font-weight: bold;">$1</h2>')
+
+    // Horizontal rule
+    .replace(/^[-*_]{3,}$/gm, '<hr style="border: none; border-top: 1px solid var(--rule); margin: 16px 0;">')
+
+    // Code blocks (```code```)
+    .replace(/```([^`]+)```/gs, '<pre style="background: var(--rule); padding: 12px; overflow-x: auto; font-family: monospace; font-size: 12px; margin: 12px 0; border: 1px solid var(--muted);">$1</pre>')
+
+    // Inline code (`code`)
+    .replace(/`([^`]+)`/g, '<code style="background: var(--rule); padding: 2px 6px; font-family: monospace; font-size: 12px;">$1</code>')
+
+    // Images ![alt](url) - render as linked text since we're in ASCII theme
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<span style="color: var(--muted);">[img: $1]</span>')
+
+    // Links [text](url)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: var(--tech-green); text-decoration: underline;">$1</a>')
+
+    // Bold **text** or __text__
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+
+    // Italic *text* or _text_
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/_([^_]+)_/g, '<em>$1</em>')
+
+    // Unordered lists (- or *)
+    .replace(/^[\-\*] (.+)$/gm, '<li style="margin-left: 20px; list-style: disc;">$1</li>')
+
+    // Ordered lists (1. 2. etc)
+    .replace(/^\d+\. (.+)$/gm, '<li style="margin-left: 20px; list-style: decimal;">$1</li>')
+
+    // Wrap consecutive <li> elements in <ul>
+    .replace(/(<li[^>]*>.*<\/li>\n?)+/g, (match) => `<ul style="margin: 8px 0; padding: 0;">${match}</ul>`)
+
+    // Paragraphs (double newline)
+    .replace(/\n\n+/g, '</p><p style="margin: 0 0 12px;">')
+
+    // Single newlines within paragraphs
+    .replace(/\n/g, '<br>');
+
+  // Wrap in paragraph if not starting with block element
+  if (!html.startsWith('<h') && !html.startsWith('<ul') && !html.startsWith('<pre') && !html.startsWith('<hr')) {
+    html = `<p style="margin: 0 0 12px;">${html}</p>`;
+  }
+
+  // Clean up empty paragraphs
+  html = html.replace(/<p[^>]*>\s*<\/p>/g, '');
+
+  return html;
+}
+
 function parseRepoParam() {
   const params = new URLSearchParams(location.search);
   const repo = params.get("repo") || params.get("id") || params.get("project");
@@ -352,6 +419,7 @@ function renderBanner(meta) {
   let filteredItems = allGalleryItems;
   let currentIndex = 0;
   const initializedModels = new Map(); // Map para guardar instancias de modelos
+  let isColorMode = false; // Estado persistente del modo color
 
   // Crear contenedor principal de galería
   const container = document.createElement("div");
@@ -416,13 +484,37 @@ function renderBanner(meta) {
     controlsBar.appendChild(filterGroup);
   }
 
+  // Botón de color para modelos 3D (solo si hay modelos)
+  let colorBtn = null;
+  if (hasModels) {
+    colorBtn = document.createElement("button");
+    colorBtn.className = "toggle";
+    colorBtn.style.padding = "4px 10px";
+    colorBtn.style.fontSize = "11px";
+    colorBtn.style.fontWeight = "bold";
+    colorBtn.textContent = "[ color ]";
+    colorBtn.setAttribute("aria-pressed", "false");
+    colorBtn.setAttribute("aria-label", "Alternar colores");
+
+    colorBtn.addEventListener("click", () => {
+      if (typeof toggleAllMonochromeMode === "function") {
+        const isMonochrome = toggleAllMonochromeMode();
+        isColorMode = !isMonochrome;
+        colorBtn.textContent = isMonochrome ? "[ color ]" : "[ monocromo ]";
+        colorBtn.setAttribute("aria-pressed", String(!isMonochrome));
+      }
+    });
+
+    controlsBar.appendChild(colorBtn);
+  }
+
   container.appendChild(controlsBar);
 
   // Contenedor del item actual
   const itemContainer = document.createElement("div");
   itemContainer.id = "gallery-item-container";
   itemContainer.style.width = "100%";
-  itemContainer.style.minHeight = "320px";
+  itemContainer.style.minHeight = "480px";
   itemContainer.style.display = "flex";
   itemContainer.style.alignItems = "center";
   itemContainer.style.justifyContent = "center";
@@ -505,8 +597,8 @@ function renderBanner(meta) {
       const img = document.createElement("img");
       img.src = resolveAsset(item.src);
       img.alt = item.title || meta?.title || "Proyecto";
-      img.style.maxWidth = "500px";
-      img.style.maxHeight = "400px";
+      img.style.maxWidth = "100%";
+      img.style.maxHeight = "480px";
       img.style.width = "auto";
       img.style.height = "auto";
       img.style.objectFit = "contain";
@@ -517,9 +609,9 @@ function renderBanner(meta) {
       const modelNode = document.createElement("div");
       modelNode.id = `gallery-model-${index}-${Date.now()}`;
       modelNode.className = "ascii-3d-container";
-      modelNode.style.width = "500px";
+      modelNode.style.width = "100%";
       modelNode.style.maxWidth = "100%";
-      modelNode.style.height = "400px";
+      modelNode.style.height = "480px";
       itemContainer.appendChild(modelNode);
 
       // Inicializar modelo 3D
@@ -611,27 +703,22 @@ function renderBanner(meta) {
           fps: 30,
           color: modelColor,
           floatingMode: true, // Animación tipo videojuego: rotación Y + flotación
+          monochromeMode: !isColorMode, // Aplicar estado actual de color
         })
           .then((instance) => {
-            if (instance) initializedModels.set(modelKey, instance);
+            if (instance) {
+              initializedModels.set(modelKey, instance);
+              // Aplicar el estado de color actual al nuevo modelo
+              if (isColorMode && typeof instance.setMonochromeMode === "function") {
+                instance.setMonochromeMode(false);
+              }
+            }
           })
           .catch((e) => {
             console.warn("3D banner:", e);
             node.innerHTML =
               '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';
           });
-        const colorBtn = document.getElementById("colorBtn");
-        if (colorBtn) {
-          // Estado inicial (monocromático)
-          colorBtn.textContent = "[ color ]";
-          colorBtn.setAttribute("aria-pressed", "false");
-
-          colorBtn.addEventListener("click", () => {
-            const isMonochrome = toggleAllMonochromeMode();
-            colorBtn.textContent = isMonochrome ? "[ color ]" : "[ monocromo ]";
-            colorBtn.setAttribute("aria-pressed", String(!isMonochrome));
-          });
-        }
       } else if (typeof ASCII3DThreeJS !== "undefined") {
         const ascii = new ASCII3DThreeJS(node.id, {
           cellSize: 2,
@@ -646,12 +733,17 @@ function renderBanner(meta) {
           halftoneSize: 2,
           colorReduction: 12,
           floatingMode: true, // Animación tipo videojuego
+          monochromeMode: !isColorMode, // Aplicar estado actual de color
         });
         ascii
           .loadModel(resolveAsset(modelPath))
           .then(() => {
             ascii.start();
             initializedModels.set(modelKey, ascii);
+            // Aplicar el estado de color actual al nuevo modelo
+            if (isColorMode && typeof ascii.setMonochromeMode === "function") {
+              ascii.setMonochromeMode(false);
+            }
           })
           .catch(() => {});
       } else {
@@ -735,15 +827,46 @@ function buildGalleryItems(meta) {
 }
 
 function renderTags(tags) {
-  const $tags = document.getElementById("project-tags");
-  if (!$tags) return;
-  $tags.innerHTML = "";
-  (tags || []).forEach((tag) => {
-    const span = document.createElement("span");
-    span.className = "badge";
-    span.textContent = `#${tag}`;
-    $tags.appendChild(span);
+  const tagContainers = [
+    document.getElementById("project-tags"),
+    document.getElementById("project-tags-visual"),
+  ];
+
+  tagContainers.forEach(($tags) => {
+    if (!$tags) return;
+    $tags.innerHTML = "";
+    (tags || []).forEach((tag) => {
+      const span = document.createElement("span");
+      span.className = "badge";
+      span.textContent = `#${tag}`;
+      $tags.appendChild(span);
+    });
   });
+}
+
+function renderStats(gh, meta) {
+  const starsEl = document.getElementById("stat-stars");
+  const forksEl = document.getElementById("stat-forks");
+  const issuesEl = document.getElementById("stat-issues");
+  const updatedEl = document.getElementById("stat-updated");
+
+  if (gh) {
+    if (starsEl) starsEl.textContent = gh.stargazers_count ?? "—";
+    if (forksEl) forksEl.textContent = gh.forks_count ?? "—";
+    if (issuesEl) issuesEl.textContent = gh.open_issues_count ?? "—";
+    if (updatedEl) {
+      const date = gh.updated_at || meta?.updated;
+      if (date) {
+        const d = new Date(date);
+        updatedEl.textContent = `UPDATED: ${d.toLocaleDateString()}`;
+      }
+    }
+  } else if (meta?.updated) {
+    if (starsEl) starsEl.textContent = "—";
+    if (forksEl) forksEl.textContent = "—";
+    if (issuesEl) issuesEl.textContent = "—";
+    if (updatedEl) updatedEl.textContent = `UPDATED: ${meta.updated}`;
+  }
 }
 
 function renderLinks({ githubUrl, homepage, docs, extraLinks }) {
@@ -948,19 +1071,13 @@ function renderProject(meta, gh, descriptionText) {
 
   const bodyEl = document.getElementById("project-description");
   if (bodyEl) {
-    bodyEl.innerHTML = "";
-    description.split("\n").forEach((p) => {
-      if (!p.trim()) return;
-      const para = document.createElement("p");
-      para.style.marginTop = "0";
-      para.style.marginBottom = "12px";
-      para.textContent = p.trim();
-      bodyEl.appendChild(para);
-    });
+    // Render markdown description
+    bodyEl.innerHTML = parseMarkdown(description);
   }
 
   renderBanner(meta || {});
   renderTags(meta?.tags || gh?.topics || []);
+  renderStats(gh, meta);
   renderLinks({
     githubUrl: gh?.html_url || meta?.github,
     homepage: gh?.homepage || meta?.homepage,

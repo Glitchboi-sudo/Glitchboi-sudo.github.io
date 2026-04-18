@@ -87,15 +87,6 @@
               style="margin-left: 8px"
               >[ regresar ]</a
             >
-            <button
-              id="colorBtn"
-              class="toggle"
-              type="button"
-              aria-pressed="false"
-              aria-label="Alternar colores"
-            >
-              [ color ]
-            </button>
           </div>
         </div>
       </div>
@@ -114,164 +105,210 @@
         </div>
       </div>
 
-      <section>
-        <!-- VISUAL RENDER WINDOW -->
-        <div class="window">
-          <div class="window-titlebar">
-            <span class="window-title">RENDER.VISUAL.PREVIEW</span>
-            <div class="window-controls">
-              <span class="window-btn">[_]</span>
-              <span class="window-btn">[□]</span>
-              <span class="window-btn">[X]</span>
-            </div>
-          </div>
-          <div class="window-content" style="padding: 16px">
-            <div
-              id="project-banner"
-              style="
-                min-height: 00px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                overflow: hidden;
-                background: var(--paper);
-              "
-            ></div>
-          </div>
-          <div class="window-footer">
-            <span>RENDERER: ASCII-GL</span>
-            <span>FORMAT: OBJ/IMG</span>
-          </div>
-        </div>
-
-        <!-- TECH DIVIDER -->
-        <div class="tech-divider">
-          <span class="tech-divider-label">METADATA</span>
-        </div>
-
-        <!-- PROJECT METADATA WINDOW -->
-        <div class="window">
-          <div class="window-titlebar">
-            <span class="window-title">DATA.PROJECT.INFO</span>
-            <div class="window-controls">
-              <span class="window-btn">[_]</span>
-              <span class="window-btn">[□]</span>
-              <span class="window-btn">[X]</span>
-            </div>
-          </div>
-          <div class="window-content">
-            <div class="spec-sheet" id="project-spec-sheet">
-              <div class="spec-field">
-                <span class="spec-field-label">DATE</span>
-                <span class="spec-field-value" id="project-date">—</span>
-              </div>
-              <div class="spec-field">
-                <span class="spec-field-label">LANGUAGE</span>
-                <span class="spec-field-value" id="project-language">—</span>
-              </div>
-              <div class="spec-field">
-                <span class="spec-field-label">STATUS</span>
-                <span class="spec-field-value" style="color: var(--tech-green)"
-                  >ACTIVE</span
-                >
-              </div>
-              <div class="spec-field">
-                <span class="spec-field-label">LICENSE</span>
-                <span class="spec-field-value">OPEN</span>
+      <!-- TWO-COLUMN PROJECT LAYOUT -->
+      <section class="project-layout">
+        <!-- LEFT COLUMN: Visual Preview -->
+        <div class="project-visual">
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">RENDER.VISUAL.PREVIEW</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
               </div>
             </div>
-            <div style="margin-top: 12px">
-              <p class="desc" id="project-summary" style="margin: 0">—</p>
+            <div class="window-content">
+              <div
+                id="project-banner"
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  overflow: hidden;
+                  background: var(--paper);
+                "
+              ></div>
             </div>
-            <div
-              id="project-tags"
-              style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px"
-            ></div>
-          </div>
-          <div class="window-footer">
-            <span>FIELDS: 4</span>
-            <span>SCHEMA: v2.0</span>
-          </div>
-        </div>
-
-        <!-- TECH DIVIDER -->
-        <div class="tech-divider">
-          <span class="tech-divider-label">DESCRIPTION</span>
-        </div>
-
-        <!-- TECHNICAL DESCRIPTION WINDOW -->
-        <div class="window">
-          <div class="window-titlebar">
-            <span class="window-title">DOC.TECHNICAL.README</span>
-            <div class="window-controls">
-              <span class="window-btn">[_]</span>
-              <span class="window-btn">[□]</span>
-              <span class="window-btn">[X]</span>
+            <div class="window-footer">
+              <span>RENDERER: ASCII-GL</span>
+              <span>FORMAT: OBJ/IMG</span>
             </div>
           </div>
-          <div class="window-content">
-            <div
-              id="project-description"
-              style="font-size: 14px; line-height: 1.6"
-            ></div>
-          </div>
-          <div class="window-footer">
-            <span>FORMAT: MARKDOWN</span>
-            <span>SOURCE: README.md</span>
-          </div>
-        </div>
 
-        <!-- TECH DIVIDER -->
-        <div class="tech-divider">
-          <span class="tech-divider-label">ACCESS</span>
-        </div>
-
-        <!-- LINKS WINDOW -->
-        <div class="window">
-          <div class="window-titlebar">
-            <span class="window-title">LINKS.EXTERNAL.ACCESS</span>
-            <div class="window-controls">
-              <span class="window-btn">[_]</span>
-              <span class="window-btn">[□]</span>
-              <span class="window-btn">[X]</span>
+          <!-- QUICK STATS WINDOW -->
+          <div class="window" style="margin-top: 12px">
+            <div class="window-titlebar">
+              <span class="window-title">STATS.REPOSITORY.LIVE</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content" style="padding: 0">
+              <div class="project-stats" id="project-stats">
+                <div class="project-stat">
+                  <span class="project-stat-value" id="stat-stars">—</span>
+                  <span class="project-stat-label">Stars</span>
+                </div>
+                <div class="project-stat">
+                  <span class="project-stat-value" id="stat-forks">—</span>
+                  <span class="project-stat-label">Forks</span>
+                </div>
+                <div class="project-stat">
+                  <span class="project-stat-value" id="stat-issues">—</span>
+                  <span class="project-stat-label">Issues</span>
+                </div>
+              </div>
+            </div>
+            <div class="window-footer">
+              <span id="stat-updated">UPDATED: —</span>
+              <span>SOURCE: GITHUB</span>
             </div>
           </div>
-          <div class="window-content">
-            <div
-              id="project-links"
-              style="display: flex; gap: 10px; flex-wrap: wrap"
-            ></div>
-          </div>
-          <div class="window-footer">
-            <span>LINKS: LOADING...</span>
-          </div>
-        </div>
 
-        <!-- TECH DIVIDER -->
-        <div class="tech-divider" id="pricing-divider" style="display: none">
-          <span class="tech-divider-label">PRICING</span>
-        </div>
-
-        <!-- PRICING WINDOW -->
-        <div class="window" id="pricing-window" style="display: none">
-          <div class="window-titlebar">
-            <span class="window-title">PRICING.OPTIONS.HARDWARE</span>
-            <div class="window-controls">
-              <span class="window-btn">[_]</span>
-              <span class="window-btn">[□]</span>
-              <span class="window-btn">[X]</span>
+          <!-- TAGS WINDOW -->
+          <div class="window" style="margin-top: 12px">
+            <div class="window-titlebar">
+              <span class="window-title">TAGS.CATEGORIES</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div
+                id="project-tags-visual"
+                style="display: flex; gap: 8px; flex-wrap: wrap"
+              ></div>
+            </div>
+            <div class="window-footer">
+              <span>TYPE: HARDWARE</span>
             </div>
           </div>
-          <div class="window-content">
-            <p style="margin: 0 0 12px; font-size: 12px; color: var(--muted)">
-              <span data-lang="es">100% Open Source — Siempre puedes fabricar el tuyo</span>
-              <span data-lang="en" style="display: none">100% Open Source — You can always build your own</span>
-            </p>
-            <div id="project-pricing"></div>
+        </div>
+
+        <!-- RIGHT COLUMN: Project Info -->
+        <div class="project-info">
+          <!-- METADATA WINDOW -->
+          <div class="tech-divider">
+            <span class="tech-divider-label">METADATA</span>
           </div>
-          <div class="window-footer">
-            <span id="pricing-currency">CURRENCY: MXN</span>
-            <span>OPEN HARDWARE</span>
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">DATA.PROJECT.INFO</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div class="spec-sheet" id="project-spec-sheet">
+                <div class="spec-field">
+                  <span class="spec-field-label">DATE</span>
+                  <span class="spec-field-value" id="project-date">—</span>
+                </div>
+                <div class="spec-field">
+                  <span class="spec-field-label">LANGUAGE</span>
+                  <span class="spec-field-value" id="project-language">—</span>
+                </div>
+                <div class="spec-field">
+                  <span class="spec-field-label">STATUS</span>
+                  <span class="spec-field-value" style="color: var(--tech-green)">ACTIVE</span>
+                </div>
+                <div class="spec-field">
+                  <span class="spec-field-label">LICENSE</span>
+                  <span class="spec-field-value">OPEN</span>
+                </div>
+              </div>
+              <div style="margin-top: 12px">
+                <p class="desc" id="project-summary" style="margin: 0">—</p>
+              </div>
+              <!-- Tags moved to visual column -->
+              <div id="project-tags" style="display: none"></div>
+            </div>
+            <div class="window-footer">
+              <span>FIELDS: 4</span>
+              <span>SCHEMA: v2.0</span>
+            </div>
+          </div>
+
+          <!-- DESCRIPTION WINDOW -->
+          <div class="tech-divider">
+            <span class="tech-divider-label">DESCRIPTION</span>
+          </div>
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">DOC.TECHNICAL.README</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div
+                id="project-description"
+                style="font-size: 14px; line-height: 1.6"
+              ></div>
+            </div>
+            <div class="window-footer">
+              <span>FORMAT: MARKDOWN</span>
+              <span>SOURCE: README.md</span>
+            </div>
+          </div>
+
+          <!-- ACCESS WINDOW -->
+          <div class="tech-divider">
+            <span class="tech-divider-label">ACCESS</span>
+          </div>
+          <div class="window">
+            <div class="window-titlebar">
+              <span class="window-title">LINKS.EXTERNAL.ACCESS</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <div
+                id="project-links"
+                style="display: flex; gap: 10px; flex-wrap: wrap"
+              ></div>
+            </div>
+            <div class="window-footer">
+              <span>LINKS: LOADING...</span>
+            </div>
+          </div>
+
+          <!-- PRICING WINDOW -->
+          <div class="tech-divider" id="pricing-divider" style="display: none">
+            <span class="tech-divider-label">PRICING</span>
+          </div>
+          <div class="window" id="pricing-window" style="display: none">
+            <div class="window-titlebar">
+              <span class="window-title">PRICING.OPTIONS.HARDWARE</span>
+              <div class="window-controls">
+                <span class="window-btn">[_]</span>
+                <span class="window-btn">[□]</span>
+                <span class="window-btn">[X]</span>
+              </div>
+            </div>
+            <div class="window-content">
+              <p style="margin: 0 0 12px; font-size: 12px; color: var(--muted)">
+                <span data-lang="es">100% Open Source — Siempre puedes fabricar el tuyo</span>
+                <span data-lang="en" style="display: none">100% Open Source — You can always build your own</span>
+              </p>
+              <div id="project-pricing"></div>
+            </div>
+            <div class="window-footer">
+              <span id="pricing-currency">CURRENCY: MXN</span>
+              <span>OPEN HARDWARE</span>
+            </div>
           </div>
         </div>
       </section>
