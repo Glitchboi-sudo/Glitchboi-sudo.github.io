@@ -328,11 +328,20 @@ class ASCII3DThreeJS {
     }
     this.lastFrameTime = now;
 
-    // Auto-rotate en ejes X e Y simultaneamente
+    // Animación del modelo
     if (this.options.autoRotate && this.model) {
-      this.model.rotation.z -= this.options.rotationSpeed;
-      this.model.rotation.y += this.options.rotationSpeed * 0.9;
-      this.model.rotation.x += this.options.rotationSpeed * 0.7;  // Velocidad ligeramente diferente para movimiento organico
+      if (this.options.floatingMode) {
+        // Modo videojuego: rotación solo en Y + flotación
+        this.model.rotation.y += this.options.rotationSpeed;
+        // Efecto de flotación suave (seno para movimiento smooth)
+        const time = now * 0.002;
+        this.model.position.y = Math.sin(time) * 0.3; // Flotación ligera
+      } else {
+        // Modo original: rotación en múltiples ejes
+        this.model.rotation.z -= this.options.rotationSpeed;
+        this.model.rotation.y += this.options.rotationSpeed * 0.9;
+        this.model.rotation.x += this.options.rotationSpeed * 0.7;
+      }
     }
 
     // Render 3D scene to off-screen buffer

@@ -259,23 +259,27 @@ function mergeProjectData(metaList, liveList) {
   // Si no hay datos de GitHub, usar solo el JSON
   if (!liveList || !liveList.length) return metaList;
 
-  // Crear un mapa de los datos del JSON por nombre de repo (normalizado)
+  // Crear un mapa de los datos del JSON por nombre de repo (normalizado con slugify)
   const metaMap = new Map();
   metaList.forEach((meta) => {
-    const repoName = String(meta.repo || meta.title || "").toLowerCase();
-    if (repoName) metaMap.set(repoName, meta);
+    const repoKey = slugify(meta.repo || meta.title || "");
+    if (repoKey) metaMap.set(repoKey, meta);
   });
 
   // Combinar datos: GitHub (dinámico) + JSON (manual)
   const merged = liveList.map((ghRepo) => {
-    const repoName = String(ghRepo.repo || ghRepo.title || "").toLowerCase();
-    const meta = metaMap.get(repoName);
+    const repoKey = slugify(ghRepo.repo || ghRepo.title || "");
+    const meta = metaMap.get(repoKey);
 
     if (meta) {
       // Merge: priorizar GitHub para datos dinámicos, JSON para configuración manual
       return {
         ...ghRepo, // Datos de GitHub (descripción, fecha, etc.)
-        model: meta.model, // Modelo 3D del JSON
+        model: meta.model, // Modelo 3D del JSON (legacy)
+        models: meta.models, // Múltiples modelos 3D
+        images: meta.images, // Múltiples imágenes
+        gallery: meta.gallery, // Galería unificada
+        banner: meta.banner, // Banner legacy
         tags: meta.tags || ghRepo.tags || ghRepo.topics || [], // Tags personalizados o topics de GitHub
         links: meta.links, // Enlaces personalizados del JSON
         summary: meta.summary || ghRepo.summary, // Summary personalizado o de GitHub
@@ -291,9 +295,9 @@ function mergeProjectData(metaList, liveList) {
 
   // Agregar proyectos que están en JSON pero no en GitHub
   metaList.forEach((meta) => {
-    const repoName = String(meta.repo || meta.title || "").toLowerCase();
+    const repoKey = slugify(meta.repo || meta.title || "");
     const existsInMerged = merged.some(
-      (m) => String(m.repo || m.title || "").toLowerCase() === repoName,
+      (m) => slugify(m.repo || m.title || "") === repoKey,
     );
     if (!existsInMerged) {
       merged.push(meta);
@@ -320,11 +324,36 @@ function renderBanner(meta) {
   if (!bannerBox) return;
   bannerBox.innerHTML = "";
 
-  const hasModel = meta?.model;
-  const hasImage = meta?.banner || meta?.bannerUrl;
-  const imageUrl = meta?.bannerUrl || meta?.banner || FALLBACK_BANNER;
+  // Construir array de items de galería
+  const allGalleryItems = buildGalleryItems(meta);
 
-  // Crear contenedor principal
+  if (allGalleryItems.length === 0) {
+    // Sin contenido, mostrar imagen por defecto
+    const img = document.createElement("img");
+    img.src = resolveAsset(FALLBACK_BANNER);
+    img.alt = meta?.title || "Proyecto";
+    img.style.maxWidth = "700px";
+    img.style.maxHeight = "700px";
+    img.style.objectFit = "contain";
+    bannerBox.appendChild(img);
+    return;
+  }
+
+  // Verificar si hay ambos tipos (imágenes y modelos)
+  const hasImages = allGalleryItems.some((i) => i.type === "image");
+  const hasModels = allGalleryItems.some((i) => i.type === "model");
+  const hasBothTypes = hasImages && hasModels;
+
+  // Estado del filtro y color
+  let currentFilter = "all"; // "all", "image", "model"
+  let modelColor =
+    getComputedStyle(document.body).getPropertyValue("--ink").trim() ||
+    "#00ff00";
+  let filteredItems = allGalleryItems;
+  let currentIndex = 0;
+  const initializedModels = new Map(); // Map para guardar instancias de modelos
+
+  // Crear contenedor principal de galería
   const container = document.createElement("div");
   container.style.position = "relative";
   container.style.width = "100%";
@@ -332,145 +361,302 @@ function renderBanner(meta) {
   container.style.flexDirection = "column";
   container.style.alignItems = "center";
 
-  // Si tiene ambos (imagen y modelo), agregar botón toggle
-  if (hasModel && hasImage) {
-    const toggleBtn = document.createElement("button");
-    toggleBtn.className = "toggle";
-    toggleBtn.style.position = "absolute";
-    toggleBtn.style.top = "10px";
-    toggleBtn.style.right = "10px";
-    toggleBtn.style.zIndex = "10";
-    toggleBtn.textContent = "[ ver 3D ]";
-    toggleBtn.setAttribute("aria-label", "Alternar entre imagen y modelo 3D");
+  // Barra de controles (filtros + color)
+  const controlsBar = document.createElement("div");
+  controlsBar.style.display = "flex";
+  controlsBar.style.gap = "12px";
+  controlsBar.style.marginBottom = "12px";
+  controlsBar.style.alignItems = "center";
+  controlsBar.style.flexWrap = "wrap";
+  controlsBar.style.justifyContent = "center";
 
-    let showing3D = false;
+  // Solo mostrar filtros si hay ambos tipos
+  if (hasBothTypes) {
+    const filterGroup = document.createElement("div");
+    filterGroup.style.display = "flex";
+    filterGroup.style.gap = "4px";
+    filterGroup.style.border = "1px solid var(--rule)";
+    filterGroup.style.padding = "2px";
 
-    // Contenedor de imagen
-    const imageContainer = document.createElement("div");
-    imageContainer.id = "banner-image-container";
-    imageContainer.style.display = "block";
-    imageContainer.style.textAlign = "center";
-    const img = document.createElement("img");
-    img.src = resolveAsset(imageUrl);
-    img.alt = meta?.title || "Proyecto";
-    img.style.maxWidth = "400px";
-    img.style.maxHeight = "320px";
-    img.style.width = "auto";
-    img.style.height = "auto";
-    img.style.objectFit = "contain";
-    img.loading = "lazy";
-    imageContainer.appendChild(img);
+    const filters = [
+      { key: "all", label: "TODO" },
+      { key: "image", label: "PNG" },
+      { key: "model", label: "3D" },
+    ];
 
-    // Contenedor de modelo 3D
-    const modelContainer = document.createElement("div");
-    modelContainer.id = "banner-model-container";
-    modelContainer.style.display = "none";
-    modelContainer.style.width = "400px";
-    modelContainer.style.maxWidth = "100%";
-    const modelNode = document.createElement("div");
-    modelNode.id = "project-banner-3d";
-    modelNode.className = "ascii-3d-container";
-    modelNode.style.width = "100%";
-    modelNode.style.height = "320px";
-    modelContainer.appendChild(modelNode);
-
-    // Función toggle
-    toggleBtn.addEventListener("click", () => {
-      showing3D = !showing3D;
-      if (showing3D) {
-        imageContainer.style.display = "none";
-        modelContainer.style.display = "block";
-        toggleBtn.textContent = "[ ver imagen ]";
-        // Inicializar modelo 3D si no se ha hecho
-        // Usar requestAnimationFrame para asegurar que el layout se haya calculado
-        if (!modelNode.dataset.initialized) {
-          modelNode.dataset.initialized = "true";
-          requestAnimationFrame(() => {
-            initModel3D(modelNode, meta.model);
-          });
-        }
-      } else {
-        imageContainer.style.display = "block";
-        modelContainer.style.display = "none";
-        toggleBtn.textContent = "[ ver 3D ]";
+    filters.forEach((f) => {
+      const btn = document.createElement("button");
+      btn.className = "toggle";
+      btn.style.padding = "4px 10px";
+      btn.style.fontSize = "11px";
+      btn.style.fontWeight = "bold";
+      btn.textContent = f.label;
+      btn.dataset.filter = f.key;
+      if (f.key === currentFilter) {
+        btn.style.background = "var(--ink)";
+        btn.style.color = "var(--paper)";
       }
+      btn.addEventListener("click", () => {
+        currentFilter = f.key;
+        applyFilter();
+        // Actualizar estilos de botones
+        filterGroup.querySelectorAll("button").forEach((b) => {
+          if (b.dataset.filter === currentFilter) {
+            b.style.background = "var(--ink)";
+            b.style.color = "var(--paper)";
+          } else {
+            b.style.background = "";
+            b.style.color = "";
+          }
+        });
+      });
+      filterGroup.appendChild(btn);
     });
 
-    container.appendChild(toggleBtn);
-    container.appendChild(imageContainer);
-    container.appendChild(modelContainer);
-  } else if (hasModel) {
-    // Solo modelo 3D - marcar para inicialización diferida
-    const modelNode = document.createElement("div");
-    modelNode.id = "project-banner-3d";
-    modelNode.className = "ascii-3d-container";
-    modelNode.style.width = "500px";
-    modelNode.style.maxWidth = "100%";
-    modelNode.style.height = "500px";
-    modelNode.dataset.pendingModel = meta.model;
-    container.appendChild(modelNode);
-  } else {
-    // Solo imagen
-    const img = document.createElement("img");
-    img.src = resolveAsset(imageUrl);
-    img.alt = meta?.title || "Proyecto";
-    img.style.maxWidth = "700px";
-    img.style.maxHeight = "700px";
-    img.style.width = "auto";
-    img.style.height = "auto";
-    img.style.objectFit = "contain";
-    img.loading = "lazy";
-    container.appendChild(img);
+    controlsBar.appendChild(filterGroup);
   }
+
+  container.appendChild(controlsBar);
+
+  // Contenedor del item actual
+  const itemContainer = document.createElement("div");
+  itemContainer.id = "gallery-item-container";
+  itemContainer.style.width = "100%";
+  itemContainer.style.minHeight = "320px";
+  itemContainer.style.display = "flex";
+  itemContainer.style.alignItems = "center";
+  itemContainer.style.justifyContent = "center";
+
+  // Variables para título e indicadores
+  let titleEl = null;
+  let indicatorContainer = null;
+  let prevBtn = null;
+  let nextBtn = null;
+
+  // Función para aplicar filtro
+  function applyFilter() {
+    if (currentFilter === "all") {
+      filteredItems = allGalleryItems;
+    } else {
+      filteredItems = allGalleryItems.filter((i) => i.type === currentFilter);
+    }
+    currentIndex = 0;
+    rebuildIndicators();
+    renderItem(currentIndex);
+    updateNavVisibility();
+  }
+
+  // Función para actualizar visibilidad de navegación
+  function updateNavVisibility() {
+    const showNav = filteredItems.length > 1;
+    if (prevBtn) prevBtn.style.display = showNav ? "" : "none";
+    if (nextBtn) nextBtn.style.display = showNav ? "" : "none";
+    if (indicatorContainer)
+      indicatorContainer.style.display = showNav ? "flex" : "none";
+  }
+
+  // Función para reconstruir indicadores
+  function rebuildIndicators() {
+    if (!indicatorContainer) return;
+    indicatorContainer.innerHTML = "";
+    filteredItems.forEach((item, idx) => {
+      const dot = document.createElement("button");
+      dot.className = "toggle";
+      dot.style.width = "12px";
+      dot.style.height = "12px";
+      dot.style.padding = "0";
+      dot.style.borderRadius = "50%";
+      dot.style.fontSize = "0";
+      dot.dataset.index = idx;
+      dot.setAttribute("aria-label", `Ir a ${item.title || `item ${idx + 1}`}`);
+      dot.addEventListener("click", () => {
+        currentIndex = idx;
+        renderItem(currentIndex);
+      });
+      indicatorContainer.appendChild(dot);
+    });
+    updateIndicator(currentIndex);
+  }
+
+  // Función para actualizar indicadores
+  function updateIndicator(activeIndex) {
+    if (!indicatorContainer) return;
+    const dots = indicatorContainer.querySelectorAll("button");
+    dots.forEach((dot, idx) => {
+      if (idx === activeIndex) {
+        dot.style.background = "var(--ink)";
+      } else {
+        dot.style.background = "var(--rule)";
+      }
+    });
+  }
+
+  // Función para renderizar un item
+  function renderItem(index) {
+    itemContainer.innerHTML = "";
+    if (filteredItems.length === 0) {
+      itemContainer.innerHTML =
+        '<p style="color:var(--muted)">Sin elementos</p>';
+      return;
+    }
+    const item = filteredItems[index];
+
+    if (item.type === "image") {
+      const img = document.createElement("img");
+      img.src = resolveAsset(item.src);
+      img.alt = item.title || meta?.title || "Proyecto";
+      img.style.maxWidth = "500px";
+      img.style.maxHeight = "400px";
+      img.style.width = "auto";
+      img.style.height = "auto";
+      img.style.objectFit = "contain";
+      img.loading = "lazy";
+      itemContainer.appendChild(img);
+    } else if (item.type === "model") {
+      const modelKey = item.src;
+      const modelNode = document.createElement("div");
+      modelNode.id = `gallery-model-${index}-${Date.now()}`;
+      modelNode.className = "ascii-3d-container";
+      modelNode.style.width = "500px";
+      modelNode.style.maxWidth = "100%";
+      modelNode.style.height = "400px";
+      itemContainer.appendChild(modelNode);
+
+      // Inicializar modelo 3D
+      requestAnimationFrame(() => {
+        initModel3D(modelNode, item.src, modelKey);
+      });
+    }
+
+    // Actualizar título si existe
+    if (titleEl) {
+      titleEl.textContent =
+        item.title || `${index + 1} / ${filteredItems.length}`;
+    }
+
+    // Actualizar indicador
+    updateIndicator(index);
+  }
+
+  // Navegación
+  prevBtn = document.createElement("button");
+  prevBtn.className = "toggle";
+  prevBtn.style.position = "absolute";
+  prevBtn.style.left = "10px";
+  prevBtn.style.top = "50%";
+  prevBtn.style.transform = "translateY(-50%)";
+  prevBtn.style.zIndex = "10";
+  prevBtn.style.fontSize = "18px";
+  prevBtn.style.padding = "8px 12px";
+  prevBtn.textContent = "◀";
+  prevBtn.setAttribute("aria-label", "Anterior");
+  prevBtn.addEventListener("click", () => {
+    currentIndex =
+      (currentIndex - 1 + filteredItems.length) % filteredItems.length;
+    renderItem(currentIndex);
+  });
+
+  nextBtn = document.createElement("button");
+  nextBtn.className = "toggle";
+  nextBtn.style.position = "absolute";
+  nextBtn.style.right = "10px";
+  nextBtn.style.top = "50%";
+  nextBtn.style.transform = "translateY(-50%)";
+  nextBtn.style.zIndex = "10";
+  nextBtn.style.fontSize = "18px";
+  nextBtn.style.padding = "8px 12px";
+  nextBtn.textContent = "▶";
+  nextBtn.setAttribute("aria-label", "Siguiente");
+  nextBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % filteredItems.length;
+    renderItem(currentIndex);
+  });
+
+  container.appendChild(prevBtn);
+  container.appendChild(nextBtn);
+
+  // Indicador de posición (dots)
+  indicatorContainer = document.createElement("div");
+  indicatorContainer.id = "gallery-indicators";
+  indicatorContainer.style.display = "flex";
+  indicatorContainer.style.gap = "8px";
+  indicatorContainer.style.marginTop = "12px";
+  indicatorContainer.style.justifyContent = "center";
+
+  // Título del item actual
+  titleEl = document.createElement("div");
+  titleEl.id = "gallery-title";
+  titleEl.style.marginTop = "8px";
+  titleEl.style.fontSize = "12px";
+  titleEl.style.color = "var(--muted)";
+  titleEl.style.textAlign = "center";
+
+  container.appendChild(itemContainer);
+  container.appendChild(indicatorContainer);
+  container.appendChild(titleEl);
+
+  // Inicializar
+  rebuildIndicators();
+  renderItem(0);
+  updateNavVisibility();
 
   bannerBox.appendChild(container);
 
-  // Inicializar modelo 3D diferido (después de que el contenedor esté en el DOM)
-  const pendingModelNode = container.querySelector("[data-pending-model]");
-  if (pendingModelNode) {
-    const modelPath = pendingModelNode.dataset.pendingModel;
-    delete pendingModelNode.dataset.pendingModel;
-    // Usar requestAnimationFrame para asegurar que el layout se haya calculado
-    requestAnimationFrame(() => {
-      initModel3D(pendingModelNode, modelPath);
-    });
-  }
-
-  // Función auxiliar para inicializar modelo 3D
-  function initModel3D(node, modelPath) {
+  // Función auxiliar para inicializar modelo 3D con animación tipo videojuego
+  function initModel3D(node, modelPath, modelKey) {
     try {
       if (typeof initASCII3DWithModel === "function") {
         initASCII3DWithModel(node.id, resolveAsset(modelPath), {
-          rotationSpeed: 0.004,
-          fps: 24,
-        }).catch((e) => {
-          console.warn("3D banner:", e);
-          node.innerHTML =
-            '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';
-        });
-      } else {
-        console.warn(
-          "ascii-3d-init.js no cargado, usando configuración básica",
-        );
+          rotationSpeed: 0.008,
+          fps: 30,
+          color: modelColor,
+          floatingMode: true, // Animación tipo videojuego: rotación Y + flotación
+        })
+          .then((instance) => {
+            if (instance) initializedModels.set(modelKey, instance);
+          })
+          .catch((e) => {
+            console.warn("3D banner:", e);
+            node.innerHTML =
+              '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';
+          });
+        const colorBtn = document.getElementById("colorBtn");
+        if (colorBtn) {
+          // Estado inicial (monocromático)
+          colorBtn.textContent = "[ color ]";
+          colorBtn.setAttribute("aria-pressed", "false");
+
+          colorBtn.addEventListener("click", () => {
+            const isMonochrome = toggleAllMonochromeMode();
+            colorBtn.textContent = isMonochrome ? "[ color ]" : "[ monocromo ]";
+            colorBtn.setAttribute("aria-pressed", String(!isMonochrome));
+          });
+        }
+      } else if (typeof ASCII3DThreeJS !== "undefined") {
         const ascii = new ASCII3DThreeJS(node.id, {
           cellSize: 2,
           fontSize: 3,
-          color:
-            getComputedStyle(document.body).getPropertyValue("--ink").trim() ||
-            "#0b0b0b",
+          color: modelColor,
           backgroundColor: "transparent",
           chars: [" ", ".", "·", ":", "∙", "•", "o", "O", "0", "●", "█"],
           autoRotate: true,
-          rotationSpeed: 0.004,
-          fps: 24,
+          rotationSpeed: 0.008,
+          fps: 30,
           halftone: true,
           halftoneSize: 2,
           colorReduction: 12,
+          floatingMode: true, // Animación tipo videojuego
         });
         ascii
           .loadModel(resolveAsset(modelPath))
-          .then(() => ascii.start())
+          .then(() => {
+            ascii.start();
+            initializedModels.set(modelKey, ascii);
+          })
           .catch(() => {});
+      } else {
+        node.innerHTML =
+          '<p style="padding:20px;text-align:center;color:var(--muted)">Cargando modelo 3D...</p>';
       }
     } catch (e) {
       console.warn("3D banner:", e);
@@ -478,6 +664,74 @@ function renderBanner(meta) {
         '<p style="padding:20px;text-align:center;color:var(--muted)">Error cargando modelo 3D</p>';
     }
   }
+}
+
+// Construye array de items de galería desde meta
+function buildGalleryItems(meta) {
+  const items = [];
+
+  // Si tiene galería explícita, usarla
+  if (meta?.gallery && Array.isArray(meta.gallery)) {
+    meta.gallery.forEach((item) => {
+      if (item.type && item.src) {
+        items.push({
+          type: item.type,
+          src: item.src,
+          title: item.title || "",
+        });
+      }
+    });
+    return items;
+  }
+
+  // Compatibilidad: construir desde campos legacy
+  // Imágenes
+  if (meta?.images && Array.isArray(meta.images)) {
+    meta.images.forEach((img, idx) => {
+      if (typeof img === "string") {
+        items.push({ type: "image", src: img, title: `Imagen ${idx + 1}` });
+      } else if (img.src) {
+        items.push({
+          type: "image",
+          src: img.src,
+          title: img.title || `Imagen ${idx + 1}`,
+        });
+      }
+    });
+  } else if (meta?.bannerUrl || meta?.banner) {
+    items.push({
+      type: "image",
+      src: meta.bannerUrl || meta.banner,
+      title: "Vista principal",
+    });
+  }
+
+  // Modelos 3D
+  if (meta?.models && Array.isArray(meta.models)) {
+    meta.models.forEach((model, idx) => {
+      if (typeof model === "string") {
+        items.push({
+          type: "model",
+          src: model,
+          title: `Modelo 3D ${idx + 1}`,
+        });
+      } else if (model.src) {
+        items.push({
+          type: "model",
+          src: model.src,
+          title: model.title || `Modelo 3D ${idx + 1}`,
+        });
+      }
+    });
+  } else if (meta?.model) {
+    items.push({
+      type: "model",
+      src: meta.model,
+      title: "Modelo 3D",
+    });
+  }
+
+  return items;
 }
 
 function renderTags(tags) {

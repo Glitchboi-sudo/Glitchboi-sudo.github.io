@@ -1,5 +1,79 @@
 [
   {
+    "slug": "esp32-piratebus-kit",
+    "repo": "ESP32-Piratebus-Kit",
+    "title": "ESP32 Piratebus Kit",
+    "summary": "Kit modular de PCBs basado en ESP32 para hacking y experimentación.",
+    "description": "El ESP32 Piratebus Kit es un conjunto de placas modulares diseñadas para facilitar el prototipado y experimentación con ESP32. Incluye múltiples PCBs que se pueden combinar según las necesidades del proyecto.",
+    "tags": ["hardware", "esp32", "modular", "kit"],
+    "gallery": [
+      {
+        "type": "image",
+        "src": "../assets/images/esp32_Mainpng.png",
+        "title": "ESP32 Main Board"
+      },
+      {
+        "type": "model",
+        "src": "../assets/models/ESP32_main.obj",
+        "title": "ESP32 Main - 3D"
+      },
+      {
+        "type": "image",
+        "src": "../assets/images/ghz_mod.png",
+        "title": "GHz Module"
+      },
+      {
+        "type": "model",
+        "src": "../assets/models/ghz_mod.obj",
+        "title": "GHz Module - 3D"
+      },
+      {
+        "type": "image",
+        "src": "../assets/images/NFC_Mod.png",
+        "title": "NFC Module"
+      },
+      {
+        "type": "model",
+        "src": "../assets/models/NFC_Mod.obj",
+        "title": "NFC Module - 3D"
+      },
+      {
+        "type": "image",
+        "src": "../assets/images/ETH_Mod.png",
+        "title": "ETH Module"
+      },
+      {
+        "type": "model",
+        "src": "../assets/models/ETH_Mod.obj",
+        "title": "ETH Module - 3D"
+      }
+    ],
+    "updated": "2026-04-17",
+    "pricing": {
+      "currency": "MXN",
+      "options": [
+        {
+          "type": "diy",
+          "label": "DIY (Hazlo tú mismo)",
+          "label_en": "DIY (Do It Yourself)",
+          "price": 0,
+          "note": "Descarga los archivos y fabrica tú mismo",
+          "note_en": "Download files and manufacture yourself",
+          "available": true
+        },
+        {
+          "type": "kit",
+          "label": "Kit completo",
+          "label_en": "Complete Kit",
+          "price": null,
+          "note": "Próximamente",
+          "note_en": "Coming soon",
+          "available": false
+        }
+      ]
+    }
+  },
+  {
     "slug": "cerberus",
     "repo": "Cerberus-A-USB-Watchdog",
     "title": "Cerberus",
