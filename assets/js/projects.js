@@ -420,6 +420,7 @@ function renderBanner(meta) {
   let currentIndex = 0;
   const initializedModels = new Map(); // Map para guardar instancias de modelos
   let isColorMode = false; // Estado persistente del modo color
+  const isMobile = window.innerWidth <= 600; // Detectar móvil para estilos responsivos
 
   // Crear contenedor principal de galería
   const container = document.createElement("div");
@@ -431,12 +432,15 @@ function renderBanner(meta) {
 
   // Barra de controles (filtros + color)
   const controlsBar = document.createElement("div");
+  controlsBar.id = "gallery-controls";
   controlsBar.style.display = "flex";
-  controlsBar.style.gap = "12px";
+  controlsBar.style.gap = isMobile ? "6px" : "12px";
   controlsBar.style.marginBottom = "12px";
   controlsBar.style.alignItems = "center";
   controlsBar.style.flexWrap = "wrap";
   controlsBar.style.justifyContent = "center";
+  controlsBar.style.position = "relative";
+  controlsBar.style.zIndex = "5";
 
   // Solo mostrar filtros si hay ambos tipos
   if (hasBothTypes) {
@@ -553,12 +557,18 @@ function renderBanner(meta) {
     indicatorContainer.innerHTML = "";
     filteredItems.forEach((item, idx) => {
       const dot = document.createElement("button");
-      dot.className = "toggle";
+      dot.className = "toggle gallery-dot";
       dot.style.width = "12px";
       dot.style.height = "12px";
+      dot.style.minWidth = "12px";
+      dot.style.minHeight = "12px";
+      dot.style.maxWidth = "12px";
+      dot.style.maxHeight = "12px";
       dot.style.padding = "0";
       dot.style.borderRadius = "50%";
       dot.style.fontSize = "0";
+      dot.style.boxSizing = "border-box";
+      dot.style.flexShrink = "0";
       dot.dataset.index = idx;
       dot.setAttribute("aria-label", `Ir a ${item.title || `item ${idx + 1}`}`);
       dot.addEventListener("click", () => {
@@ -630,16 +640,17 @@ function renderBanner(meta) {
     updateIndicator(index);
   }
 
-  // Navegación
+  // Navegación - responsive para móvil
   prevBtn = document.createElement("button");
-  prevBtn.className = "toggle";
+  prevBtn.className = "toggle gallery-nav-btn";
   prevBtn.style.position = "absolute";
-  prevBtn.style.left = "10px";
+  prevBtn.style.left = isMobile ? "2px" : "10px";
   prevBtn.style.top = "50%";
   prevBtn.style.transform = "translateY(-50%)";
   prevBtn.style.zIndex = "10";
-  prevBtn.style.fontSize = "18px";
-  prevBtn.style.padding = "8px 12px";
+  prevBtn.style.fontSize = isMobile ? "14px" : "18px";
+  prevBtn.style.padding = isMobile ? "6px 8px" : "8px 12px";
+  prevBtn.style.opacity = isMobile ? "0.8" : "1";
   prevBtn.textContent = "◀";
   prevBtn.setAttribute("aria-label", "Anterior");
   prevBtn.addEventListener("click", () => {
@@ -649,14 +660,15 @@ function renderBanner(meta) {
   });
 
   nextBtn = document.createElement("button");
-  nextBtn.className = "toggle";
+  nextBtn.className = "toggle gallery-nav-btn";
   nextBtn.style.position = "absolute";
-  nextBtn.style.right = "10px";
+  nextBtn.style.right = isMobile ? "2px" : "10px";
   nextBtn.style.top = "50%";
   nextBtn.style.transform = "translateY(-50%)";
   nextBtn.style.zIndex = "10";
-  nextBtn.style.fontSize = "18px";
-  nextBtn.style.padding = "8px 12px";
+  nextBtn.style.fontSize = isMobile ? "14px" : "18px";
+  nextBtn.style.padding = isMobile ? "6px 8px" : "8px 12px";
+  nextBtn.style.opacity = isMobile ? "0.8" : "1";
   nextBtn.textContent = "▶";
   nextBtn.setAttribute("aria-label", "Siguiente");
   nextBtn.addEventListener("click", () => {
@@ -674,6 +686,8 @@ function renderBanner(meta) {
   indicatorContainer.style.gap = "8px";
   indicatorContainer.style.marginTop = "12px";
   indicatorContainer.style.justifyContent = "center";
+  indicatorContainer.style.flexWrap = "wrap";
+  indicatorContainer.style.alignItems = "center";
 
   // Título del item actual
   titleEl = document.createElement("div");

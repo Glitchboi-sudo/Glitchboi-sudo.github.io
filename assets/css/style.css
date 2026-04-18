@@ -1285,6 +1285,27 @@ a:focus-visible::before {
   .cards {
     gap: 14px;
   }
+
+  /* Project card title + pricing badge layout on mobile */
+  #projects .project-header,
+  #project-list .project-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  #projects .project-header i,
+  #project-list .project-header i {
+    display: none;
+  }
+
+  #projects .project-title-wrap,
+  #project-list .project-title-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
 }
 
 /* ===== PROJECT DETAIL PAGE MOBILE ===== */
@@ -1331,6 +1352,41 @@ a:focus-visible::before {
 
   #project-description {
     font-size: 13px !important;
+  }
+
+  /* Gallery controls bar on mobile */
+  #gallery-controls {
+    gap: 4px !important;
+    padding: 4px;
+  }
+
+  #gallery-controls .toggle {
+    padding: 3px 6px !important;
+    font-size: 10px !important;
+  }
+
+  /* Gallery navigation arrows on mobile */
+  .gallery-nav-btn {
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+    background: var(--paper) !important;
+    border: 1px solid var(--rule) !important;
+  }
+
+  /* Gallery indicator dots - ensure circular shape */
+  .gallery-dot {
+    width: 10px !important;
+    height: 10px !important;
+    min-width: 10px !important;
+    min-height: 10px !important;
+    max-width: 10px !important;
+    max-height: 10px !important;
+    border-radius: 50% !important;
+  }
+
+  /* Gallery indicators container */
+  #gallery-indicators {
+    gap: 6px !important;
   }
 }
 

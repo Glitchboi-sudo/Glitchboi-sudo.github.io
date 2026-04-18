@@ -492,6 +492,19 @@ function clampText(str, max = 120) {
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trim() + "\u2026";
 }
 
+// Simple markdown parser for project notes (lightweight version)
+function parseNoteMarkdown(text) {
+  if (!text) return "\u2014";
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code style="background:var(--rule);padding:1px 4px;font-size:11px;">$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+}
+
 function renderProjects(items) {
   const $p = document.getElementById("projects");
   $p.innerHTML = "";
@@ -510,15 +523,18 @@ function renderProjects(items) {
 
     const safeTitle = esc(p.title);
     const safeMeta = esc(p.meta);
-    const safeNote = esc(p.note || "\u2014");
+    const parsedNote = parseNoteMarkdown(p.note);
     const pricingBadge = getPricingBadge(p.pricing);
 
     const detailHref = p.detailUrl || projectDetailLink(p.title);
     const githubHref = p.githubUrl || p.url;
 
     el.innerHTML = `
-      <div class="dotfill">
-        <span><a href="${escAttr(detailHref)}">${safeTitle}</a> ${pricingBadge}</span>
+      <div class="dotfill project-header">
+        <span class="project-title-wrap">
+          <a href="${escAttr(detailHref)}">${safeTitle}</a>
+          ${pricingBadge}
+        </span>
         <i></i>
         <span>${safeMeta}</span>
       </div>
@@ -535,13 +551,8 @@ function renderProjects(items) {
         </span>
       </div>
 
-      <div class="desc" data-fallback>${safeNote}</div>
+      <div class="desc">${parsedNote}</div>
     `;
-
-    if (!supportsLineClamp) {
-      const d = el.querySelector("[data-fallback]");
-      d.textContent = clampText(p.note, 140);
-    }
 
     $p.appendChild(el);
 
