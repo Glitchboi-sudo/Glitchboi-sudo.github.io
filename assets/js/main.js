@@ -95,8 +95,8 @@ function refreshLocale() {
 const I18N = {
   es: {
     // Hero
-    hero_title: "Hardware de México para el mundo",
-    kicker: "Glitch Hardware — Ingeniería embebida & IoT",
+    hero_title: "Tu hardware, tus reglas.",
+    kicker: "Glitchboi — Pentester de hardware & maker",
 
     // Expertise section
     expertise: "Especialidades",
@@ -111,15 +111,18 @@ const I18N = {
 
     // Spec sheet labels
     domain_label: "DOMINIO",
-    domain_value: "Hardware Abierto",
+    domain_value: "Hardware Pentesting",
     focus_label: "ENFOQUE",
-    focus_value: "Pentesting",
+    focus_value: "IoT / Embebidos",
     stack_label: "STACK",
-    stack_value: "IoT / Embebidos",
+    stack_value: "C / Python / RP2040",
     license_label: "LICENCIA",
     license_value: "Open Source",
     modules_count: "MÓDULOS: 4",
     status_active: "ESTADO: ACTIVO",
+    stack_desc: "Lenguajes y plataformas que uso día a día",
+    stack_count: "ITEMS: 5",
+    stack_status: "ESTADO: EN.USO",
 
     // Communications
     email_label: "CORREO",
@@ -130,12 +133,23 @@ const I18N = {
     port_info: "PUERTO: 443",
 
     // Philosophy
-    philosophy_1: "Romper es la mejor forma de fortalecer",
-    philosophy_2: "100% Open Source",
-    philosophy_3: "Hecho en México para el mundo",
-    philosophy_4: "Hardware + Software = Freedom",
-    principles_count: "PRINCIPIOS: 4",
+    philosophy_1: "No gods, no masters, no firmware locks",
+    philosophy_2: "Si lo compraste, es tuyo — abre, modifica, comparte",
+    philosophy_3: "Conocimiento libre, herramientas libres",
+    philosophy_4: "Hecho en México, sin patrón",
+    philosophy_5: "Hardware + Software = Freedom",
+    principles_count: "PRINCIPIOS: 5",
     version_stable: "VERSIÓN: ESTABLE",
+
+    // Manifesto
+    manifesto_p1:
+      "[TEXTO DE PRUEBA] El hardware que compras no es realmente tuyo si no puedes abrirlo. El firmware que corre en tu casa no es neutral si no puedes leerlo. Lo cerrado es propiedad de unos cuantos; el conocimiento debería ser de todos.",
+    manifesto_p2:
+      "[TEXTO DE PRUEBA] Romper no es vandalismo: es la única manera honesta de entender. Compartir lo aprendido no es opcional, es la renta que pagamos por estar aquí.",
+    manifesto_p3:
+      "[TEXTO DE PRUEBA] Hecho en México, sin patrón, sin permiso, sin candados. Stay punk.",
+    manifesto_sig: "FIRMADO: GLITCHBOI",
+    manifesto_status: "ESTADO: BORRADOR",
 
     // Projects
     projects_title: "Proyectos",
@@ -171,24 +185,24 @@ const I18N = {
     lang_btn: "[ EN ]",
     contact: "Contacto",
 
-    // Who We Are
+    // Who I Am
     who_we_are_p1:
-      "Somos un colectivo de ingenieros y hackers con sede en Ciudad de México, dedicados a crear hardware de seguridad accesible y open source.",
+      "Soy Glitchboi. Pentester de profesión, maker y hardware hacker en mis tiempos libres. Vivo entre soldaduras, scripts en Python y firmwares que no deberían estar ahí.",
     who_we_are_p2:
-      "Inspirados por la tradición de cDc, L0pht y la escena phreaker de los 90s, creemos que el conocimiento debe ser libre y las herramientas de seguridad accesibles para todos.",
+      "Mi terreno es el hardware y el IoT: abrir cosas, entenderlas, romperlas y devolverle el control a quien las compró. Si tiene chip, se audita.",
     who_we_are_p3:
-      "Cada dispositivo que creamos está diseñado para enseñar, investigar y fortalecer la seguridad — nunca para dañar.",
-    founded_label: "FUNDADO: 2024",
-    team_label: "EQUIPO: CDMX",
+      "Heredero de la tradición de cDc, L0pht y la escena phreaker de los 90s. El conocimiento se comparte, la curiosidad no se pide permiso.",
+    founded_label: "ROLE: PENTESTER",
+    team_label: "LOC: CDMX",
 
-    // Collective Members
-    collective_desc: "Páginas de los integrantes del colectivo",
+    // Friends links
+    collective_desc: "Otros que también rompen cosas",
     members_count: "MIEMBROS: 4",
   },
   en: {
     // Hero
-    hero_title: "Hardware from Mexico to the world",
-    kicker: "Glitch Hardware — Embedded engineering & IoT",
+    hero_title: "Your hardware, your rules.",
+    kicker: "Glitchboi — Hardware pentester & maker",
 
     // Expertise section
     expertise: "Expertise",
@@ -203,15 +217,18 @@ const I18N = {
 
     // Spec sheet labels
     domain_label: "DOMAIN",
-    domain_value: "Open Hardware",
+    domain_value: "Hardware Pentesting",
     focus_label: "FOCUS",
-    focus_value: "Pentesting",
+    focus_value: "IoT / Embedded",
     stack_label: "STACK",
-    stack_value: "IoT / Embedded",
+    stack_value: "C / Python / RP2040",
     license_label: "LICENSE",
     license_value: "Open Source",
     modules_count: "MODULES: 4",
     status_active: "STATUS: ACTIVE",
+    stack_desc: "Languages and platforms I use day to day",
+    stack_count: "ITEMS: 5",
+    stack_status: "STATUS: IN.USE",
 
     // Communications
     email_label: "EMAIL",
@@ -222,12 +239,23 @@ const I18N = {
     port_info: "PORT: 443",
 
     // Philosophy
-    philosophy_1: "Breaking is the best way to strengthen",
-    philosophy_2: "100% Open Source",
-    philosophy_3: "Made in Mexico for the world",
-    philosophy_4: "Hardware + Software = Freedom",
-    principles_count: "PRINCIPLES: 4",
+    philosophy_1: "No gods, no masters, no firmware locks",
+    philosophy_2: "If you bought it, it's yours — open it, mod it, share it",
+    philosophy_3: "Free knowledge, free tools",
+    philosophy_4: "Made in Mexico, no bosses",
+    philosophy_5: "Hardware + Software = Freedom",
+    principles_count: "PRINCIPLES: 5",
     version_stable: "VERSION: STABLE",
+
+    // Manifesto
+    manifesto_p1:
+      "[PLACEHOLDER TEXT] The hardware you buy isn't really yours if you can't open it. The firmware running in your home isn't neutral if you can't read it. Closed is the property of a few; knowledge should belong to everyone.",
+    manifesto_p2:
+      "[PLACEHOLDER TEXT] Breaking isn't vandalism: it's the only honest way to understand. Sharing what you learn isn't optional, it's the rent we pay for being here.",
+    manifesto_p3:
+      "[PLACEHOLDER TEXT] Made in Mexico, no bosses, no permission, no locks. Stay punk.",
+    manifesto_sig: "SIGNED: GLITCHBOI",
+    manifesto_status: "STATUS: DRAFT",
 
     // Projects
     projects_title: "Projects",
@@ -263,18 +291,18 @@ const I18N = {
     lang_btn: "[ ES ]",
     contact: "Contact",
 
-    // Who We Are
+    // Who I Am
     who_we_are_p1:
-      "We are a collective of engineers and hackers based in Mexico City, dedicated to creating accessible and open source security hardware.",
+      "I'm Glitchboi. Pentester by day, maker and hardware hacker on my free time. I live between soldering irons, Python scripts and firmware that wasn't meant to be there.",
     who_we_are_p2:
-      "Inspired by the tradition of cDc, L0pht and the 90s phreaker scene, we believe knowledge should be free and security tools accessible to everyone.",
+      "My field is hardware and IoT: open it, understand it, break it, and give the control back to whoever paid for it. If it has a chip, it gets audited.",
     who_we_are_p3:
-      "Every device we create is designed to teach, research, and strengthen security — never to harm.",
-    founded_label: "FOUNDED: 2024",
-    team_label: "TEAM: CDMX",
+      "Heir to the tradition of cDc, L0pht and the 90s phreaker scene. Knowledge is shared, curiosity doesn't ask for permission.",
+    founded_label: "ROLE: PENTESTER",
+    team_label: "LOC: CDMX",
 
-    // Collective's friends
-    collective_desc: "Pages from collective's friends",
+    // Friends links
+    collective_desc: "Other folks who also break things",
     members_count: "MEMBERS: 4",
   },
 };

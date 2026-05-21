@@ -117,7 +117,7 @@ hr.rule {
     padding: 16px 12px;
   }
   .logoX {
-    width: 80px;
+    width: 130px;
   }
 
   /* Título más pequeño en móvil */
@@ -222,7 +222,7 @@ hr.rule {
     padding: 18px;
   }
   .logoX {
-    width: 90px;
+    width: 150px;
   }
 
   .title {
@@ -364,7 +364,7 @@ hr.rule {
     padding: 12px;
   }
   .logoX {
-    width: 70px;
+    width: 110px;
     margin: 0 auto 8px;
   }
   .title {
@@ -423,9 +423,9 @@ a:focus-visible::before {
   margin-bottom: 20px;
 }
 .logoX {
-  width: 100px;
+  width: 180px;
   height: auto;
-  margin: 0 auto 10px;
+  margin: 0 auto 14px;
   display: block;
   color: var(--brand);
 }
@@ -1166,7 +1166,7 @@ a[aria-label="Inicio"]:focus-visible {
   }
 
   .logoX {
-    width: 70px;
+    width: 110px;
     margin-bottom: 8px;
   }
 
@@ -1967,4 +1967,49 @@ section {
 :focus-visible {
   outline: 2px solid var(--tech-cyan);
   outline-offset: 2px;
+}
+
+/* ===== WEBRING GLYPH ===== */
+.webring-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--brand) !important;
+  text-decoration: none;
+  background: transparent !important;
+  border: 1px dashed var(--rule) !important;
+  padding: 0 !important;
+  margin: 0 auto;
+  animation: webring-flicker 3.2s infinite steps(1);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.webring-glyph::before {
+  content: none !important;
+  display: none !important;
+}
+.webring-glyph:hover,
+.webring-glyph:focus-visible {
+  color: var(--brand) !important;
+  transform: rotate(15deg) scale(1.15);
+  outline: none;
+  background: transparent !important;
+  border-color: var(--brand) !important;
+}
+.webring-glyph:hover::before,
+.webring-glyph:focus-visible::before {
+  content: none !important;
+  display: none !important;
+}
+@keyframes webring-flicker {
+  0%, 92%, 100% { opacity: 1; transform: translate(0, 0); }
+  93% { opacity: 0.4; transform: translate(-1px, 1px); }
+  94% { opacity: 1; transform: translate(1px, -1px); }
+  95% { opacity: 0.7; transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .webring-glyph { animation: none; }
 }
