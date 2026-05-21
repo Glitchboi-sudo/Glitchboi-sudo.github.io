@@ -137,17 +137,16 @@ const I18N = {
     philosophy_2: "Si lo compraste, es tuyo — abre, modifica, comparte",
     philosophy_3: "Conocimiento libre, herramientas libres",
     philosophy_4: "Hecho en México, sin patrón",
-    philosophy_5: "Hardware + Software = Freedom",
     principles_count: "PRINCIPIOS: 5",
     version_stable: "VERSIÓN: ESTABLE",
 
     // Manifesto
     manifesto_p1:
-      "[TEXTO DE PRUEBA] El hardware que compras no es realmente tuyo si no puedes abrirlo. El firmware que corre en tu casa no es neutral si no puedes leerlo. Lo cerrado es propiedad de unos cuantos; el conocimiento debería ser de todos.",
+      "Mientras más nos sumergimos en la tecnología, más dependientes nos volvemos de ella — de los dueños de estas tecnologías. No conocemos sus verdaderas intenciones; recupera tu libertad.",
     manifesto_p2:
-      "[TEXTO DE PRUEBA] Romper no es vandalismo: es la única manera honesta de entender. Compartir lo aprendido no es opcional, es la renta que pagamos por estar aquí.",
+      "No puedes controlar nada si no lo comprendes; hay que aprender, explorar. No hay vergüenza en quemar o destruir mientras aprendas algo de ello.",
     manifesto_p3:
-      "[TEXTO DE PRUEBA] Hecho en México, sin patrón, sin permiso, sin candados. Stay punk.",
+      "Somos animales sociales, estamos diseñados para compartir. ¿Por qué no abrazarlo? Comparte tu conocimiento, no dejes que muera contigo.",
     manifesto_sig: "FIRMADO: GLITCHBOI",
     manifesto_status: "ESTADO: BORRADOR",
 
@@ -243,17 +242,16 @@ const I18N = {
     philosophy_2: "If you bought it, it's yours — open it, mod it, share it",
     philosophy_3: "Free knowledge, free tools",
     philosophy_4: "Made in Mexico, no bosses",
-    philosophy_5: "Hardware + Software = Freedom",
     principles_count: "PRINCIPLES: 5",
     version_stable: "VERSION: STABLE",
 
     // Manifesto
     manifesto_p1:
-      "[PLACEHOLDER TEXT] The hardware you buy isn't really yours if you can't open it. The firmware running in your home isn't neutral if you can't read it. Closed is the property of a few; knowledge should belong to everyone.",
+      "As we sink deeper into tech, we become more dependent on it — on the masters of these technologies. We don't know their full intentions; regain your freedom.",
     manifesto_p2:
-      "[PLACEHOLDER TEXT] Breaking isn't vandalism: it's the only honest way to understand. Sharing what you learn isn't optional, it's the rent we pay for being here.",
+      "You can't control anything if you don't comprehend it; we need to learn, to explore. There is no shame in burning or destroying as long as you learn.",
     manifesto_p3:
-      "[PLACEHOLDER TEXT] Made in Mexico, no bosses, no permission, no locks. Stay punk.",
+      "We are social animals, we are designed to share. Then why not embrace it? Share your knowledge, don't let it die with you.",
     manifesto_sig: "SIGNED: GLITCHBOI",
     manifesto_status: "STATUS: DRAFT",
 
