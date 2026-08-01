@@ -1,0 +1,109 @@
+name: Mirror Cerberus firmware
+
+# Copia los .uf2 de los releases del repo del firmware a firmware/ de este sitio
+# y genera firmware/manifest.json, para que la herramienta web (cerberus/) los
+# sirva desde el mismo origen (sin CORS ni proxies, con SHA-256 verificable).
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 6 * * *" # diario 06:00 UTC
+  repository_dispatch:
+    types: [new-firmware] # el repo del firmware puede dispararlo al publicar
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mirror-firmware
+  cancel-in-progress: true
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    env:
+      SRC_REPO: Lab217MX/Cerberus-A-USB-Watchdog
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Espejar assets .uf2 de los releases
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, hashlib, os, datetime, shutil
+
+          repo   = os.environ["SRC_REPO"]
+          token  = os.environ.get("GH_TOKEN", "")
+          api    = f"https://api.github.com/repos/{repo}/releases"
+          FW     = "firmware"
+
+          def fetch(url, binary=False):
+              headers = {
+                  "User-Agent": "cerberus-mirror",
+                  "Accept": "application/octet-stream" if binary
+                            else "application/vnd.github+json",
+              }
+              if token:
+                  headers["Authorization"] = f"Bearer {token}"
+              req = urllib.request.Request(url, headers=headers)
+              with urllib.request.urlopen(req, timeout=180) as r:
+                  return r.read()
+
+          releases = json.loads(fetch(api))
+
+          # Reconstruye firmware/ desde cero para reflejar borrados en releases.
+          if os.path.isdir(FW):
+              shutil.rmtree(FW)
+          os.makedirs(FW, exist_ok=True)
+
+          manifest = {
+              "generated": datetime.datetime.now(datetime.timezone.utc)
+                              .strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "source": repo,
+              "releases": [],
+          }
+          for rel in releases:
+              uf2 = [a for a in rel.get("assets", [])
+                     if a["name"].lower().endswith(".uf2")]
+              if not uf2:
+                  continue
+              tag = rel["tag_name"]
+              os.makedirs(os.path.join(FW, tag), exist_ok=True)
+              entry = {
+                  "name": rel.get("name") or tag,
+                  "tag": tag,
+                  "prerelease": rel.get("prerelease", False),
+                  "published_at": rel.get("published_at"),
+                  "assets": [],
+              }
+              for a in uf2:
+                  data = fetch(a["browser_download_url"], binary=True)
+                  path = os.path.join(FW, tag, a["name"])
+                  with open(path, "wb") as f:
+                      f.write(data)
+                  entry["assets"].append({
+                      "name": a["name"],
+                      "size": len(data),
+                      "sha256": hashlib.sha256(data).hexdigest(),
+                      "path": f"{FW}/{tag}/{a['name']}",
+                  })
+                  print(f"mirrored {path} ({len(data)} bytes)")
+              manifest["releases"].append(entry)
+
+          with open(os.path.join(FW, "manifest.json"), "w", encoding="utf-8") as f:
+              json.dump(manifest, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          print(f"manifest con {len(manifest['releases'])} releases")
+          PY
+
+      - name: Commit si hubo cambios
+        run: |
+          if [ -n "$(git status --porcelain firmware)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add firmware
+            git commit -m "chore: espejo de firmware Cerberus (auto)"
+            git push
+          else
+            echo "Sin cambios en firmware/"
+          fi

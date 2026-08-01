@@ -1,0 +1,54 @@
+{
+  "generated": "2026-08-01T02:05:25Z",
+  "source": "Lab217MX/Cerberus-A-USB-Watchdog",
+  "releases": [
+    {
+      "name": "Cerberus v1.1.0",
+      "tag": "v1.1.0",
+      "prerelease": false,
+      "published_at": "2026-08-01T02:01:18Z",
+      "assets": [
+        {
+          "name": "Cerberus-1.1.0.uf2",
+          "size": 634368,
+          "sha256": "ddd610feb54e41ff01f8fa05701950fb4da59c72b00aa8e3c3bef215ac20ec4f",
+          "path": "firmware/v1.1.0/Cerberus-1.1.0.uf2"
+        }
+      ]
+    },
+    {
+      "name": "Gerber & Firmware v1.0",
+      "tag": "Beta",
+      "prerelease": false,
+      "published_at": "2026-03-30T19:06:48Z",
+      "assets": [
+        {
+          "name": "Cerberus_V1.uf2",
+          "size": 645632,
+          "sha256": "b1cfb0519ea837f77500cc6ef05fed7c0f9a42408d1f71b2810a5d40c38caec4",
+          "path": "firmware/Beta/Cerberus_V1.uf2"
+        }
+      ]
+    },
+    {
+      "name": "0.1.5 Prueba",
+      "tag": "Pre-Alpha",
+      "prerelease": true,
+      "published_at": "2025-12-09T07:07:46Z",
+      "assets": [
+        {
+          "name": "Cerberus_2mb.ino.uf2",
+          "size": 631296,
+          "sha256": "bc00c5c5ffa85d3e8a4f98be584ad879d3ae6845b54b2ec8c67898bb9c226e2b",
+          "path": "firmware/Pre-Alpha/Cerberus_2mb.ino.uf2"
+        },
+        {
+          "name": "Cerberus_4mb.ino.uf2",
+          "size": 631296,
+          "sha256": "c8cb1c2e9dc614e3378154184220d0388e5c013a7d6144429bd51d277fbadc28",
+          "path": "firmware/Pre-Alpha/Cerberus_4mb.ino.uf2"
+        }
+      ]
+    }
+  ]
+}

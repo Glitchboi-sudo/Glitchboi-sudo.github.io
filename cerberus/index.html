@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cerberus Web — GLITCHBOI</title>
+    <meta
+      name="description"
+      content="Programa e inspecciona Cerberus (USB Watchdog) directamente desde el navegador. Sin instalar nada."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/animations.css" />
+    <link rel="stylesheet" href="../assets/css/cerberus-web.css" />
+  </head>
+  <body class="scanlines">
+    <main class="container">
+      <!-- CABECERA -->
+      <div class="header crt-border" aria-label="Encabezado estilo dossier">
+        <div class="ascii-banner">
+          ╔═══════════════════════════════════════════════════════════════════════╗<br />
+          ║ ◄ CERBERUS FIELD CONSOLE v1.0 ► ║<br />
+          ║ [WEBUSB / WEBSERIAL BRIDGE] ║<br />
+          ╚═══════════════════════════════════════════════════════════════════════╝
+        </div>
+
+        <a href="../" aria-label="Inicio">
+          <img
+            class="logoX"
+            src="../assets/images/GlitchLogo.svg"
+            alt="Glitch Hardware"
+          />
+        </a>
+        <div class="top-marks">
+          <span>┤ TOOL: 00,217 ├</span><span>┤ LINK: LOCAL ├</span>
+        </div>
+        <div class="bar" role="presentation"></div>
+        <div class="title" data-glitch="Cerberus Web">Cerberus Web</div>
+        <div class="kicker">
+          Programa e inspecciona tu Cerberus desde el navegador
+        </div>
+        <hr class="rule" />
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+          "
+        >
+          <a class="badge" href="../">← inicio</a>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button
+              id="themeBtn"
+              class="toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Cambiar tema"
+            >
+              [ modo nocturno ]
+            </button>
+            <a
+              class="toggle"
+              href="https://github.com/Lab217MX/Cerberus-A-USB-Watchdog"
+              target="_blank"
+              rel="noopener noreferrer"
+              >[ repo ]</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- AVISO DE COMPATIBILIDAD -->
+      <div id="compat-warning" class="cw-alert cw-alert--warn" hidden>
+        <strong>Navegador no compatible.</strong>
+        <span id="compat-detail"></span>
+        Usa <b>Chrome</b>, <b>Edge</b> u <b>Opera</b>.
+      </div>
+
+      <!-- TABS -->
+      <div class="ascii-box-header">
+        ╔══[ CONTROL PANEL ]═════════════════════════════════════════════════╗
+      </div>
+      <div class="cw-tabs" role="tablist" aria-label="Modo de operación">
+        <button
+          class="cw-tab is-active"
+          id="tab-flash"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-flash"
+          type="button"
+        >
+          ▸ PROGRAMAR
+        </button>
+        <button
+          class="cw-tab"
+          id="tab-inspect"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-inspect"
+          type="button"
+        >
+          ◉ INSPECCIONAR
+        </button>
+      </div>
+
+      <!-- ===================== PANEL: PROGRAMAR ===================== -->
+      <section
+        id="panel-flash"
+        class="cw-panel"
+        role="tabpanel"
+        aria-labelledby="tab-flash"
+      >
+        <!-- Paso 1: Firmware -->
+        <article class="card cw-step">
+          <div class="cw-step-head">
+            <span class="cw-step-num">01</span>
+            <div class="label" style="margin: 0">Elige el firmware</div>
+          </div>
+          <p class="cw-muted">
+            Se sirve desde este mismo sitio (espejo de los
+            <a
+              href="https://github.com/Lab217MX/Cerberus-A-USB-Watchdog/releases"
+              target="_blank"
+              rel="noopener noreferrer"
+              >releases de GitHub</a
+            >, verificado por SHA-256). También puedes cargar un
+            <code>.uf2</code> propio.
+          </p>
+
+          <div class="cw-field">
+            <label class="cw-label" for="version-select">Versión de firmware</label>
+            <select id="version-select" class="cw-select" disabled>
+              <option>Cargando…</option>
+            </select>
+          </div>
+          <div class="cw-row">
+            <label class="toggle cw-filelabel" for="file-uf2"
+              >[ subir .uf2 propio ]</label
+            >
+            <span id="fw-status" class="cw-muted" style="margin: 0"></span>
+          </div>
+          <input
+            id="file-uf2"
+            type="file"
+            accept=".uf2,application/octet-stream"
+            hidden
+          />
+
+          <div id="fw-info" class="cw-fwinfo" hidden>
+            <div class="dotfill">
+              <span>Archivo</span><i></i><span id="fw-name">—</span>
+            </div>
+            <div class="dotfill">
+              <span>Tamaño</span><i></i><span id="fw-size">—</span>
+            </div>
+            <div class="dotfill">
+              <span>Bloques UF2</span><i></i><span id="fw-blocks">—</span>
+            </div>
+            <div class="dotfill">
+              <span>Rango flash</span><i></i><span id="fw-range">—</span>
+            </div>
+            <div class="dotfill">
+              <span>SHA-256</span><i></i
+              ><span id="fw-sha" class="cw-mono-sm">—</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Paso 2: BOOTSEL -->
+        <article class="card cw-step">
+          <div class="cw-step-head">
+            <span class="cw-step-num">02</span>
+            <div class="label" style="margin: 0">
+              Pon la Pico en modo BOOTSEL
+            </div>
+          </div>
+          <p class="cw-muted">
+            El chip debe estar en modo bootloader (aparece como
+            <code>RPI-RP2</code>). Dos formas:
+          </p>
+          <ul class="cw-list">
+            <li>
+              <b>Manual:</b> desconecta la Pico, mantén pulsado
+              <b>BOOTSEL</b> y vuelve a conectarla.
+            </li>
+            <li>
+              <b>Asistido:</b> si Cerberus está corriendo y conectado por USB,
+              pulsa el botón para reiniciarlo al bootloader (toque 1200&nbsp;bps).
+            </li>
+          </ul>
+          <div class="cw-row">
+            <button id="btn-bootsel" class="toggle" type="button">
+              [ reiniciar a BOOTSEL ]
+            </button>
+            <span id="bootsel-status" class="cw-muted"></span>
+          </div>
+        </article>
+
+        <!-- Paso 3: Flashear -->
+        <article class="card cw-step">
+          <div class="cw-step-head">
+            <span class="cw-step-num">03</span>
+            <div class="label" style="margin: 0">Conecta y flashea</div>
+          </div>
+          <p class="cw-muted">
+            Se comunica con el bootrom del RP2040 vía WebUSB (protocolo
+            PICOBOOT). No se instala ningún driver.
+          </p>
+          <div class="cw-row">
+            <button id="btn-flash" class="toggle cw-primary" type="button" disabled>
+              [ conectar y flashear ]
+            </button>
+            <span
+              class="cw-status-pill"
+              id="flash-pill"
+              data-state="idle"
+              aria-live="polite"
+              >en espera</span
+            >
+          </div>
+
+          <div class="cw-progress" hidden id="flash-progress-wrap">
+            <div class="progress"><i id="flash-progress" style="--w: 0%"></i></div>
+            <div class="cw-progress-meta">
+              <span id="flash-progress-label">—</span>
+              <span id="flash-progress-pct">0%</span>
+            </div>
+          </div>
+
+          <pre id="flash-log" class="cw-console cw-console--sm" aria-live="polite"></pre>
+        </article>
+      </section>
+
+      <!-- ===================== PANEL: INSPECCIONAR ===================== -->
+      <section
+        id="panel-inspect"
+        class="cw-panel"
+        role="tabpanel"
+        aria-labelledby="tab-inspect"
+        hidden
+      >
+        <article class="card cw-step">
+          <div class="cw-toolbar">
+            <div class="cw-toolbar-left">
+              <button id="btn-connect-serial" class="toggle cw-primary" type="button">
+                [ conectar ]
+              </button>
+              <button id="btn-disconnect-serial" class="toggle" type="button" disabled>
+                [ desconectar ]
+              </button>
+              <span
+                class="cw-status-pill"
+                id="serial-pill"
+                data-state="idle"
+                aria-live="polite"
+                >desconectado</span
+              >
+            </div>
+            <div class="cw-toolbar-right">
+              <label class="cw-label" for="filter-select">Filtro</label>
+              <select id="filter-select" class="cw-select cw-select--sm">
+                <option value="all">Todo</option>
+                <option value="alerts">Solo alertas</option>
+                <option value="hid">Eventos HID</option>
+                <option value="devices">Dispositivos</option>
+                <option value="suspicious">Sospechoso</option>
+                <option value="commands">Comandos</option>
+              </select>
+              <input
+                id="search-input"
+                class="cw-input cw-input--sm"
+                type="search"
+                placeholder="buscar…"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <!-- Análisis de payloads -->
+          <div class="cw-analysis" id="analysis-box">
+            <div class="cw-analysis-head">
+              <span>▼ ANÁLISIS DE PAYLOAD</span>
+              <span class="cw-muted" id="hid-speed">0.0 k/s</span>
+            </div>
+            <div class="cw-badges" id="attack-badges">
+              <span class="cw-muted">Sin patrones detectados aún…</span>
+            </div>
+            <div class="cw-keystrokes" id="keystroke-buffer" aria-live="polite"></div>
+          </div>
+
+          <pre id="serial-log" class="cw-console" aria-live="polite" tabindex="0"></pre>
+
+          <!-- Barra de comandos -->
+          <form id="cmd-form" class="cw-cmdbar" autocomplete="off">
+            <span class="cw-prompt">cerberus&gt;</span>
+            <input
+              id="cmd-input"
+              class="cw-input"
+              type="text"
+              placeholder="HELP, STATUS, LAST, VERBOSE…"
+              disabled
+              spellcheck="false"
+            />
+            <button class="toggle" type="submit" id="cmd-send" disabled>
+              [ enviar ]
+            </button>
+          </form>
+
+          <div class="cw-quickcmds" id="quick-cmds">
+            <button class="cw-chip" data-cmd="HELP" type="button" disabled>HELP</button>
+            <button class="cw-chip" data-cmd="STATUS" type="button" disabled>STATUS</button>
+            <button class="cw-chip" data-cmd="LAST" type="button" disabled>LAST</button>
+            <button class="cw-chip" data-cmd="VERBOSE" type="button" disabled>VERBOSE</button>
+            <button class="cw-chip" data-cmd="HEXDUMP" type="button" disabled>HEXDUMP</button>
+            <button class="cw-chip" data-cmd="HIDDEBUG" type="button" disabled>HIDDEBUG</button>
+            <button class="cw-chip" data-cmd="RESET" type="button" disabled>RESET</button>
+            <button class="cw-chip" data-cmd="CLEAR" type="button" disabled>CLEAR</button>
+          </div>
+
+          <div class="cw-row cw-row--end">
+            <button id="btn-clear-log" class="toggle" type="button">[ limpiar log ]</button>
+            <button id="btn-save-log" class="toggle" type="button">[ guardar .txt ]</button>
+            <button id="btn-export-ducky" class="toggle" type="button">[ export DuckyScript ]</button>
+          </div>
+        </article>
+      </section>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <hr class="rule" />
+        <div style="text-align: center; margin: 16px 0">
+          <div
+            style="
+              display: inline-block;
+              border: 1px solid var(--rule);
+              padding: 10px 20px;
+              background: var(--paper);
+            "
+          >
+            <div style="font-size: 10px; color: var(--muted); margin-bottom: 6px; opacity: 0.7">
+              ┌─[ SYSTEM INFO ]─────────────────────┐
+            </div>
+            <div class="top-marks" style="margin: 0; font-size: 11px">
+              <span>© <span id="y"></span> Glitch Hardware</span>
+              <span style="margin-left: 20px">[status: online]</span>
+            </div>
+            <div style="font-size: 10px; color: var(--muted); margin-top: 6px; opacity: 0.7">
+              └─────────────────────────────────────┘
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../assets/js/cerberus-web.js"></script>
+  </body>
+</html>

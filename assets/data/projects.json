@@ -5,7 +5,12 @@
     "title": "ESP32 Piratebus Kit",
     "summary": "Kit modular de PCBs basado en ESP32 para hacking y experimentación.",
     "description": "El ESP32 Piratebus Kit es un conjunto de placas modulares diseñadas para facilitar el prototipado y experimentación con ESP32. Incluye múltiples PCBs que se pueden combinar según las necesidades del proyecto.",
-    "tags": ["hardware", "esp32", "modular", "kit"],
+    "tags": [
+      "hardware",
+      "esp32",
+      "modular",
+      "kit"
+    ],
     "gallery": [
       {
         "type": "image",
@@ -79,14 +84,23 @@
     "title": "Cerberus",
     "summary": "Watchdog USB para detección y análisis de dispositivos sospechosos.",
     "description": "Cerberus es un watchdog USB open-source pensado para inspeccionar dispositivos, registrar eventos eléctricos y probar payloads de forma segura. Incluye firmware en RP2040 y hardware con protección de sobrevoltaje.",
-    "tags": ["hardware", "usb", "iot"],
+    "tags": [
+      "hardware",
+      "usb",
+      "iot"
+    ],
     "model": "../assets/models/cerberus.obj",
     "updated": "2026-02-08",
     "links": [
       {
-        "label": "Guía rápida",
-        "href": "../posts/2025-12-07-nueva-funcion-en-cerberus.html",
+        "label": "⚡ Cerberus Web — programar / inspeccionar",
+        "href": "../cerberus/",
         "external": false
+      },
+      {
+        "label": "Guía rápida",
+        "href": "https://github.com/Lab217MX/Cerberus-A-USB-Watchdog/blob/main/README.es.md",
+        "external": true
       }
     ],
     "pricing": {
@@ -119,7 +133,10 @@
     "title": "Hackplate",
     "summary": "Placa de pre-calentamiento / reflow abierta para laboratorios portátiles.",
     "description": "Hackplate combina una resistencia de calentamiento con control PID básico para hacer reflow y preheat de PCBs pequeñas. Es ideal para reparaciones rápidas y para makers que quieran ensamblar prototipos sin estación grande.",
-    "tags": ["hardware", "reflow"],
+    "tags": [
+      "hardware",
+      "reflow"
+    ],
     "model": "",
     "updated": "2025-10-18",
     "pricing": {
