@@ -1,7 +1,35 @@
 {
-  "generated": "2026-10-14T11:32:29Z",
+  "generated": "2026-10-15T11:10:53Z",
   "source": "Lab217MX/Cerberus-A-USB-Watchdog",
   "releases": [
+    {
+      "name": "Cerberus v2.0.1",
+      "tag": "v2.0.1",
+      "prerelease": false,
+      "published_at": "2026-10-15T02:14:58Z",
+      "assets": [
+        {
+          "name": "Cerberus-v2.0.1.uf2",
+          "size": 717824,
+          "sha256": "b82327c10f255ed741b2fe9f3c5e129b2d4bb01855ef45d91d1ffae0e58488d5",
+          "path": "firmware/v2.0.1/Cerberus-v2.0.1.uf2"
+        }
+      ]
+    },
+    {
+      "name": "Cerberus v2.0",
+      "tag": "v2.0.0",
+      "prerelease": false,
+      "published_at": "2026-10-14T16:50:14Z",
+      "assets": [
+        {
+          "name": "Cerberus-v2.0.uf2",
+          "size": 714240,
+          "sha256": "12462c90ace23fe7a5e51d251f7b0e8a3cb101cca0e941aff8057bb9ab205bc8",
+          "path": "firmware/v2.0.0/Cerberus-v2.0.uf2"
+        }
+      ]
+    },
     {
       "name": "Cerberus v1.1.0",
       "tag": "v1.1.0",
